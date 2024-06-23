@@ -1,0 +1,100 @@
+# Poetry pyproject.toml: https://python-poetry.org/docs/pyproject/
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.poetry]
+name = "gcop"
+version = "0.1.0"
+description = "gcop is your git copilot"
+readme = "README.md"
+authors = ["gcop <zeeland4work@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/Undertone0809/gcop"
+homepage = "https://github.com/Undertone0809/gcop"
+keywords = ["git", "git copilot", "promptulate", "pne", "LLM"]
+
+[tool.poetry.scripts]
+"gcop" = "gcop.__main__:app"
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+pne = "^1.0.1"
+click = "^8.1.7"
+questionary = "^2.0.1"
+typer = "^0.12.3"
+rich = "^13.7.1"
+pyyaml = "^6.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.3"
+pytest-html = "^3.1.1"
+pytest-cov = "^3.0.0"
+bandit = "^1.7.1"
+ruff = "^0.1.6"
+
+[tool.ruff]
+# https://beta.ruff.rs/docs/settings/
+# https://docs.astral.sh/ruff/configuration/
+line-length = 88
+
+# https://beta.ruff.rs/docs/rules/
+lint.select = ["E", "W", "F", "I"]
+lint.extend-select = ["I"]
+lint.ignore = ["F401"]
+
+# Exclude a variety of commonly ignored directories.
+respect-gitignore = true
+lint.ignore-init-module-imports = true
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+# https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
+# Directories that are not visited by pytest collector:
+norecursedirs =["hooks", "*.egg", ".eggs", "dist", "build", "docs", ".tox", ".git", "__pycache__"]
+doctest_optionflags = ["NUMBER", "NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
+
+# Extra options:
+addopts = [
+  "--strict-markers",
+  "--tb=short",
+  "--doctest-modules",
+  "--doctest-continue-on-failure",
+]
+
+
