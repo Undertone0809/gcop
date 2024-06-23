@@ -30,7 +30,7 @@ Gcop is your git AI copilot. You can use any large language model to help automa
 
 ## Video Demo
 
-[![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240519054442.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
+[![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
 
 ## Quick Start
 
@@ -99,7 +99,7 @@ git gcommit
 
 This video shows how to use gcop to generate a commit message.
 
-[![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240519054442.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
+[![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
 
 ## Development
 
