@@ -77,6 +77,8 @@ def generate_commit_message(diff: str) -> str:
     - feat: first commit
     - style: Format code using black
     - refactor: Refactor generate_commit_message function
+    - ci: Add GitHub Actions workflow for Python package release
+    - build: Update setup.py and add tests folder
 
     \n{diff}
     """  # noqa

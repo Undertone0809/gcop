@@ -33,7 +33,6 @@ format: polish-codestyle
 
 test:
 	$(TEST_COMMAND)
-	poetry run coverage-badge -o assets/images/coverage.svg -f
 
 check-codestyle:
 	poetry run ruff format --check --config pyproject.toml .
@@ -41,7 +40,7 @@ check-codestyle:
 
 
 
-lint: test check-codestyle 
+lint: test check-codestyle
 
 # Example: make docker-build VERSION=latest
 # Example: make docker-build IMAGE=some_name VERSION=0.1.0
