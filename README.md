@@ -2,15 +2,14 @@
 
 <div align="center">
 
-[![Build status](https://github.com/Undertone0809/gcop/workflows/build/badge.svg?branch=main&event=push)](https://github.com/Undertone0809/gcop/actions?query=workflow%3Abuild)
 [![Python Version](https://img.shields.io/pypi/pyversions/gcop.svg)](https://pypi.org/project/gcop/)
 [![Dependencies Status](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)](https://github.com/Undertone0809/gcop/pulls?utf8=%E2%9C%93&q=is%3Apr%20author%3Aapp%2Fdependabot)
 [![Semantic Versions](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--versions-e10079.svg)](https://github.com/Undertone0809/gcop/releases)
 [![License](https://img.shields.io/github/license/Undertone0809/gcop)](https://github.com/Undertone0809/gcop/blob/main/LICENSE)
 
-<a href="https://t.me/gcopilot" target="_blank">
-    <img src="https://img.shields.io/badge/Telegram-join%20chat-2CA5E0?logo=telegram&logoColor=white"
-        alt="chat on Telegram"></a>
+<a href="https://t.me/zeeland0809" target="_blank">
+    <img src="https://img.shields.io/badge/Telegram-join%20chat-2CA5E0?logo=telegram&logoColor=white" alt="chat on Telegram">
+</a>
 
 </div>
 
@@ -48,11 +47,11 @@ gcop init
 
 ## Basic Usage
 
-Run the `git ghelp` command to get help information.
+Run the `git ghelp` command to get help information and show all gcop commands.
 
 ```shell
 gcop is your local git command copilot
-Version: 0.1.0
+Version: 1.0.0
 GitHub: https://github.com/Undertone0809/gcop
 
 
@@ -62,6 +61,8 @@ Commands:
   git gconfig    Open the config file in the default editor
   git gcommit    Generate a git commit message based on the staged changes and commit the changes
 ```
+
+> gcop continues to add git gxxx commands later.
 
 ### Config your language model
 
@@ -78,7 +79,6 @@ Then gcop will generate a `config.yaml`, then you can config your language model
 - MacOS: `~/.gcop/config.yaml`
 
 Config your model in `config.yaml`, see how to config your model [here](./docs/how-to-config-model.md):
-
 
 ```yaml
 model:
@@ -302,6 +302,9 @@ See [LICENSE](https://github.com/Undertone0809/gcop/blob/main/LICENSE) for more 
 
 For more information, please
 contact: [zeeland4work@gmail.com](mailto:zeeland4work@gmail.com)
+
+See anything changelog, describe the [telegram channel](https://t.me/zeeland0809)
+
 
 ## Credits [![🚀 Your next Python package needs a bleeding-edge project structure.](https://img.shields.io/badge/P3G-%F0%9F%9A%80-brightgreen)](https://github.com/Undertone0809/python-package-template)
 
