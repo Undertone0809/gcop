@@ -5,7 +5,7 @@ requires = ["poetry-core"]
 
 [tool.poetry]
 name = "gcop"
-version = "1.0.0"
+version = "1.0.1"
 description = "gcop is your git AI copilot."
 readme = "README.md"
 authors = ["gcop <zeeland4work@gmail.com>"]

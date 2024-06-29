@@ -95,6 +95,19 @@ def generate_commit_message(diff: str) -> str:
     return response.content
 
 
+@app.command(name="config")
+def config_command():
+    """Open the config file in the default editor."""
+    initial_content = (
+        "model:\n  model_name: provider/name,eg openai/gpt-4o"
+        "\n  api_key: your_api_key\n"
+    )
+    if not os.path.exists(gcop_config.config_path):
+        Path(gcop_config.config_path).write_text(initial_content)
+
+    click.edit(filename=gcop_config.config_path)
+
+
 @app.command(name="init")
 def init_command():
     """Add command into git config"""
@@ -114,22 +127,12 @@ def init_command():
             check=True,
             encoding="utf-8",  # noqa
         )
+        console.print("[green]git aliases added successfully[/]")
+
+        config_command()
         console.print("[green]gcop initialized successfully[/]")
     except subprocess.CalledProcessError as error:
         print(f"Error adding git aliases: {error}")
-
-
-@app.command(name="config")
-def config_command():
-    """Open the config file in the default editor."""
-    initial_content = (
-        "model:\n  model_name: provider/name,eg openai/gpt-4o"
-        "\n  api_key: your_api_key\n"
-    )
-    if not os.path.exists(gcop_config.config_path):
-        Path(gcop_config.config_path).write_text(initial_content)
-
-    click.edit(filename=gcop_config.config_path)
 
 
 @app.command(name="commit")
