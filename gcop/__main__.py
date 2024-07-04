@@ -2,7 +2,7 @@ import os
 import subprocess
 from enum import Enum
 from pathlib import Path
-from typing import Literal
+from typing import List, Literal
 
 import click
 import pne
@@ -16,7 +16,6 @@ from gcop import version
 from gcop.config import ModelConfig, gcop_config
 
 load_dotenv()
-
 
 app = typer.Typer(
     name="gcop",
@@ -36,9 +35,9 @@ class Color(str, Enum):
 
 
 class LLMResponse(BaseModel):
-    content: str = Field(
+    content: List[str] = Field(
         ...,
-        description="git commit message, eg: feat: Add type annotation to generate_commit_message function",  # noqa
+        description="three of alternative git commit messages, eg: feat: Add type annotation to generate_commit_message function",  # noqa
     )
 
 
@@ -60,7 +59,7 @@ def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
         raise ValueError(f"Error getting git diff: {e}")
 
 
-def generate_commit_message(diff: str) -> str:
+def generate_commit_message(diff: str) -> List[str]:
     """Generate a git commit message based on the given diff.
 
     Args:
@@ -147,14 +146,19 @@ def commit_command():
 
     console.print(f"[yellow]Staged: {diff}[/]")
 
-    commit_message: str = generate_commit_message(diff)
+    commit_messages: List[str] = generate_commit_message(diff)
 
-    response = questionary.confirm(
-        f"Ready to run command: git commit -m '{commit_message}', continue?"
+    response = questionary.select(
+        "Select a commit message to commit", choices=[*commit_messages, "retry"]
     ).ask()
+
+    if response == "retry":
+        commit_command()
+        return
+
     if response:
-        console.print(f"[green]Command: git commit -m '{commit_message}'[/]")
-        subprocess.run(["git", "commit", "-m", f"{commit_message}"])
+        console.print(f"[green]Command: git commit -m '{response}'[/]")
+        subprocess.run(["git", "commit", "-m", f"{response}"])
     else:
         console.print("[red]Canceled[/]")
 
@@ -170,7 +174,7 @@ def help_command():
     console.print("[bold]  git ghelp      Add command into git config")
     console.print("[bold]  git gconfig    Open the config file in the default editor")
     console.print(
-        "[bold]  git gcommit    Generate a git commit message based on the staged changes and commit the changes"  # noqa
+        "[bold] git gcommit Generate a git commit message based on the staged changes and commit the changes"  # noqa
     )
 
 
