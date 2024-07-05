@@ -37,7 +37,8 @@ class Color(str, Enum):
 class LLMResponse(BaseModel):
     content: List[str] = Field(
         ...,
-        description="three of alternative git commit messages, eg: feat: Add type annotation to generate_commit_message function",  # noqa
+        description="three of alternative git commit messages, eg: feat: Add type annotation to generate_commit_message function",
+        # noqa
     )
 
 
@@ -95,7 +96,7 @@ def generate_commit_message(diff: str) -> List[str]:
 
 
 @app.command(name="config")
-def config_command():
+def config_command(from_init: bool = False):
     """Open the config file in the default editor."""
     initial_content = (
         "model:\n  model_name: provider/name,eg openai/gpt-4o"
@@ -104,13 +105,26 @@ def config_command():
     if not os.path.exists(gcop_config.config_path):
         Path(gcop_config.config_path).write_text(initial_content)
 
-    click.edit(filename=gcop_config.config_path)
+    if not from_init:
+        click.edit(filename=gcop_config.config_path)
+        return
+
+    with open(gcop_config.config_path) as f:
+        content = f.read()
+
+        if content == initial_content:
+            click.edit(filename=gcop_config.config_path)
 
 
 @app.command(name="init")
 def init_command():
     """Add command into git config"""
     try:
+        subprocess.run(
+            ["git", "config", "--global", "alias.undo", "reset --soft HEAD^"],
+            check=True,
+            encoding="utf-8",  # noqa
+        )
         subprocess.run(
             ["git", "config", "--global", "alias.gcommit", "!gcop commit"],
             check=True,
@@ -128,7 +142,7 @@ def init_command():
         )
         console.print("[green]git aliases added successfully[/]")
 
-        config_command()
+        config_command(from_init=True)
         console.print("[green]gcop initialized successfully[/]")
     except subprocess.CalledProcessError as error:
         print(f"Error adding git aliases: {error}")
@@ -171,10 +185,13 @@ def help_command():
     console.print("[bold]GitHub: https://github.com/Undertone0809/gcop[/]")
     console.print("\n\n[bold]Usage: gcop [OPTIONS] COMMAND[/]")
     console.print("[bold]Commands:")
+    console.print(
+        "[bold]  git undo       Undo the last commit but keep the file changes"
+    )
     console.print("[bold]  git ghelp      Add command into git config")
     console.print("[bold]  git gconfig    Open the config file in the default editor")
     console.print(
-        "[bold] git gcommit Generate a git commit message based on the staged changes and commit the changes"  # noqa
+        "[bold] git gcommit Generate a git commit message based on the staged changes and commit the changes"# noqa
     )
 
 
