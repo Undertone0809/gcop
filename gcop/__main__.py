@@ -2,11 +2,12 @@ import os
 import subprocess
 from enum import Enum
 from pathlib import Path
-from typing import List, Literal
+from typing import List, Literal, Optional
 
 import click
 import pne
 import questionary
+import requests
 import typer
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
@@ -37,8 +38,7 @@ class Color(str, Enum):
 class LLMResponse(BaseModel):
     content: List[str] = Field(
         ...,
-        description="three of alternative git commit messages, eg: feat: Add type annotation to generate_commit_message function",
-        # noqa
+        description="three of alternative git commit messages, eg: feat: Add type annotation to generate_commit_message function",  # noqa
     )
 
 
@@ -60,11 +60,12 @@ def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
         raise ValueError(f"Error getting git diff: {e}")
 
 
-def generate_commit_message(diff: str) -> List[str]:
+def generate_commit_message(diff: str, feedback: Optional[str] = None) -> List[str]:
     """Generate a git commit message based on the given diff.
 
     Args:
         diff(str): git diff
+        feedback(Optional[str]): feedback from the previous commit message.
 
     Returns:
         str: git commit message
@@ -82,6 +83,15 @@ def generate_commit_message(diff: str) -> List[str]:
 
     \n{diff}
     """  # noqa
+
+    if not feedback:
+        # TODO optimize feedback logic
+        prompt += f"""
+    This is original git commit message, it's not good enough, please reflect the
+    feedback and generate the better git messages.
+    {feedback}
+    """
+
     model_config: ModelConfig = gcop_config.model_config
     response: LLMResponse = pne.chat(
         messages=prompt,
@@ -126,7 +136,17 @@ def init_command():
             encoding="utf-8",  # noqa
         )
         subprocess.run(
+            ["git", "config", "--global", "alias.pf", "push --force"],
+            check=True,
+            encoding="utf-8",  # noqa
+        )
+        subprocess.run(
             ["git", "config", "--global", "alias.gcommit", "!gcop commit"],
+            check=True,
+            encoding="utf-8",  # noqa
+        )
+        subprocess.run(
+            ["git", "config", "--global", "alias.c", "!gcop commit"],
             check=True,
             encoding="utf-8",  # noqa
         )
@@ -149,7 +169,7 @@ def init_command():
 
 
 @app.command(name="commit")
-def commit_command():
+def commit_command(feedback: Optional[str] = None):
     """Generate a git commit message based on the staged changes and commit the
     changes."""
     diff: str = get_git_diff("--staged")
@@ -160,14 +180,14 @@ def commit_command():
 
     console.print(f"[yellow]Staged: {diff}[/]")
 
-    commit_messages: List[str] = generate_commit_message(diff)
+    commit_messages: List[str] = generate_commit_message(diff, feedback)
 
     response = questionary.select(
         "Select a commit message to commit", choices=[*commit_messages, "retry"]
     ).ask()
 
     if response == "retry":
-        commit_command()
+        commit_command(feedback=str(commit_messages))
         return
 
     if response:
@@ -176,27 +196,39 @@ def commit_command():
     else:
         console.print("[red]Canceled[/]")
 
+    # # request pypi to get the latest version
+    # # TODO optimize logic, everyday check the latest version one time
+    # response = requests.get("https://pypi.org/pypi/gcop/json")
+    # latest_version = response.json()["info"]["version"]
+    # if version != latest_version:
+    #     console.print(f"[bold]A new version of gcop is available: {latest_version}[/]") # noqa
+    #     console.print(f"[bold]Your current version: {version}[/]")
+    #     console.print(
+    #         "[bold]Please consider upgrading by running: pip install -U gcop[/]"
+    #     )
+
 
 @app.command(name="help")
 def help_command():
     """Show help message"""
-    console.print("[bold]gcop[/] is your local git command copilot")
-    console.print(f"[bold]Version: [/]{version}")
-    console.print("[bold]GitHub: https://github.com/Undertone0809/gcop[/]")
-    console.print("\n\n[bold]Usage: gcop [OPTIONS] COMMAND[/]")
-    console.print("[bold]Commands:")
-    console.print(
-        "[bold]  git undo       Undo the last commit but keep the file changes"
-    )
-    console.print("[bold]  git ghelp      Add command into git config")
-    console.print("[bold]  git gconfig    Open the config file in the default editor")
-    console.print(
-        "[bold] git gcommit Generate a git commit message based on the staged changes and commit the changes"# noqa
-    )
+    help_message = """
+[bold]gcop[/] is your local git command copilot
+[bold]Version: [/]{version}
+[bold]GitHub: https://github.com/Undertone0809/gcop[/]
+
+[bold]Usage: gcop [OPTIONS] COMMAND[/]
+
+[bold]Commands:
+  git undo       Undo the last commit but keep the file changes
+  git pf         Push the changes to the remote repository with force
+  git ghelp      Add command into git config
+  git gconfig    Open the config file in the default editor
+  git gcommit    Generate a git commit message based on the staged changes and commit the changes
+  git c          The same as `git gcommit` command
+"""  # noqa
+
+    console.print(help_message)
 
 
 if __name__ == "__main__":
     app()
-
-    # response: str = pne.chat(messages="hello", model="deepseek/deepseek-chat")
-    # print(response)

@@ -19,6 +19,7 @@ Gcop is your git AI copilot. You can use any large language model to help automa
 
 - Generate commit messages by large language models.
 - Easily config your language model.
+- Powerful and simple alias commands to use.
 
 ## TECH
 
@@ -56,13 +57,15 @@ GitHub: https://github.com/Undertone0809/gcop
 
 
 Usage: git [OPTIONS] COMMAND
+
 Commands:
+  git undo       Undo the last commit but keep the file changes
+  git pf         Push the changes to the remote repository with force
   git ghelp      Add command into git config
   git gconfig    Open the config file in the default editor
   git gcommit    Generate a git commit message based on the staged changes and commit the changes
+  git c          The same as `git gcommit` command
 ```
-
-> gcop continues to add git gxxx commands later.
 
 ### Config your language model
 
@@ -72,19 +75,12 @@ Before you generate a commit message, you need to config your language model. Yo
 git gconfig
 ```
 
-Then gcop will generate a `config.yaml`, then you can config your language model.`config.yaml` store path:
+Then gcop will generate a `config.yaml`, then gcop will open the `config.yaml` file in the default editor, and you can config your language model. See how to config your model [here](./docs/how-to-config-model.md):
 
-- Windows: `%USERPROFILE%\.gcop\config.yaml`
-- Linux: `~/.gcop/config.yaml`
-- MacOS: `~/.gcop/config.yaml`
-
-Config your model in `config.yaml`, see how to config your model [here](./docs/how-to-config-model.md):
-
-```yaml
-model:
-  model_name: provider/name,eg OpenAI/gpt-4
-  api_key: YOUR_API_KEY
-```
+> `config.yaml` store path:
+> - Windows: `%USERPROFILE%\.gcop\config.yaml`
+> - Linux: `~/.gcop/config.yaml`
+> - MacOS: `~/.gcop/config.yaml`
 
 ### Generate commit message
 
@@ -101,7 +97,34 @@ This video shows how to use gcop to generate a commit message.
 
 [![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
 
-## Development
+## All commands
+
+### git gcommit / git c
+
+Generate a git commit message based on the staged changes and commit the changes.
+
+```shell
+> git c # You can also use `git gcommit` command
+? Select a commit message to commit (Use arrow keys)
+ » docs: Add 'All commands' section to README.md
+   feat: Add 'git gcommit' and 'git gconfig' commands to README.md
+   feat: Add 'git config --global alias.pf' command in __main__.py
+   retry
+```
+
+### git gconfig
+
+Open the config file in the default editor.
+
+### git undo
+
+Undo the last commit.
+
+### git pf
+
+Push force to the current branch, equivalent to `git push --force`.
+
+## Development setup
 
 Conda package manager is recommended. Create a conda environment.
 
