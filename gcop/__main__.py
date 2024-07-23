@@ -136,12 +136,12 @@ def init_command():
             encoding="utf-8",  # noqa
         )
         subprocess.run(
-            ["git", "config", "--global", "alias.undo", "reset --soft HEAD^"],
+            ["git", "config", "--global", "alias.pf", "push --force"],
             check=True,
             encoding="utf-8",  # noqa
         )
         subprocess.run(
-            ["git", "config", "--global", "alias.pf", "push --force"],
+            ["git", "config", "--global", "alias.undo", "reset --soft HEAD^"],
             check=True,
             encoding="utf-8",  # noqa
         )
@@ -152,6 +152,11 @@ def init_command():
         )
         subprocess.run(
             ["git", "config", "--global", "alias.c", "!gcop commit"],
+            check=True,
+            encoding="utf-8",  # noqa
+        )
+        subprocess.run(
+            ["git", "config", "--global", "alias.ac", "!git add . && gcop commit"],
             check=True,
             encoding="utf-8",  # noqa
         )
@@ -230,6 +235,7 @@ def help_command():
   git ghelp      Add command into git config
   git gconfig    Open the config file in the default editor
   git gcommit    Generate a git commit message based on the staged changes and commit the changes
+  git ac         The same as `git add . && git gcommit` command
   git c          The same as `git gcommit` command
 """  # noqa
 

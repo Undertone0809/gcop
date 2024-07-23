@@ -59,11 +59,13 @@ GitHub: https://github.com/Undertone0809/gcop
 Usage: git [OPTIONS] COMMAND
 
 Commands:
-  git undo       Undo the last commit but keep the file changes
+  git p          Push the changes to the remote repository
   git pf         Push the changes to the remote repository with force
+  git undo       Undo the last commit but keep the file changes
   git ghelp      Add command into git config
   git gconfig    Open the config file in the default editor
   git gcommit    Generate a git commit message based on the staged changes and commit the changes
+  git ac         The same as `git add . && git gcommit` command
   git c          The same as `git gcommit` command
 ```
 
@@ -123,6 +125,14 @@ Undo the last commit.
 ### git pf
 
 Push force to the current branch, equivalent to `git push --force`.
+
+### git p
+
+Push to the current branch, equivalent to `git push`.
+
+### git ac
+
+The same as `git add . && git gcommit` command.
 
 ## Development setup
 
