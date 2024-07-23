@@ -131,6 +131,11 @@ def init_command():
     """Add command into git config"""
     try:
         subprocess.run(
+            ["git", "config", "--global", "alias.p", "push"],
+            check=True,
+            encoding="utf-8",  # noqa
+        )
+        subprocess.run(
             ["git", "config", "--global", "alias.undo", "reset --soft HEAD^"],
             check=True,
             encoding="utf-8",  # noqa
@@ -219,8 +224,9 @@ def help_command():
 [bold]Usage: gcop [OPTIONS] COMMAND[/]
 
 [bold]Commands:
-  git undo       Undo the last commit but keep the file changes
+  git p          Push the changes to the remote repository
   git pf         Push the changes to the remote repository with force
+  git undo       Undo the last commit but keep the file changes
   git ghelp      Add command into git config
   git gconfig    Open the config file in the default editor
   git gcommit    Generate a git commit message based on the staged changes and commit the changes
