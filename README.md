@@ -34,6 +34,12 @@ Gcop is your git AI copilot. You can use any large language model to help automa
 
 ## Quick Start
 
+- Requirements:
+  - Python 3.6+
+  - Git
+  - Any large language model key
+
+
 - Install gcop
 
 ```shell
