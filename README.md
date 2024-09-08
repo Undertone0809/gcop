@@ -1,4 +1,4 @@
-<img src="assets/images/banner.png" alt="img.png" style="border-radius: 15px;">
+<img src="assets/images/banner.png" alt="GCOP Banner" style="border-radius: 15px;">
 
 <div align="center">
 
@@ -13,15 +13,15 @@
 
 </div>
 
-Gcop is your git AI copilot. You can use any large language model to help automate the generation of commit messages.
+GCOP (Git Copilot) is an intelligent assistant that enhances your Git workflow by automating commit message generation using AI. It's designed to make your development process smoother and more efficient.
 
-## Features
+## 🚀 Key Features
 
-- Generate commit messages by large language models.
-- Easily config your language model.
-- Powerful and simple alias commands to use.
+- **Smart Commit Messages**: Let AI generate meaningful commit messages based on your changes.
+- **Flexible AI Integration**: Works with various large language models (LLMs) of your choice.
+- **Simplified Git Commands**: Powerful aliases for common Git operations to speed up your workflow.
 
-## TECH
+## 📦 Techs
 
 - [Promptulate: Large language model automation and Autonomous Language Agents development framework](https://github.com/Undertone0809/promptulate)
 - [P3G: Python Packages Project Generator](https://github.com/Undertone0809/P3G)
@@ -30,163 +30,210 @@ Gcop is your git AI copilot. You can use any large language model to help automa
 
 ## Video Demo
 
-[![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
-
-## Quick Start
-
-- Requirements:
-  - Python 3.6+
-  - Git
-  - Any large language model key
-
-
-- Install gcop
-
-```shell
-pip install gcop
-```
-
-- If you are first time to use gcop, you need to run the `gcop init` command to initialize the configuration. This command will alias gcop command on your git.
-
-```shell
-gcop init
-```
-
-## Basic Usage
-
-Run the `git ghelp` command to get help information and show all gcop commands.
-
-```shell
-gcop is your local git command copilot
-Version: 1.0.0
-GitHub: https://github.com/Undertone0809/gcop
-
-
-Usage: git [OPTIONS] COMMAND
-
-Commands:
-  git p          Push the changes to the remote repository
-  git pf         Push the changes to the remote repository with force
-  git undo       Undo the last commit but keep the file changes
-  git ghelp      Add command into git config
-  git gconfig    Open the config file in the default editor
-  git gcommit    Generate a git commit message based on the staged changes and commit the changes
-  git ac         The same as `git add . && git gcommit` command
-  git c          The same as `git gcommit` command
-```
-
-### Config your language model
-
-Before you generate a commit message, you need to config your language model. You can use any large language model to generate commit messages. The following example shows how to config the language model.
-
-```shell
-git gconfig
-```
-
-Then gcop will generate a `config.yaml`, then gcop will open the `config.yaml` file in the default editor, and you can config your language model. See how to config your model [here](./docs/how-to-config-model.md):
-
-> `config.yaml` store path:
-> - Windows: `%USERPROFILE%\.gcop\config.yaml`
-> - Linux: `~/.gcop/config.yaml`
-> - MacOS: `~/.gcop/config.yaml`
-
-### Generate commit message
-
-The following example show how to use gcop to generate a commit message. 
-
-```shell
-git add .
-git gcommit
-```
-
-## Video Demo
-
 This video shows how to use gcop to generate a commit message.
 
 [![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
 
-## All commands
+## 🛠️ Getting Started
 
-### git gcommit / git c
+### What You'll Need
 
-Generate a git commit message based on the staged changes and commit the changes.
+- Python 3.8 or newer
+- Git installed on your system
+- An API key for your preferred LLM (e.g., OpenAI, Anthropic)
 
-```shell
-> git c # You can also use `git gcommit` command
-? Select a commit message to commit (Use arrow keys)
- » docs: Add 'All commands' section to README.md
-   feat: Add 'git gcommit' and 'git gconfig' commands to README.md
-   feat: Add 'git config --global alias.pf' command in __main__.py
-   retry
-```
+### Installation
 
-### git gconfig
+1. Install GCOP with pip:
 
-Open the config file in the default editor.
+   ```
+   pip install gcop
+   ```
 
-### git undo
+2. Initialize GCOP:
 
-Undo the last commit.
+   ```
+   gcop init
+   ```
 
-### git pf
+> This command sets up GCOP and adds its aliases to your Git configuration.
 
-Push force to the current branch, equivalent to `git push --force`.
+3. Configure your AI model:
 
-### git p
+   ```
+   git gconfig
+   ```
 
-Push to the current branch, equivalent to `git push`.
+   This opens the configuration file. Edit it to include your AI provider details:
 
-### git ac
+   ```yaml
+   llm:
+     provider: openai  # or your preferred provider
+     api_key: your_api_key_here
+     model: gpt-3.5-turbo  # or your preferred model
+   ```
 
-The same as `git add . && git gcommit` command.
+Then gcop will generate a `config.yaml`, then gcop will open the `config.yaml`
+file in the default editor, and you can config your language model. See how to
+config your model [here](./docs/guide/how-to-config-model.md):
 
-## Development setup
+> `config.yaml` store path:
+>
+> - Windows: `%USERPROFILE%\.gcop\config.yaml`
+> - Linux: `~/.gcop/config.yaml`
+> - MacOS: `~/.gcop/config.yaml`
 
-Conda package manager is recommended. Create a conda environment.
+4. Verify the installation:
 
-```bash
-conda create -n gcop python==3.10
-```
+   ```
+   git ghelp
+   ```
 
-Activate conda environment and install poetry
+   You should see output similar to:
 
-```bash
-conda activate gcop
-pip install poetry
-```
+   ```
+   gcop is your local git command copilot
+   Version: 1.0.0
+   GitHub: https://github.com/Undertone0809/gcop
 
-Then you can run the client using the following command:
+   Usage: git [OPTIONS] COMMAND
 
-```bash
-gcop --help
-```
+   Commands:
+     git p          Push changes to remote repository
+     git pf         Force push changes to remote repository
+     git undo       Undo last commit, keep changes
+     git ghelp      Show this help message
+     git gconfig    Open config file in default editor
+     git gcommit    Generate AI commit message and commit changes
+     git ac         Add all changes and commit with AI message
+     git c          Shorthand for 'git gcommit'
+   ```
 
-or with `Poetry`:
+## 💡 Basic Usage
 
-```bash
-poetry run gcop --help
-```
+### Generating AI Commit Messages
+
+After making changes to your project:
+
+1. Stage your changes:
+
+   ```
+   git add .
+   ```
+
+2. Generate and apply an AI commit message:
+
+   ```
+   git c
+   ```
+
+   Example output:
+
+   ```
+   ? Select a commit message to commit (Use arrow keys)
+    » feat: Implement user authentication system
+      docs: Update installation instructions in README
+      fix: Resolve database connection timeout issue
+      style: Improve code formatting in src/main.py
+      retry
+   ```
+
+3. Choose the most appropriate message using arrow keys and press Enter.
+
+### Other Useful Commands
+
+- `git ac`: Add all changes and commit with an AI-generated message
+
+   ```
+   git ac
+   ```
+
+   Output:
+
+   ```
+   Changes added. Generating commit message...
+   ? Select a commit message to commit (Use arrow keys)
+    » feat: Add new user profile page
+      fix: Correct CSS styling issues on mobile devices
+      docs: Update API documentation for v2.0
+      refactor: Optimize database queries for better performance
+      retry
+   ```
+
+- `git undo`: Undo the last commit while keeping changes staged
+
+   ```
+   git undo
+   ```
+
+   Output:
+
+   ```
+   HEAD is now at a1b2c3d Previous commit message
+   Changes from the last commit are now staged.
+   ```
+
+- `git p`: Push to the current branch
+
+   ```
+   git p
+   ```
+
+   Output:
+
+   ```
+   Enumerating objects: 5, done.
+   Counting objects: 100% (5/5), done.
+   Delta compression using up to 8 threads
+   Compressing objects: 100% (3/3), done.
+   Writing objects: 100% (3/3), 328 bytes | 328.00 KiB/s, done.
+   Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+   To https://github.com/username/repo.git
+      a1b2c3d..e4f5g6h  main -> main
+   ```
+
+- `git pf`: Force push to the current branch (use with caution)
+- `git gconfig`: Open the GCOP configuration file for adjustments
+
+## 🔧 Configuration
+
+To modify your AI model settings:
+
+1. Open the config file:
+
+   ```
+   git gconfig
+   ```
+
+2. Edit the `config.yaml` file:
+
+   ```yaml
+   llm:
+     provider: openai
+     api_key: your_api_key_here
+     model: gpt-3.5-turbo
+   ```
+
+3. Save and close the file.
+
+## 📚 Learn More
+
+- [Detailed Documentation](https://github.com/Undertone0809/gcop/wiki)
+- [Contribution Guidelines](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 
 ### Makefile usage
 
-[`Makefile`](https://github.com/Undertone0809/gcop/blob/main/Makefile) contains a lot of
+[`Makefile`](https://github.com/Undertone0809/gcop/blob/main/Makefile)
+contains a lot of
 functions for faster development.
-
 
 <details>
 <summary>Install all dependencies and pre-commit hooks</summary>
 <p>
 
-Install requirements:
-
 ```bash
 make install
-```
-
-Pre-commit hooks coulb be installed after `git init` via
-
-```bash
-make pre-commit-install
 ```
 
 </p>
@@ -337,13 +384,12 @@ make cleanup
 This project is licensed under the terms of the `MIT` license.
 See [LICENSE](https://github.com/Undertone0809/gcop/blob/main/LICENSE) for more details.
 
-## Contact
+## 🤝 Support
 
 For more information, please
 contact: [zeeland4work@gmail.com](mailto:zeeland4work@gmail.com)
 
 See anything changelog, describe the [telegram channel](https://t.me/zeeland0809)
-
 
 ## Credits [![🚀 Your next Python package needs a bleeding-edge project structure.](https://img.shields.io/badge/P3G-%F0%9F%9A%80-brightgreen)](https://github.com/Undertone0809/python-package-template)
 
