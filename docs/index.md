@@ -7,7 +7,7 @@ hero:
   text: "Your first git AI copilot"
   tagline: Commit smarter, not harder with gcop
   image:
-    src: https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240909012747.png
+    src: https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/gcop-logo.png
     alt: gcop
   actions:
     - theme: brand
