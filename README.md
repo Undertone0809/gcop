@@ -1,4 +1,6 @@
-<img src="assets/images/banner.png" alt="GCOP Banner" style="border-radius: 15px;">
+<p align="center">
+   <img src="./docs/public/banner.png" alt="GCOP Banner" style="border-radius: 15px;">
+</p>
 
 <div align="center">
 

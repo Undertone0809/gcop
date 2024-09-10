@@ -5,7 +5,7 @@ export default defineConfig({
   title: "GCOP",
   description: "🚀 Your git AI copilot",
   head: [
-    ['link', { rel: 'icon', href: '/images/logo.ico' }],
+    ['link', { rel: 'icon', href: '/gcop-logo.ico' }],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
