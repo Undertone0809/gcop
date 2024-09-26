@@ -23,6 +23,7 @@ export default defineConfig({
           { text: 'Introduction', link: '/guide/introduction' },
           { text: 'Quick Start', link: '/guide/quick-start' },
           { text: 'Commands', link: '/guide/commands' },
+          { text: 'Connect to Gaianet', link: '/guide/connect2gaianet' },
         ]
       },
       {

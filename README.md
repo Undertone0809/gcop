@@ -69,10 +69,9 @@ This video shows how to use gcop to generate a commit message.
    This opens the configuration file. Edit it to include your AI provider details:
 
    ```yaml
-   llm:
-     provider: openai  # or your preferred provider
-     api_key: your_api_key_here
-     model: gpt-3.5-turbo  # or your preferred model
+   model:
+     model_name: provider/name, eg openai/gpt-4o
+     api_key: your_api_key
    ```
 
 Then gcop will generate a `config.yaml`, then gcop will open the `config.yaml`
@@ -210,10 +209,9 @@ To modify your AI model settings:
 2. Edit the `config.yaml` file:
 
    ```yaml
-   llm:
-     provider: openai
-     api_key: your_api_key_here
-     model: gpt-3.5-turbo
+   model:
+     model_name: provider/name, eg openai/gpt-4o
+     api_key: your_api_key
    ```
 
 3. Save and close the file.

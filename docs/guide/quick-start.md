@@ -35,10 +35,9 @@ Before you begin, ensure you have the following:
    This opens the configuration file. Edit it to include your AI provider details:
 
    ```yaml
-   llm:
-     provider: openai  # or your preferred provider
-     api_key: your_api_key_here
-     model: gpt-3.5-turbo  # or your preferred model
+   model:
+     model_name: provider/name, eg openai/gpt-4o
+     api_key: your_api_key
    ```
 
    The `config.yaml` file will be stored in:
