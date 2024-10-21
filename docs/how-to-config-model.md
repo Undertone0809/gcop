@@ -78,6 +78,6 @@ model:
 
 ## More models
 
-gcop use [promptulate](https://github.com/Undertone0809/promptulate) standard to name the model. You can see how to write your model name in [here](https://www.promptulate.cn/#/other/how_to_write_model_name?id=how-to-write-model-name).
+gcop use [promptulate](https://github.com/Undertone0809/promptulate) standard to name the model. You can see how to write your model name in [here](https://www.promptulate.cn/other/how_to_write_model_name.html).
 
 promptulate integrates litellm's capabilities and model name standards, so if you want to use any model, you can go directly to the [litellm](https://docs.litellm.ai/docs/) website to view the model name and then use it in promptulate.

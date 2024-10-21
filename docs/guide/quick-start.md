@@ -40,6 +40,8 @@ Before you begin, ensure you have the following:
      api_key: your_api_key
    ```
 
+   How to config your model? Please refer to [How to Config Model](../how-to-config-model.md)
+
    The `config.yaml` file will be stored in:
    - Windows: `%USERPROFILE%\.gcop\config.yaml`
    - Linux: `~/.gcop/config.yaml`
