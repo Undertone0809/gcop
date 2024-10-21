@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitepress'
-import { env } from 'process'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -11,7 +10,7 @@ export default defineConfig({
       'script',
       {
         defer: 'true',
-        'data-website-id': env.UMAMI_WEBSITE_ID,
+        'data-website-id': '77d0dd59-9095-463b-a317-b49b373af92d',
         src: 'https://umami.zeeland.top/script.js'
       }
     ],
