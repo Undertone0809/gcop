@@ -100,6 +100,44 @@ These changes improve the clarity and accuracy of the documentation, ensuring th
  3 files changed, 5 insertions(+), 2 deletions(-)
 ```
 
+### Viewing Repository Information
+
+To get a detailed overview of your repository, use:
+
+```
+git info
+```
+
+This command now displays comprehensive information about your repository, including:
+
+- Project name
+- Current branch
+- Latest commit
+- Number of uncommitted changes
+- Remote URL
+- Total number of commits
+- Number of contributors
+- Repository creation time
+- Last modified time
+- Repository size
+- Most active contributor
+- Most changed file
+- Line count by language (if cloc is installed)
+- Latest tag
+- Branch count
+- Untracked files count
+- Submodule information
+- Latest merge commit
+- File type statistics
+
+This detailed information provides a thorough understanding of your project's state, history, and composition. It's particularly useful for quickly assessing the repository's overall structure and recent activities.
+
+For example:
+
+![repository information](../images/git-info.png)
+
+> Note: Some features like line count by language require additional tools (e.g., cloc) to be installed.
+
 ### Other Useful Commands
 
 - `git ac`: Add all changes and commit with an AI-generated message

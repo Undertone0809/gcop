@@ -32,6 +32,10 @@ Show the help message with a list of available GCOP commands.
 
 Open the GCOP configuration file in the default editor.
 
+### `git info`
+
+Display basic information about the current git repository.
+
 ## Usage Examples
 
 1. Generate and apply an AI commit message:
@@ -53,5 +57,31 @@ Open the GCOP configuration file in the default editor.
    ```
    git p
    ```
+
+5. View repository information:
+   ```
+   git info
+   ```
+   This command provides a summary of your repository, including:
+
+- Project name
+- Current branch
+- Latest commit
+- Number of uncommitted changes
+- Remote URL
+- Total number of commits
+- Number of contributors
+- Repository creation time
+- Last modified time
+- Repository size
+- Most active contributor
+- Most changed file
+- Line count by language (if cloc is installed)
+- Latest tag
+- Branch count
+- Untracked files count
+- Submodule information
+- Latest merge commit
+- File type statistics
 
 For more detailed information on each command, refer to the [Quick Start](/guide/quick-start.md) section in the guide.
