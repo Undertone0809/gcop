@@ -211,6 +211,11 @@ def init_command():
             encoding="utf-8",  # noqa
         )
         subprocess.run(
+            ["git", "config", "--global", "alias.info", "!gcop info"],
+            check=True,
+            encoding="utf-8",  # noqa
+        )
+        subprocess.run(
             ["git", "config", "--global", "alias.gconfig", "!gcop config"],
             check=True,
             encoding="utf-8",  # noqa
@@ -226,6 +231,231 @@ def init_command():
         console.print("[green]gcop initialized successfully[/]")
     except subprocess.CalledProcessError as error:
         print(f"Error adding git aliases: {error}")
+
+
+@app.command(name="info")
+def info_command():
+    """Display detailed information about the current git repository."""
+    try:
+        # Get project name (usually the directory name)
+        project_name = os.path.basename(os.getcwd())
+
+        # Get current branch
+        current_branch = subprocess.check_output(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True
+        ).strip()
+
+        # Get latest commit info
+        latest_commit = subprocess.check_output(
+            ["git", "log", "-1", "--oneline"], text=True
+        ).strip()
+
+        # Get number of uncommitted changes
+        uncommitted_changes = len(
+            subprocess.check_output(
+                ["git", "status", "--porcelain"], text=True
+            ).splitlines()
+        )
+
+        # Get remote URL
+        remote_url = subprocess.check_output(
+            ["git", "config", "--get", "remote.origin.url"], text=True
+        ).strip()
+
+        # Get total number of commits
+        total_commits = subprocess.check_output(
+            ["git", "rev-list", "--count", "HEAD"], text=True
+        ).strip()
+
+        # Get number of contributors
+        contributors = len(
+            set(
+                subprocess.check_output(
+                    ["git", "log", "--format='%ae'"], text=True
+                ).splitlines()
+            )
+        )
+
+        # Get repository creation time
+        creation_time = subprocess.check_output(
+            [
+                "git",
+                "log",
+                "--reverse",
+                "--date=iso",
+                "--format=%ad",
+                "|",
+                "head",
+                "-1",
+            ],
+            text=True,
+            shell=True,
+        ).strip()
+
+        # Get last modified time
+        last_modified = subprocess.check_output(
+            ["git", "log", "-1", "--date=iso", "--format=%ad"], text=True
+        ).strip()
+
+        # Get repository size
+        repo_size = (
+            subprocess.check_output(["git", "count-objects", "-vH"], text=True)
+            .split("\n")[2]
+            .split(":")[1]
+            .strip()
+        )
+
+        # Get most active contributor
+        most_active = (
+            subprocess.check_output(
+                ["git", "shortlog", "-sn", "--no-merges", "|", "head", "-n", "1"],
+                text=True,
+                shell=True,
+            )
+            .strip()
+            .split("\t")[1]
+        )
+
+        # Get most changed file
+        most_changed = (
+            subprocess.check_output(
+                [
+                    "git",
+                    "log",
+                    "--pretty=format:",
+                    "--name-only",
+                    "|",
+                    "sort",
+                    "|",
+                    "uniq",
+                    "-c",
+                    "|",
+                    "sort",
+                    "-rg",
+                    "|",
+                    "head",
+                    "-n",
+                    "1",
+                ],
+                text=True,
+                shell=True,
+            )
+            .strip()
+            .split()[-1]
+        )
+
+        # Get line count by language (requires cloc to be installed)
+        try:
+            line_count = subprocess.check_output(
+                ["cloc", ".", "--quiet", "--json"], text=True
+            )
+            # Parse JSON output and format it
+            import json
+
+            line_count_data = json.loads(line_count)
+            formatted_line_count = "\n".join(
+                [
+                    f"{lang}: {data['code']} lines"
+                    for lang, data in line_count_data.items()
+                    if lang != "header" and lang != "SUM"
+                ]
+            )
+            line_count = formatted_line_count
+        except FileNotFoundError:
+            line_count = (
+                "cloc not found. Please ensure it's installed and in your system PATH."
+            )
+        except json.JSONDecodeError:
+            line_count = (
+                "Error parsing cloc output. Please check if cloc is working correctly."
+            )
+        except subprocess.CalledProcessError:
+            line_count = "Error running cloc. Please check if it's installed correctly."
+
+        # Get latest tag
+        try:
+            latest_tag = subprocess.check_output(
+                ["git", "describe", "--tags", "--abbrev=0"], text=True
+            ).strip()
+        except subprocess.CalledProcessError:
+            latest_tag = "No tags found"
+
+        # Get branch count
+        branch_count = len(
+            subprocess.check_output(["git", "branch", "-a"], text=True).splitlines()
+        )
+
+        # Get untracked files count
+        untracked_count = len(
+            subprocess.check_output(
+                ["git", "ls-files", "--others", "--exclude-standard"], text=True
+            ).splitlines()
+        )
+
+        # Get submodule info
+        try:
+            submodules = subprocess.check_output(
+                ["git", "submodule", "status"], text=True
+            ).strip()
+            if not submodules:
+                submodules = "No submodules"
+        except subprocess.CalledProcessError:
+            submodules = "No submodules"
+
+        # Get latest merge commit
+        try:
+            latest_merge = subprocess.check_output(
+                ["git", "log", "--merges", "-n", "1", "--pretty=format:%h - %s"],
+                text=True,
+            ).strip()
+            if not latest_merge:
+                latest_merge = "No merge commits found"
+        except subprocess.CalledProcessError:
+            latest_merge = "No merge commits found"
+
+        # Get file type statistics
+        file_types = subprocess.check_output(
+            [
+                "git",
+                "ls-files",
+                "|",
+                "sed",
+                "s/.*\\.//",
+                "|",
+                "sort",
+                "|",
+                "uniq",
+                "-c",
+                "|",
+                "sort",
+                "-rn",
+            ],
+            text=True,
+            shell=True,
+        ).strip()
+
+        console.print(f"[bold]Project Name:[/] {project_name}")
+        console.print(f"[bold]Current Branch:[/] {current_branch}")
+        console.print(f"[bold]Latest Commit:[/] {latest_commit}")
+        console.print(f"[bold]Uncommitted Changes:[/] {uncommitted_changes}")
+        console.print(f"[bold]Remote URL:[/] {remote_url}")
+        console.print(f"[bold]Total Commits:[/] {total_commits}")
+        console.print(f"[bold]Contributors:[/] {contributors}")
+        console.print(f"[bold]Repository Created:[/] {creation_time}")
+        console.print(f"[bold]Last Modified:[/] {last_modified}")
+        console.print(f"[bold]Repository Size:[/] {repo_size}")
+        console.print(f"[bold]Most Active Contributor:[/] {most_active}")
+        console.print(f"[bold]Most Changed File:[/] {most_changed}")
+        console.print(f"[bold]Line Count by Language:[/]\n{line_count}")
+        console.print(f"[bold]Latest Tag:[/] {latest_tag}")
+        console.print(f"[bold]Branch Count:[/] {branch_count}")
+        console.print(f"[bold]Untracked Files:[/] {untracked_count}")
+        console.print(f"[bold]Submodules:[/]{submodules}")
+        console.print(f"[bold]Latest Merge Commit:[/] {latest_merge}")
+        console.print(f"[bold]File Type Statistics:[/]\n{file_types}")
+
+    except subprocess.CalledProcessError as e:
+        console.print(f"[red]Error getting repository information: {e}[/]")
 
 
 @app.command(name="commit")
@@ -296,8 +526,9 @@ def help_command():
   git ghelp      Add command into git config
   git gconfig    Open the config file in the default editor
   git gcommit    Generate a git commit message based on the staged changes and commit the changes
-  git ac         The same as `git add . && git gcommit` command
   git c          The same as `git gcommit` command
+  git ac         The same as `git add . && git gcommit` command
+  git info       Display basic information about the current git repository
 """  # noqa
 
     console.print(help_message)
