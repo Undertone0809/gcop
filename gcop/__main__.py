@@ -255,7 +255,6 @@ def commit_command(feedback: Optional[str] = None):
     ).ask()
 
     if response == "yes":
-        console.print(f"[green]Committing with message: {commit_messages}[/]")
         subprocess.run(["git", "commit", "-m", commit_messages])
     elif response == "retry":
         commit_command(feedback=None)

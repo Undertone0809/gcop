@@ -71,7 +71,34 @@ Before you begin, ensure you have the following:
    git c
    ```
 
-3. Choose the most appropriate message using arrow keys and press Enter.
+> Some times, if you use `git add .` and `git c` together, you can use `git ac` as a shortcut.
+
+3. You can accept the default message, retry, retry by your feedback or exit after the AI generates the commit message.
+
+Finally, you can see the commit message like this:
+
+![commit message](../images/git-commit-2.png)
+
+```bash
+(gcop) D:\Projects\gcop\docs>git ac
+[Code diff] 
+...
+
+
+[Thought] The changes involve updating the VitePress configuration to use an environment variable for the website ID, adding a reference to a new documentation page in the quick-start guide, and correcting a URL in the model configuration documentation. These changes are primarily 
+related to documentation and configuration updates.
+[Generated commit message]
+docs: update VitePress config and add model config reference
+
+- Update VitePress config to use environment variable for website ID
+- Add reference to model configuration guide in quick-start documentation
+- Correct URL in model configuration documentation
+
+These changes improve the clarity and accuracy of the documentation, ensuring that users can properly configure the website and understand how to set up models.
+? Do you want to commit the changes with this message? yes
+[main 5612f60] docs: update VitePress config and add model config reference
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+```
 
 ### Other Useful Commands
 

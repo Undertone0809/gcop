@@ -13,3 +13,7 @@ GCOP integrates with your existing Git workflow and uses advanced language model
 ### Is GCOP free to use?
 
 GCOP is an open-source project and is free to use. However, some advanced features may require access to paid language model APIs.
+
+### How to config my model?
+
+Please refer to [How to Config Model](./how-to-config-model.md)
