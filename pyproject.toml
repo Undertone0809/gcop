@@ -5,14 +5,14 @@ requires = ["poetry-core"]
 
 [tool.poetry]
 name = "gcop"
-version = "1.3.0"
+version = "1.3.1"
 description = "gcop is your git AI copilot."
 readme = "README.md"
 authors = ["gcop <zeeland4work@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/Undertone0809/gcop"
 homepage = "https://github.com/Undertone0809/gcop"
-keywords = ["git", "git copilot", "promptulate", "pne", "LLM"]
+keywords = ["gcop", "git", "git copilot", "promptulate", "pne", "LLM"]
 
 [tool.poetry.scripts]
 "gcop" = "gcop.__main__:app"
