@@ -12,8 +12,9 @@ class ModelConfig:
     model_name: str
     api_key: str
     api_base: Optional[str] = None
-    include_git_history: bool = False  # 是否将过去的 git commit 信息作为参考的一部分
-    enable_data_improvement: bool = False  # 是否愿意将数据用于改进 gcop 模型
+    include_git_history: bool = False
+    enable_data_improvement: bool = False
+
 
 class GcopConfig(metaclass=Singleton):
     def __init__(self):

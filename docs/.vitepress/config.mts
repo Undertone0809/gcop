@@ -6,6 +6,25 @@ export default defineConfig({
   description: "🚀 Your git AI copilot",
   head: [
     ['link', { rel: 'icon', href: '/gcop-logo.ico' }],
+    [
+      'script',
+      {
+        defer: 'true',
+        'data-website-id': '77d0dd59-9095-463b-a317-b49b373af92d',
+        src: 'https://umami.zeeland.top/script.js'
+      }
+    ],
+    ['meta', { property: 'description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI.' }],
+    ['meta', { property: 'keywords', content: 'gcop, git, git copilot, LLM' }],
+    ['meta', { property: 'og:site_name', content: 'GCOP' }],
+    ['meta', { property: 'og:url', content: 'https://gcop.zeeland.top' }],
+    ['meta', { property: 'og:title', content: 'GCOP' }],
+    ['meta', { property: 'og:description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI.' }],
+    ['meta', { property: 'og:image', content: 'https://r2.zeeland.top/images/2024/10/b03949e6bc43d71b7ddab3d70515eee0.png' }],
+    ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { property: 'twitter:image', content: 'https://r2.zeeland.top/images/2024/10/b03949e6bc43d71b7ddab3d70515eee0.png' }],
+    ['meta', { property: 'twitter:title', content: 'GCOP' }],
+    ['meta', { property: 'twitter:description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI.' }],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
