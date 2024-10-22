@@ -4,6 +4,16 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "GCOP",
   description: "🚀 Your git AI copilot",
+  sitemap: {
+    hostname: "https://gcop.zeeland.top",
+    transformItems: (items) => {
+      return items.map(item => ({
+        ...item,
+        changefreq: 'weekly',
+        priority: 0.8,
+      }))
+    }
+  },
   head: [
     ['link', { rel: 'icon', href: '/gcop-logo.ico' }],
     [
