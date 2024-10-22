@@ -75,3 +75,4 @@ Display detailed information about the current git repository. This command prov
 > Note: Some advanced features like line count by language require additional tools (e.g., cloc) to be installed.
 
 For more detailed information on each command, refer to the [Quick Start](/guide/quick-start.md) section in the guide.
+
