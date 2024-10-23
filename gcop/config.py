@@ -9,11 +9,53 @@ from gcop.utils.singleton import Singleton
 
 @dataclass
 class ModelConfig:
+    """Model config.
+
+    Args:
+        model_name (str): The name of the model to use.
+        api_key (str): The API key to use.
+        api_base (Optional[str]): The API base URL to use.
+        include_git_history (bool): Whether to include the git history in the prompt.
+        enable_data_improvement (bool): Whether to enable data improvement.
+        commit_template (Optional[str]): The commit template to use.
+
+    Examples:
+        model_name: openai/gpt-4o
+        api_key: sk-xxx
+        api_base: https://api.openai.com/v1
+        include_git_history: true
+        enable_data_improvement: true
+        commit_template: `
+        - Good Example
+
+        ```
+        feat: implement user registration
+
+        - Add registration form component
+        - Create API endpoint for user creation
+        - Implement email verification process
+
+        This feature allows new users to create accounts and verifies
+        their email addresses before activation. It includes proper
+        input validation and error handling.
+        ```
+        reason: contain relevant detail of the changes, no just one line
+
+        - Bad Example
+
+        ```
+        feat: add user registration
+        ```
+        reason: only one line, need more detail based on guidelines
+        `
+    """
+
     model_name: str
     api_key: str
     api_base: Optional[str] = None
     include_git_history: bool = False
     enable_data_improvement: bool = False
+    commit_template: Optional[str] = None
 
 
 class GcopConfig(metaclass=Singleton):
@@ -39,6 +81,13 @@ class GcopConfig(metaclass=Singleton):
                     "config.\nGo https://github.com/Undertone0809/gcop see how to config your model."  # noqa
                 )
                 raise ValueError(msg)
+
+            # Set commit_template to None if it's empty or only contains whitespace
+            if (
+                model_config.commit_template
+                and not model_config.commit_template.strip()
+            ):
+                model_config.commit_template = None
 
             return model_config
         except KeyError:
