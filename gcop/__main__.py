@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from rich.console import Console
 
-from gcop import version
+from gcop import prompt, version
 from gcop.config import ModelConfig, gcop_config
 
 load_dotenv()
@@ -26,7 +26,7 @@ app = typer.Typer(
 console = Console()
 
 
-class LLMResponse(BaseModel):
+class CommitMessage(BaseModel):
     thought: str = Field(
         ..., description="the reasoning of why output these commit messages"
     )  # noqa
@@ -54,105 +54,40 @@ def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
         raise ValueError(f"Error getting git diff: {e}")
 
 
-def generate_commit_message(diff: str, feedback: Optional[str] = None) -> List[str]:
+def generate_commit_message(
+    diff: str,
+    instruction: Optional[str] = None,
+    previous_commit_message: Optional[str] = None,
+) -> CommitMessage:
     """Generate a git commit message based on the given diff.
 
     Args:
         diff(str): git diff
-        feedback(Optional[str]): feedback from the previous commit message.
+        instruction(Optional[str]): additional instruction. Defaults to None.
+        previous_commit_message(Optional[str]): previous commit message. Defaults to
+            None.
 
     Returns:
-        str: git commit message
+        str: git commit message with ai generated.
     """
-    prompt = f"""
-    # Git Commit Message Generator
-    You are a professional software developer tasked with generating standardized git commit messages based on given git diff content. Your job is to analyze the diff, understand the changes made, and produce a concise, informative commit message following the Conventional Commits specification.
-
-    ## Input
-    You will receive a git diff output showing the differences between the current working directory and the last commit.
-
-    ## Guidelines
-    Generate a conventional git commit message adhering to the following format and guidelines:
-
-    1. Start with a type prefix, followed by a colon and space. Common types include:
-    - feat: A new feature
-    - fix: A bug fix
-    - docs: Documentation only changes
-    - style: Changes that do not affect the meaning of the code
-    - refactor: A code change that neither fixes a bug nor adds a feature
-    - perf: A code change that improves performance
-    - test: Adding missing tests or correcting existing tests
-    - chore: Changes to the build process or auxiliary tools and libraries
-    2. After the type, provide a short, imperative summary of the change (not capitalized, no period at the end).
-    3. The entire first line (type + summary) should be no more than 50 characters.
-    4. After the first line, leave one blank line.
-    5. The body of the commit message should provide detailed explanations of the changes, wrapped at 72 characters.
-    6. Use markdown lists to organize multiple points if necessary.
-    7. Include any of the following information when applicable:
-    - Motivation for the change
-    - Contrast with previous behavior
-    - Side effects or other unintuitive consequences of the change
-
-    ## Analysis Steps
-    1. Carefully read the git diff output, identifying changed files and specific code modifications.
-    2. Determine the primary purpose of the changes (e.g., adding a feature, fixing a bug, refactoring code, updating dependencies).
-    3. Analyze the scope and impact of the changes, determining if they affect multiple components or functionalities.
-    4. Consider how these changes impact the overall project or system functionality and performance.
-
-    ## Notes
-    - Maintain a professional and objective tone, avoiding emotional or unnecessary descriptions.
-    - Ensure the commit message clearly communicates the purpose and impact of the changes.
-    - If the diff contains multiple unrelated changes, suggest splitting them into separate commits.
-
-    ## Examples
-    - Good Example
-
-    ```
-    feat: implement user registration
-
-    - Add registration form component
-    - Create API endpoint for user creation
-    - Implement email verification process
-
-    This feature allows new users to create accounts and verifies
-    their email addresses before activation. It includes proper
-    input validation and error handling.
-    ```
-    reason: contain relevant detail of the changes, no just one line
-
-    - Bad Example
-
-    ```
-    feat: add user registration
-    ```
-    reason: only one line, need more detail based on guidelines
-
-    Please generate a conventional commit message based on the provided git diff, following the above guidelines.
-    
-    ## Provided Git Diff
-    \n{diff}
-    """  # noqa
-
-    if feedback is not None:
-        prompt += f"""
-    This is original git commit message, it's not good enough, please reflect the
-    feedback and generate the better git messages.
-    {feedback}
-    """
+    instruction: str = prompt.get_commit_instrcution(
+        diff=diff,
+        commit_template=gcop_config.model_config.commit_template,
+        instruction=instruction,
+        previous_commit_message=previous_commit_message,
+    )
 
     model_config: ModelConfig = gcop_config.model_config
-    response: LLMResponse = pne.chat(
-        messages=prompt,
+    return pne.chat(
+        messages=instruction,
         model=model_config.model_name,
         model_config={
             "api_key": model_config.api_key,
             "api_base": model_config.api_base,
             "temperature": 0.0,
         },
-        output_schema=LLMResponse,
+        output_schema=CommitMessage,
     )
-    console.print(f"[green][Thought] {response.thought}[/]")
-    return response.content
 
 
 @app.command(name="config")
@@ -183,47 +118,52 @@ def init_command():
         subprocess.run(
             ["git", "config", "--global", "alias.p", "push"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.pf", "push --force"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.undo", "reset --soft HEAD^"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.gcommit", "!gcop commit"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.c", "!gcop commit"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.ac", "!git add . && gcop commit"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.info", "!gcop info"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.gconfig", "!gcop config"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.ghelp", "!gcop help"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
+        )
+        subprocess.run(
+            ["git", "config", "--global", "alias.amend", "commit --amend"],
+            check=True,
+            encoding="utf-8",
         )
         console.print("[green]git aliases added successfully[/]")
 
@@ -459,7 +399,9 @@ def info_command():
 
 
 @app.command(name="commit")
-def commit_command(feedback: Optional[str] = None):
+def commit_command(
+    instruction: Optional[str] = None, previous_commit_message: Optional[str] = None
+):
     """Generate a git commit message based on the staged changes and commit the
     changes.
 
@@ -468,34 +410,46 @@ def commit_command(feedback: Optional[str] = None):
     select "retry". If you want to retry the commit message generation with new
     feedback, please select "retry by feedback". If you want to exit the commit
     process, please select "exit".
+
+    Args:
+        instruction(Optional[str]): additional instruction. Defaults to None.
+        previous_commit_message(Optional[str]): previous commit message. Defaults to
+            None.
     """
     diff: str = get_git_diff("--staged")
+
     if not diff:
         console.print("[yellow]No staged changes[/]")
         return
 
     console.print(f"[yellow][Code diff] \n{diff}[/]")
+    console.print("[bold][On Ready] Generating commit message... [/]")
 
-    commit_messages: str = generate_commit_message(diff, feedback)
-    console.print(f"[green][Generated commit message]\n{commit_messages}[/]")
+    commit_messages: CommitMessage = generate_commit_message(
+        diff, instruction, previous_commit_message
+    )
+
+    console.print(f"[bold][Thought] {commit_messages.thought}[/]")
+    console.print(f"[green][Generated commit message]\n{commit_messages.content}[/]")
+
+    actions: Dict[str, Callable] = {
+        "yes": lambda: subprocess.run(["git", "commit", "-m", commit_messages.content]),
+        "retry": lambda: commit_command(
+            instruction=None, previous_commit_message=commit_messages.content
+        ),
+        "retry by feedback": lambda: commit_command(
+            instruction=questionary.text("Please enter your feedback:").ask(),
+            previous_commit_message=commit_messages.content,
+        ),
+        "exit": lambda: console.print("[yellow]Exiting commit process.[/]"),
+    }
 
     response = questionary.select(
         "Do you want to commit the changes with this message?",
-        choices=["yes", "retry", "retry by feedback", "exit"],
+        choices=list(actions.keys()),
     ).ask()
 
-    if response == "yes":
-        subprocess.run(["git", "commit", "-m", commit_messages])
-    elif response == "retry":
-        commit_command(feedback=None)
-    elif response == "retry by feedback":
-        new_feedback = questionary.text("Please enter your feedback:").ask()
-        if new_feedback:
-            commit_command(feedback=new_feedback)
-        else:
-            console.print("[yellow]No feedback provided. Exiting...[/]")
-    else:  # exit
-        console.print("[yellow]Exiting commit process.[/]")
+    actions[response]()
 
     # # request pypi to get the latest version
     # # TODO optimize logic, everyday check the latest version one time
