@@ -30,7 +30,7 @@ Show the help message with a list of available GCOP commands.
 
 ### `git gconfig`
 
-Open the GCOP configuration file in the default editor.
+Open the GCOP configuration file in the default editor. See [Configuration](/guide/config) for more details.
 
 ### `git info`
 
@@ -41,6 +41,10 @@ Display detailed information about the current git repository. This command prov
 - File and code statistics (repository size, most changed file, line count by language)
 - Version control information (latest tag, branch count, untracked files)
 - Advanced details (submodules, latest merge commit, file type statistics)
+
+### `git amend`
+
+Amend the last commit, allowing you to modify the commit message or add changes to the previous commit. The same as `git commit --amend`.
 
 ## Usage Examples
 
@@ -72,7 +76,14 @@ Display detailed information about the current git repository. This command prov
 
    Example output includes project name, current branch, latest commit, contributor statistics, file changes, language-specific line counts (if cloc is installed), tag information, and more.
 
+6. Amend the last commit:
+   ```
+   git amend
+   ```
+   This command opens your default text editor, allowing you to modify the last commit message. If you've staged changes, they will be added to the previous commit.
+
 > Note: Some advanced features like line count by language require additional tools (e.g., cloc) to be installed.
 
-For more detailed information on each command, refer to the [Quick Start](/guide/quick-start.md) section in the guide.
+> Note: The `git amend` command modifies Git history. Use it with caution, especially if you've already pushed the commit you're amending to a shared repository.
 
+For more detailed information on each command, refer to the [Quick Start](/guide/quick-start.md) section in the guide.
