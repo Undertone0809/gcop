@@ -15,7 +15,7 @@
 
 </div>
 
-GCOP (Git Copilot) is an intelligent assistant that enhances your Git workflow by automating commit message generation using AI. It's designed to make your development process smoother and more efficient.
+GCOP (Git Copilot) is an intelligent assistant that enhances your Git workflow by automating commit message generation using AI. It's designed to make your development process smoother and more efficient by improving git commit practices, conventional commits, and version control. With GCOP, you can create better commit messages, maintain a clean git history, and streamline your git commit workflow.
 
 ## 🚀 Key Features
 
@@ -37,6 +37,8 @@ This video shows how to use gcop to generate a commit message.
 [![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
 
 ## 🛠️ Getting Started
+
+We recommend you to read the [Quick Start Guide](https://gcop.zeeland.top/) in detail.
 
 ### What You'll Need
 

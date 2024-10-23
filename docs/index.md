@@ -19,7 +19,7 @@ hero:
 
 features:
   - title: 🚀 AI-Powered Commit Messages
-    details: Automatically generate meaningful commit messages using advanced language models.
+    details: Automatically generate meaningful git commit messages using advanced language models.
   - title: 🔄 Seamless Git Integration
     details: Enhance your Git workflow with intuitive commands like 'git c' for AI-assisted commits.
   - title: 🛠️ Flexible LLM Configuration

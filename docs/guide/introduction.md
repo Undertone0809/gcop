@@ -32,7 +32,16 @@ GCOP is a powerful Python-based tool that leverages large language models (LLMs)
 
 See GCOP in action! This video demonstrates how to use GCOP to generate a commit message:
 
-[![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
+<script setup>
+import IFrame from '/components/iframe.vue'
+</script>
+
+<IFrame src="https://www.youtube.com/embed/j7qKI_TdhXs" />
+
+
+This video demonstrates how to use GCOP to generate a commit message:
+
+<IFrame src="https://www.youtube.com/embed/iP5qYxFaLS4" />
 
 ## Getting Started
 

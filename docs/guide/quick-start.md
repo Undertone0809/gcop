@@ -73,7 +73,13 @@ Before you begin, ensure you have the following:
 
 > Some times, if you use `git add .` and `git c` together, you can use `git ac` as a shortcut.
 
-3. You can accept the default message, retry, retry by your feedback or exit after the AI generates the commit message.
+<script setup>
+import IFrame from '/components/iframe.vue'
+</script>
+
+<IFrame src="https://www.youtube.com/embed/iP5qYxFaLS4" />
+
+1. You can accept the default message, retry, retry by your feedback or exit after the AI generates the commit message.
 
 Finally, you can see the commit message like this:
 

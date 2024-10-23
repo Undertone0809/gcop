@@ -24,17 +24,17 @@ export default defineConfig({
         src: 'https://umami.zeeland.top/script.js'
       }
     ],
-    ['meta', { property: 'description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI.' }],
-    ['meta', { property: 'keywords', content: 'gcop, git, git copilot, LLM' }],
+    ['meta', { property: 'description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI. Help you write better git commit message.' }],
+    ['meta', { property: 'keywords', content: 'gcop, git, git copilot, LLM, git commit, commit message, conventional commit, version control,auto commit, git commit 规范' }],
     ['meta', { property: 'og:site_name', content: 'GCOP' }],
     ['meta', { property: 'og:url', content: 'https://gcop.zeeland.top' }],
     ['meta', { property: 'og:title', content: 'GCOP' }],
-    ['meta', { property: 'og:description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI.' }],
+    ['meta', { property: 'og:description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI. Help you write better git commit message.' }],
     ['meta', { property: 'og:image', content: 'https://r2.zeeland.top/images/2024/10/b03949e6bc43d71b7ddab3d70515eee0.png' }],
     ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { property: 'twitter:image', content: 'https://r2.zeeland.top/images/2024/10/b03949e6bc43d71b7ddab3d70515eee0.png' }],
     ['meta', { property: 'twitter:title', content: 'GCOP' }],
-    ['meta', { property: 'twitter:description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI.' }],
+    ['meta', { property: 'twitter:description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI. Help you write better git commit message.' }],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
