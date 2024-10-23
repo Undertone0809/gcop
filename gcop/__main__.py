@@ -13,9 +13,8 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from rich.console import Console
 
-from gcop import version
+from gcop import prompt, version
 from gcop.config import ModelConfig, gcop_config
-from gcop import prompt
 
 load_dotenv()
 
@@ -119,47 +118,52 @@ def init_command():
         subprocess.run(
             ["git", "config", "--global", "alias.p", "push"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.pf", "push --force"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.undo", "reset --soft HEAD^"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.gcommit", "!gcop commit"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.c", "!gcop commit"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.ac", "!git add . && gcop commit"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.info", "!gcop info"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.gconfig", "!gcop config"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
         )
         subprocess.run(
             ["git", "config", "--global", "alias.ghelp", "!gcop help"],
             check=True,
-            encoding="utf-8",  # noqa
+            encoding="utf-8",
+        )
+        subprocess.run(
+            ["git", "config", "--global", "alias.amend", "commit --amend"],
+            check=True,
+            encoding="utf-8",
         )
         console.print("[green]git aliases added successfully[/]")
 
