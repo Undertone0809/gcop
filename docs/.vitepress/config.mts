@@ -35,6 +35,7 @@ export default defineConfig({
     ['meta', { property: 'twitter:image', content: 'https://r2.zeeland.top/images/2024/10/b03949e6bc43d71b7ddab3d70515eee0.png' }],
     ['meta', { property: 'twitter:title', content: 'GCOP' }],
     ['meta', { property: 'twitter:description', content: 'GCOP is an intelligent assistant designed to enhance your Git workflow by automating commit message generation using AI. Help you write better git commit message.' }],
+    ['meta', { name: 'baidu-site-verification', content: 'codeva-Z87P16KxE3' }],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
