@@ -30,7 +30,7 @@ Show the help message with a list of available GCOP commands.
 
 ### `git gconfig`
 
-Open the GCOP configuration file in the default editor. See [Configuration](/guide/config) for more details.
+Open the GCOP configuration file in the default editor. See [Configuration](/guide/configuration) for more details.
 
 ### `git info`
 
