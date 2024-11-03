@@ -21,6 +21,8 @@ GCOP is a powerful Python-based tool that leverages large language models (LLMs)
 3. **Intuitive Git Aliases**: Simplify complex Git operations with easy-to-remember commands like `git c` for AI-assisted commits.
 4. **Seamless Workflow Integration**: GCOP enhances your existing Git workflow without disrupting your familiar processes.
 
+![GCOP Features](/images/git-ac-banner.png)
+
 ## Why Choose GCOP?
 
 - **Time-Saving**: Automate the often time-consuming task of crafting meaningful commit messages.
