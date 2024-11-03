@@ -1,6 +1,7 @@
 import os
 import subprocess
 from enum import Enum
+from functools import wraps
 from pathlib import Path
 from typing import Callable, Dict, List, Literal, Optional
 
@@ -15,6 +16,7 @@ from rich.console import Console
 
 from gcop import prompt, version
 from gcop.config import ModelConfig, gcop_config
+from gcop.utils import check_version_update
 
 load_dotenv()
 
@@ -90,7 +92,19 @@ def generate_commit_message(
     )
 
 
+def check_version_before_command(f: Callable) -> Callable:
+    """Decorator to check version before executing any command."""
+
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        check_version_update(console)
+        return f(*args, **kwargs)
+
+    return wrapper
+
+
 @app.command(name="config")
+@check_version_before_command
 def config_command(from_init: bool = False):
     """Open the config file in the default editor."""
     initial_content = (
@@ -112,6 +126,7 @@ def config_command(from_init: bool = False):
 
 
 @app.command(name="init")
+@check_version_before_command
 def init_command():
     """Add command into git config"""
     try:
@@ -174,6 +189,7 @@ def init_command():
 
 
 @app.command(name="info")
+@check_version_before_command
 def info_command():
     """Display detailed information about the current git repository."""
     try:
@@ -399,8 +415,14 @@ def info_command():
 
 
 @app.command(name="commit")
+@check_version_before_command
 def commit_command(
-    instruction: Optional[str] = None, previous_commit_message: Optional[str] = None
+    instruction: Optional[str] = typer.Option(
+        None, help="Additional instruction for commit message generation"
+    ),
+    previous_commit_message: Optional[str] = typer.Option(
+        None, help="Previous commit message to refine"
+    ),
 ):
     """Generate a git commit message based on the staged changes and commit the
     changes.
@@ -410,11 +432,6 @@ def commit_command(
     select "retry". If you want to retry the commit message generation with new
     feedback, please select "retry by feedback". If you want to exit the commit
     process, please select "exit".
-
-    Args:
-        instruction(Optional[str]): additional instruction. Defaults to None.
-        previous_commit_message(Optional[str]): previous commit message. Defaults to
-            None.
     """
     diff: str = get_git_diff("--staged")
 
@@ -451,19 +468,9 @@ def commit_command(
 
     actions[response]()
 
-    # # request pypi to get the latest version
-    # # TODO optimize logic, everyday check the latest version one time
-    # response = requests.get("https://pypi.org/pypi/gcop/json")
-    # latest_version = response.json()["info"]["version"]
-    # if version != latest_version:
-    #     console.print(f"[bold]A new version of gcop is available: {latest_version}[/]") # noqa
-    #     console.print(f"[bold]Your current version: {version}[/]")
-    #     console.print(
-    #         "[bold]Please consider upgrading by running: pip install -U gcop[/]"
-    #     )
-
 
 @app.command(name="help")
+@check_version_before_command
 def help_command():
     """Show help message"""
     help_message = """
