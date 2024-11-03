@@ -1,3 +1,17 @@
+---
+title: Quick Start
+description: Get started with GCOP (Git Copilot) quickly and easily.
+head:
+  - - meta
+    - name: keywords
+      content: git copilot, git ai, git ai commit, git ai commit message, git ai commit message generator
+  - - meta
+    - property: og:title
+      content: Quick Start Guide
+    - property: og:description
+      content: Get started with GCOP (Git Copilot) quickly and easily.
+---
+
 # Quick Start Guide
 
 This guide will help you get started with GCOP (Git Copilot) quickly and easily.

@@ -1,3 +1,14 @@
+---
+title: Connect to GaiaNet
+description: Connect to GaiaNet to use GCOP (Git Copilot).
+head:
+  - - meta
+    - property: og:title
+      content: Connect to GaiaNet
+    - property: og:description
+      content: Connect to GaiaNet to use GCOP (Git Copilot).
+---
+
 # Connect to GaiaNet
 
 GaiaNet is a decentralized computing infrastructure that enables everyone to create, deploy, scale, and monetize their own AI agents. This guide will show you how to configure GCOP to use GaiaNet as your AI provider.

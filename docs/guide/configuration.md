@@ -1,3 +1,14 @@
+---
+title: Configuration
+description: Configure GCOP (Git Copilot).
+head:
+  - - meta
+    - property: og:title
+      content: Configuration
+    - property: og:description
+      content: Configure GCOP (Git Copilot).
+---
+
 # Configuration
 
 This tutorial will guide you through the process of configuring GCOP. Before you start, please make sure you have installed GCOP. See [Quick Start](/guide/quick-start) for more details.
@@ -6,9 +17,9 @@ This tutorial will guide you through the process of configuring GCOP. Before you
 
 Gcop will store all configurations in the `config.yaml` file. The `config.yaml` file will be stored in:
 
-Windows: %USERPROFILE%\.gcop\config.yaml
-Linux: ~/.gcop/config.yaml
-MacOS: ~/.gcop/config.yaml
+- Windows: `%USERPROFILE%\.gcop\config.yaml`
+- Linux: `~/.gcop/config.yaml`
+- MacOS: `~/.gcop/config.yaml`
 
 ## All Configurations
 

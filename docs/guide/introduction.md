@@ -1,3 +1,14 @@
+---
+title: Introduction
+description: Introduction to GCOP (Git Copilot).
+head:
+  - - meta
+    - property: og:title
+      content: Introduction to GCOP
+    - property: og:description
+      content: Introduction to GCOP (Git Copilot).
+---
+
 <p align="center">
    <img src="/banner.png" alt="GCOP Banner" style="border-radius: 15px;">
 </p>
