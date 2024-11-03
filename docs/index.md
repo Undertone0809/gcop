@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "GCOP"
   text: "Your first git AI copilot"
-  tagline: Commit smarter, not harder with gcop
+  tagline: Help you write better git commit message and build efficient git workflow
   image:
     src: /gcop-logo.png
     alt: gcop
