@@ -67,14 +67,17 @@ Generate a conventional git commit message adhering to the following format and 
 - Maintain a professional and objective tone, avoiding emotional or unnecessary descriptions.
 - Ensure the commit message clearly communicates the purpose and impact of the changes.
 - If the diff contains multiple unrelated changes, suggest splitting them into separate commits.
+- Your output should only have one commit, do not output multiple commits.
 
-## Examples
+<commit_templates>
 {commit_template}
+</commit_templates>
 
 release generate a conventional commit message based on the provided git diff, following the above guidelines.
 
-## Provided Git Diff
+<git_diff>
 {diff}
+</git_diff>
 """  # noqa
 
 
@@ -105,10 +108,13 @@ def get_commit_instrcution(
         _ += f"""
     This is the original git commit message, which needs improvement. Please consider
     the feedback and generate a better git message.
-    previous_commit_message: {previous_commit_message}
+
+    <previous_commit_message>
+    {previous_commit_message}
+    </previous_commit_message>
     """
 
     if instruction:
-        _ += f"\nfeedback: {instruction}"
+        _ += f"<user_feedback>{instruction}</user_feedback>"
 
     return _
