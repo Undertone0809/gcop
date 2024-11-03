@@ -19,20 +19,13 @@ GCOP (Git Copilot) is an intelligent assistant that enhances your Git workflow b
 
 ## 🚀 Key Features
 
-- **Smart Commit Messages**: Let AI generate meaningful commit messages based on your changes.
-- **Flexible AI Integration**: Works with various large language models (LLMs) of your choice.
+- **Smart Commit Messages**: Let AI generate better commit messages based on your changes.
+- **Flexible AI Integration**: Support any language model you want.
 - **Simplified Git Commands**: Powerful aliases for common Git operations to speed up your workflow.
-
-## 📦 Techs
-
-- [Promptulate: Large language model automation and Autonomous Language Agents development framework](https://github.com/Undertone0809/promptulate)
-- [P3G: Python Packages Project Generator](https://github.com/Undertone0809/P3G)
-- [Gamma: Generate gcop Banner here](https://gamma.app/)
-- [gpt-4o: Generate project code](https://openai.com/)
 
 ## Video Demo
 
-This video shows how to use gcop to generate a commit message.
+This video shows how to use gcop to generate a commit message. See the [documentation](https://gcop.zeeland.top/)
 
 [![Gcop is your git AI copilot](https://zeeland-bucket.oss-cn-beijing.aliyuncs.com/images/20240624003422.png)](https://www.youtube.com/watch?v=j7qKI_TdhXs "Gcop is your git AI copilot")
 
@@ -220,9 +213,9 @@ To modify your AI model settings:
 
 ## 📚 Learn More
 
-- [Detailed Documentation](https://github.com/Undertone0809/gcop/wiki)
+- [Detailed Documentation](https://gcop.zeeland.top/)
 - [Contribution Guidelines](CONTRIBUTING.md)
-- [Changelog](CHANGELOG.md)
+- [Changelog](https://github.com/Undertone0809/gcop/releases)
 
 ### Makefile usage
 
@@ -378,6 +371,11 @@ make cleanup
 
 </p>
 </details>
+
+## 📦 Techs
+
+- [Promptulate: Large language model automation and Autonomous Language Agents development framework](https://github.com/Undertone0809/promptulate)
+- [P3G: Python Packages Project Generator](https://github.com/Undertone0809/P3G)
 
 ## 🛡 License
 

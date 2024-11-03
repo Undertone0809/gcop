@@ -26,7 +26,7 @@ make pre-commit-install
 After installation you may execute code formatting. We use [ruff](https://github.com/astral-sh/ruff) to format our code.
 
 ```bash
-make formatting
+make format
 ```
 
 ### Checks
