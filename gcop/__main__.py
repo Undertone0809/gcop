@@ -74,7 +74,7 @@ def generate_commit_message(
     """
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
-        commit_template=gcop_config.model_config.commit_template,
+        commit_template=gcop_config.commit_template,
         instruction=instruction,
         previous_commit_message=previous_commit_message,
     )
@@ -111,15 +111,15 @@ def config_command(from_init: bool = False):
         "model:\n  model_name: provider/name,eg openai/gpt-4o"
         "\n  api_key: your_api_key\n"
     )
-    if not os.path.exists(gcop_config.config_path):
-        Path(gcop_config.config_path).write_text(initial_content)
+    if not os.path.exists(gcop_config._config_path):
+        Path(gcop_config._config_path).write_text(initial_content)
 
     if from_init:
-        with open(gcop_config.config_path) as f:
+        with open(gcop_config._config_path) as f:
             if f.read() == initial_content:
-                click.edit(filename=gcop_config.config_path)
+                click.edit(filename=gcop_config._config_path)
     else:
-        click.edit(filename=gcop_config.config_path)
+        click.edit(filename=gcop_config._config_path)
 
 
 @app.command(name="init")
