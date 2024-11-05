@@ -69,6 +69,7 @@ export default defineConfig({
           { text: 'Quick Start', link: '/guide/quick-start' },
           { text: 'Commands', link: '/guide/commands' },
           { text: 'Configuration', link: '/guide/configuration' },
+          { text: 'Upgrade', link: '/guide/upgrade' },
           { text: 'Connect to Gaianet', link: '/guide/connect2gaianet' },
         ]
       },

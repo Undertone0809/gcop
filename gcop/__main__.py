@@ -16,7 +16,7 @@ from rich.console import Console
 
 from gcop import prompt, version
 from gcop.config import ModelConfig, gcop_config
-from gcop.utils import check_version_update
+from gcop.utils import check_version_update, migrate_config_if_needed
 
 load_dotenv()
 
@@ -114,21 +114,20 @@ def config_command(from_init: bool = False):
     if not os.path.exists(gcop_config.config_path):
         Path(gcop_config.config_path).write_text(initial_content)
 
-    if not from_init:
+    if from_init:
+        with open(gcop_config.config_path) as f:
+            if f.read() == initial_content:
+                click.edit(filename=gcop_config.config_path)
+    else:
         click.edit(filename=gcop_config.config_path)
-        return
-
-    with open(gcop_config.config_path) as f:
-        content = f.read()
-
-        if content == initial_content:
-            click.edit(filename=gcop_config.config_path)
 
 
 @app.command(name="init")
 @check_version_before_command
 def init_command():
     """Add command into git config"""
+    migrate_config_if_needed()
+
     try:
         subprocess.run(
             ["git", "config", "--global", "alias.p", "push"],

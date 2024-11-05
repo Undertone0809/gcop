@@ -75,9 +75,9 @@ config your model [here](https://gcop.zeeland.top/how-to-config-model.html):
 
 > `config.yaml` store path:
 >
-> - Windows: `%USERPROFILE%\.gcop\config.yaml`
-> - Linux: `~/.gcop/config.yaml`
-> - MacOS: `~/.gcop/config.yaml`
+> - Windows: `%USERPROFILE%\.zeeland\gcop\config.yaml`
+> - Linux: `~/.zeeland/gcop/config.yaml`
+> - MacOS: `~/.zeeland/gcop/config.yaml`
 
 1. Verify the installation:
 

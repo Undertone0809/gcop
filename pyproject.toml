@@ -19,6 +19,7 @@ keywords = ["gcop", "git", "git copilot", "promptulate", "pne", "LLM"]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
+zeeland = "^0.2.0"
 pne = "^1.0.1"
 click = "^8.1.7"
 questionary = "^2.0.1"

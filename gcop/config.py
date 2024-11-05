@@ -3,8 +3,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
+from zeeland import Singleton
+
 from gcop.utils import get_default_storage_path, read_yaml
-from gcop.utils.singleton import Singleton
 
 
 @dataclass
@@ -62,13 +63,6 @@ class GcopConfig(metaclass=Singleton):
     def __init__(self):
         self.config_path: str = f"{get_default_storage_path()}/config.yaml"
 
-        if not os.path.exists(self.config_path):
-            initial_content = (
-                "model:\n  model_name: provider/name,eg openai/gpt-4o"
-                "\n  api_key: your_api_key\n"
-            )
-            Path(self.config_path).write_text(initial_content)
-
     @property
     def model_config(self) -> ModelConfig:
         try:
@@ -93,7 +87,7 @@ class GcopConfig(metaclass=Singleton):
         except KeyError:
             msg: str = (
                 "`model` field not found in ~/.gcop/config.yaml\n"
-                "Please run `git gconfig` to initialize the config file by the "
+                "Please run `gcop init` to initialize the config file by the "
                 "following format:\nmodel:\n  model_name: 'xxx'\n  api_key: 'xxx'"
             )
             raise ValueError(msg)

@@ -57,9 +57,9 @@ Before you begin, ensure you have the following:
    How to config your model? Please refer to [How to Config Model](../how-to-config-model.md)
 
    The `config.yaml` file will be stored in:
-   - Windows: `%USERPROFILE%\.gcop\config.yaml`
-   - Linux: `~/.gcop/config.yaml`
-   - MacOS: `~/.gcop/config.yaml`
+   - Windows: `%USERPROFILE%\.zeeland\gcop\config.yaml`
+   - Linux: `~/.zeeland/gcop/config.yaml`
+   - MacOS: `~/.zeeland/gcop/config.yaml`
 
 4. Verify the installation:
 
