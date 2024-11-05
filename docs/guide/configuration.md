@@ -60,6 +60,10 @@ commit_template: |
   </bad_example>
 ```
 
+### Model Configuration
+
+See details in [How to config model](/other/how-to-config-model.md).
+
 ### Commit Message Template
 
 gcop provides a default `commit template` to guide language model how to generate commit message. Default template is as follows:
