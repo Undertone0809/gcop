@@ -19,6 +19,12 @@ categories:
     labels: [dependencies]
 
 template: |
+  👋 Hello and welcome to the release notes for GCOP v$NEXT_PATCH_VERSION! We're excited to share some new updates that we believe will enhance your experience with GCOP.
+  
+  For detailed information, please visit our official documentation: [GCOP Documentation](https://gcop.zeeland.top)
+
+  To see the code, report issues, or contribute, check out our GitHub repository: [GCOP on GitHub](https://github.com/Undertone0809/gcop)
+  
   ## What’s Changed
 
   $CHANGES
