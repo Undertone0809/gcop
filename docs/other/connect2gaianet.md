@@ -17,7 +17,7 @@ GaiaNet is a decentralized computing infrastructure that enables everyone to cre
 
 Before you begin, ensure you have:
 
-- GCOP installed (see [Quick Start Guide](./quick-start.md) for installation instructions)
+- GCOP installed (see [Quick Start Guide](/guide/quick-start.md) for installation instructions)
 - A GaiaNet account and access to a GaiaNet node
 
 For more information about GaiaNet, you can check out:
@@ -72,6 +72,6 @@ If you encounter any issues:
 - Ensure your GaiaNet node is running and accessible
 - Verify your internet connection
 
-For more help, refer to the [FAQ](../faq.md) or consult the [GaiaNet documentation](https://docs.gaianet.ai/intro).
+For more help, refer to the [How to guide](/guide/how-to-guide.md) or consult the [GaiaNet documentation](https://docs.gaianet.ai/intro).
 
 By following these steps, you can harness the power of GaiaNet's decentralized AI infrastructure to enhance your Git workflow with GCOP.
