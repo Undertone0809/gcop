@@ -46,7 +46,6 @@ lint.ignore = ["F401"]
 
 # Exclude a variety of commonly ignored directories.
 respect-gitignore = true
-lint.ignore-init-module-imports = true
 exclude = [
     ".bzr",
     ".direnv",
