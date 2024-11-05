@@ -5,9 +5,8 @@ import pne
 __all__ = ["get_commit_instrcution"]
 
 _DEFAULT_COMMIT_TEMPLATE: str = """
-- Good Example
-
-```
+<good_example>
+<commit_message>
 feat: implement user registration
 
 - Add registration form component
@@ -17,15 +16,14 @@ feat: implement user registration
 This feature allows new users to create accounts and verifies
 their email addresses before activation. It includes proper
 input validation and error handling.
-```
-reason: contain relevant detail of the changes, no just one line
+</commit_message>
+<reason>contain relevant detail of the changes, not just one line</reason>
+</good_example>
 
-- Bad Example
-
-```
-feat: add user registration
-```
-reason: only one line, need more detail based on guidelines
+<bad_example>
+<commit_message>feat: add user registration</commit_message>
+<reason>only one line, need more detail based on guidelines</reason>
+</bad_example>
 """
 
 _COMMIT_SYS_PROMPT: str = """

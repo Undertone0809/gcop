@@ -1,10 +1,16 @@
-# Frequently Asked Questions
+# How to guide
 
-## General Questions
+Here you’ll find answers to “How do I….?” types of questions. These guides are goal-oriented and concrete; they're meant to help you complete a specific task.
 
-### What is GCOP?
+- [How to config custom language model](/other/how-to-config-model)
 
-GCOP (Git COpilot) is an AI-powered tool designed to enhance your Git workflow by automatically generating meaningful commit messages and providing intelligent assistance for various Git operations.
+- [How to config custom commit message template](/guide/configuration.html#commit-message-template)
+
+- [How to connect to Gaianet](/other/connect2gaianet)
+
+- [How to contribute to GCOP](/other/contributing)
+
+## FAQ
 
 ### How does GCOP work?
 
@@ -13,10 +19,6 @@ GCOP integrates with your existing Git workflow and uses advanced language model
 ### Is GCOP free to use?
 
 GCOP is an open-source project and is free to use. However, some advanced features may require access to paid language model APIs.
-
-### How to config my model?
-
-Please refer to [How to Config Model](./how-to-config-model.md)
 
 ### Why doesn't GCOP work after switching Python environments?
 

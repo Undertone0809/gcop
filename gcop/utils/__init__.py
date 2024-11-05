@@ -1,15 +1,17 @@
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import questionary
 import requests
 import yaml
 from rich.console import Console
+from zeeland import get_default_storage_path as _get_default_storage_path
 
 from gcop import version
 
@@ -22,7 +24,7 @@ class VersionMetadata:
     latest_version: Optional[str] = None
 
     @classmethod
-    def from_dict(cls, data: dict) -> "VersionMetadata":
+    def from_dict(cls, data: Dict[str, Any]) -> "VersionMetadata":
         """Create VersionMetadata from dictionary."""
         last_check = None
         if data.get("last_check"):
@@ -33,7 +35,7 @@ class VersionMetadata:
 
         return cls(last_check=last_check, latest_version=data.get("latest_version"))
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return {
             "last_check": self.last_check.isoformat() if self.last_check else None,
@@ -46,7 +48,7 @@ def convert_backslashes(path: str) -> str:
     return path.replace("\\", "/")
 
 
-def get_default_storage_path(module_name: str = "") -> str:
+def get_old_default_storage_path(module_name: str = "") -> str:
     """Get the default storage path for the current module. The storage path is
     created in the user's home directory, or in a temporary directory if permission
     is denied.
@@ -73,6 +75,10 @@ def get_default_storage_path(module_name: str = "") -> str:
     return convert_backslashes(storage_path)
 
 
+def get_default_storage_path(module_name: str = "") -> str:
+    return _get_default_storage_path("gcop", module_name)
+
+
 def read_yaml(file_path: str) -> dict:
     """Read yaml config file.
 
@@ -88,7 +94,7 @@ def read_yaml(file_path: str) -> dict:
                 }
             }
     """
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         config = yaml.safe_load(file)
         return config
 
@@ -127,10 +133,10 @@ def check_version_update(console: Console) -> None:
     Args:
         console: Rich console instance for output
     """
-    metadata_path = os.path.join(get_default_storage_path(), "metadata.json")
-    current_time = datetime.now()
+    metadata_path: str = os.path.join(get_default_storage_path(), "metadata.json")
+    current_time: datetime = datetime.now()
 
-    metadata = _load_metadata(metadata_path)
+    metadata: VersionMetadata = _load_metadata(metadata_path)
 
     if metadata.last_check and current_time - metadata.last_check <= timedelta(days=1):
         return
@@ -163,3 +169,29 @@ def check_version_update(console: Console) -> None:
 
     except Exception:
         pass
+
+
+def migrate_config_if_needed() -> None:
+    """Migrate old config to new location if needed."""
+    old_config_path: str = os.path.join(get_old_default_storage_path(), "config.yaml")
+    new_config_path: str = os.path.join(get_default_storage_path(), "config.yaml")
+
+    if not os.path.exists(old_config_path):
+        return
+
+    try:
+        if not os.path.exists(new_config_path):
+            print("No new config file found, migrating old config...")
+            shutil.copy2(old_config_path, new_config_path)
+            print(f"Config migrated from {old_config_path} to {new_config_path}")
+        else:
+            print("New config file already exists, skipping migration")
+
+        backup_path: str = old_config_path + ".backup"
+        shutil.copy2(old_config_path, backup_path)
+        os.remove(old_config_path)
+        print(f"Old config backup created at {backup_path}")
+
+    except Exception as e:
+        print(f"Error migrating config: {e}")
+        print("Please manually move your config file to the new location")
