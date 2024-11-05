@@ -54,7 +54,7 @@ Before you begin, ensure you have the following:
      api_key: your_api_key
    ```
 
-   How to config your model? Please refer to [How to Config Model](../how-to-config-model.md)
+   How to config your model? Please refer to [How to Config Model](/other/how-to-config-model)
 
    The `config.yaml` file will be stored in:
    - Windows: `%USERPROFILE%\.zeeland\gcop\config.yaml`
@@ -93,7 +93,7 @@ import IFrame from '/components/iframe.vue'
 
 <IFrame src="https://www.youtube.com/embed/iP5qYxFaLS4" />
 
-1. You can accept the default message, retry, retry by your feedback or exit after the AI generates the commit message.
+You can accept the `default message`,` retry`, `retry by your feedback` or `exit` after the AI generates the commit message.
 
 Finally, you can see the commit message like this:
 
@@ -163,14 +163,14 @@ For example:
 - `git ac`: Add all changes and commit with an AI-generated message
 - `git p`: Push changes to the remote repository
 - `git undo`: Undo the last commit while keeping changes staged
+- `git amend`: Amend the last commit message
 - `git gconfig`: Open the GCOP configuration file for adjustments
 
 For more detailed information on each command, refer to the [Commands](./commands.md) section.
 
 ## Next Steps
 
-- Explore the [Introduction](./introduction.md) for an overview of GCOP's features
-- Check out the [How to Config Model](../how-to-config-model.md) guide for advanced configuration options
-- Visit our [FAQ](../faq.md) for common questions and troubleshooting
+- Visit our [How to guide](/guide/how-to-guide) for common questions and troubleshooting
+- Check out the [How to Config Model](/other/how-to-config-model) guide for advanced configuration options
 
 Start enhancing your Git workflow with GCOP today!

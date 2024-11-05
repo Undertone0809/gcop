@@ -127,4 +127,3 @@ class GcopConfig(metaclass=Singleton):
 
 
 gcop_config = GcopConfig.from_yaml()
-print(gcop_config)

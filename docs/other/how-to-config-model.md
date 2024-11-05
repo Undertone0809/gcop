@@ -1,5 +1,7 @@
 # How to config model?
 
+This guide will show you how to configure custom language models.
+
 gcop use - [Promptulate: Large language model automation and Autonomous Language Agents development framework](https://github.com/Undertone0809/promptulate) to drive the model. Promptulate allows you to create any language model and build LLM application. 
 
 ## Model template
