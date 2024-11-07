@@ -499,6 +499,8 @@ def help_command():
   git gcommit    Generate a git commit message based on the staged changes and commit the changes
   git c          The same as `git gcommit` command
   git ac         The same as `git add . && git gcommit` command
+  git acp        The same as `git add . && git gcommit && git push` command
+  git amend      Amend the last commit, allowing you to modify the commit message or add changes to the previous commit
   git info       Display basic information about the current git repository
 """  # noqa
 

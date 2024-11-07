@@ -15,6 +15,10 @@ GCOP enhances your Git workflow with several powerful commands. Here's a compreh
 
 ## Basic Commands
 
+### `git ghelp`
+
+Show the help message with a list of available GCOP commands.
+
 ### `git gcommit` or `git c`
 
 Generate an AI-powered commit message based on staged changes and commit them.
@@ -23,21 +27,37 @@ Generate an AI-powered commit message based on staged changes and commit them.
 
 Add all changes and commit with an AI-generated message.
 
+The same as `git add . && git gcommit`.
+
+### `git acp`
+
+Add all changes, commit with an AI-generated message, and push to the remote repository.
+
+The same as `git add . && git gcommit && git p`.
+
 ### `git p`
 
 Push changes to the remote repository.
+
+The same as `git push`.
 
 ### `git pf`
 
 Force push changes to the remote repository (use with caution).
 
+The same as `git push --force`.
+
 ### `git undo`
 
 Undo the last commit while keeping changes staged.
 
-### `git ghelp`
+The same as `git reset HEAD~`.
 
-Show the help message with a list of available GCOP commands.
+### `git amend`
+
+Amend the last commit, allowing you to modify the commit message or add changes to the previous commit.
+
+The same as `git commit --amend`.
 
 ### `git gconfig`
 
@@ -52,10 +72,6 @@ Display detailed information about the current git repository. This command prov
 - File and code statistics (repository size, most changed file, line count by language)
 - Version control information (latest tag, branch count, untracked files)
 - Advanced details (submodules, latest merge commit, file type statistics)
-
-### `git amend`
-
-Amend the last commit, allowing you to modify the commit message or add changes to the previous commit. The same as `git commit --amend`.
 
 ## Usage Examples
 
