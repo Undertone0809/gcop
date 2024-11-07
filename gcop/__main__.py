@@ -65,8 +65,9 @@ def generate_commit_message(
     Args:
         diff(str): git diff
         instruction(Optional[str]): additional instruction. Defaults to None.
-        previous_commit_message(Optional[str]): previous commit message. Defaults to
-            None.
+        previous_commit_message(Optional[str]): previous commit message. At the first
+            time, it's usually empty. It always uses when you are improving the
+            commit message or providing feedback. Defaults to None.
 
     Returns:
         str: git commit message with ai generated.

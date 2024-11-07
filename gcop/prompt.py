@@ -91,8 +91,9 @@ def get_commit_instrcution(
         diff (str): git diff
         commit_template (Optional[str], optional): commit template. Defaults to None.
         instruction (Optional[str], optional): additional instruction. Defaults to None.
-        previous_commit_message (Optional[str], optional): previous commit message.
-            Defaults to None.
+        previous_commit_message (Optional[str], optional): previous commit message. At
+            the first time, it's usually empty. It always uses when you are
+            improving the commit message or providing feedback.
 
     Returns:
         str: system prompt for generating commit messages
