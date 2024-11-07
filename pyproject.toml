@@ -5,21 +5,21 @@ requires = ["poetry-core"]
 
 [tool.poetry]
 name = "gcop"
-version = "1.7.1"
+version = "1.7.2"
 description = "gcop is your git AI copilot."
 readme = "README.md"
 authors = ["gcop <zeeland4work@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/Undertone0809/gcop"
 homepage = "https://github.com/Undertone0809/gcop"
-keywords = ["gcop", "git", "git copilot", "promptulate", "pne", "LLM"]
+keywords = ["gcop", "git", "git copilot", "promptulate", "pne", "LLM", "zeeland"]
 
 [tool.poetry.scripts]
 "gcop" = "gcop.__main__:app"
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-zeeland = "^0.2.0"
+zeeland = ">=0.3.0,<1.0.0"
 pne = "^1.1.1"
 click = "^8.1.7"
 questionary = "^2.0.1"
