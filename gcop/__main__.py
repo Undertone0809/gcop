@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from rich.console import Console
 
 from gcop import prompt, version
-from gcop.config import ModelConfig, gcop_config
+from gcop.config import ModelConfig, get_config
 from gcop.utils import check_version_update, migrate_config_if_needed
 
 load_dotenv()
@@ -72,6 +72,8 @@ def generate_commit_message(
     Returns:
         str: git commit message with ai generated.
     """
+    gcop_config = get_config()
+
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
         commit_template=gcop_config.commit_template,
@@ -111,6 +113,8 @@ def config_command(from_init: bool = False):
         "model:\n  model_name: provider/name,eg openai/gpt-4o"
         "\n  api_key: your_api_key\n"
     )
+    gcop_config = get_config()
+
     if not os.path.exists(gcop_config._config_path):
         Path(gcop_config._config_path).write_text(initial_content)
 

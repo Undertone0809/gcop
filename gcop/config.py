@@ -125,4 +125,9 @@ class GcopConfig(metaclass=Singleton):
         return self.model
 
 
-gcop_config = GcopConfig.from_yaml()
+def get_config() -> GcopConfig:
+    """Get the global config instance, loading it if necessary."""
+    if not hasattr(get_config, "_instance"):
+        get_config._instance = GcopConfig.from_yaml()
+
+    return get_config._instance
