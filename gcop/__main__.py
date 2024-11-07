@@ -171,6 +171,11 @@ def init_command():
             encoding="utf-8",
         )
         subprocess.run(
+            ["git", "config", "--global", "alias.cp", "!gcop commit && git push"],
+            check=True,
+            encoding="utf-8",
+        )
+        subprocess.run(
             ["git", "config", "--global", "alias.info", "!gcop info"],
             check=True,
             encoding="utf-8",
@@ -500,6 +505,7 @@ def help_command():
   git c          The same as `git gcommit` command
   git ac         The same as `git add . && git gcommit` command
   git acp        The same as `git add . && git gcommit && git push` command
+  git cp         The same as `git gcommit && git push` command
   git amend      Amend the last commit, allowing you to modify the commit message or add changes to the previous commit
   git info       Display basic information about the current git repository
 """  # noqa

@@ -29,17 +29,23 @@ Add all changes and commit with an AI-generated message.
 
 The same as `git add . && git gcommit`.
 
+### `git p`
+
+Push changes to the remote repository.
+
+The same as `git push`.
+
 ### `git acp`
 
 Add all changes, commit with an AI-generated message, and push to the remote repository.
 
 The same as `git add . && git gcommit && git p`.
 
-### `git p`
+### `git cp`
 
-Push changes to the remote repository.
+Commit with an AI-generated message and push to the remote repository.
 
-The same as `git push`.
+The same as `git gcommit && git p`.
 
 ### `git pf`
 
