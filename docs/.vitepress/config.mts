@@ -1,6 +1,38 @@
 import { defineConfig } from "vitepress";
 import { withPwa } from "@vite-pwa/vitepress";
 
+const getAnalyticsScripts = () => {
+  if (process.env.NODE_ENV === "development") {
+    return [];
+  }
+
+  return [
+    [
+      "script",
+      {
+        defer: "true",
+        "data-website-id": "77d0dd59-9095-463b-a317-b49b373af92d",
+        src: "https://umami.zeeland.top/script.js",
+      },
+    ] as [string, Record<string, string>],
+    [
+      "script",
+      {
+        async: "true",
+        src: "https://www.googletagmanager.com/gtag/js?id=G-T0VJ22HP63",
+      },
+    ] as [string, Record<string, string>],
+    [
+      "script",
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-T0VJ22HP63');`,
+    ] as [string, Record<string, string>, string],
+  ];
+};
+
 // https://vitepress.dev/reference/site-config
 export default withPwa(
   defineConfig({
@@ -18,15 +50,8 @@ export default withPwa(
       },
     },
     head: [
+      ...getAnalyticsScripts(),
       ["link", { rel: "icon", href: "/gcop-logo.ico" }],
-      [
-        "script",
-        {
-          defer: "true",
-          "data-website-id": "77d0dd59-9095-463b-a317-b49b373af92d",
-          src: "https://umami.zeeland.top/script.js",
-        },
-      ],
       [
         "meta",
         {
@@ -87,21 +112,6 @@ export default withPwa(
       [
         "meta",
         { name: "baidu-site-verification", content: "codeva-Z87P16KxE3" },
-      ],
-      [
-        "script",
-        {
-          async: "true",
-          src: "https://www.googletagmanager.com/gtag/js?id=G-T0VJ22HP63",
-        },
-      ],
-      [
-        "script",
-        {},
-        `window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-T0VJ22HP63');`,
       ],
     ],
     themeConfig: {
