@@ -160,6 +160,17 @@ def init_command():
             encoding="utf-8",
         )
         subprocess.run(
+            [
+                "git",
+                "config",
+                "--global",
+                "alias.acp",
+                "!git add . && gcop commit && git push",
+            ],
+            check=True,
+            encoding="utf-8",
+        )
+        subprocess.run(
             ["git", "config", "--global", "alias.info", "!gcop info"],
             check=True,
             encoding="utf-8",
