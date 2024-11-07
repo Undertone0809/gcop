@@ -61,8 +61,7 @@ export default withPwa(
         "meta",
         {
           property: "og:image",
-          content:
-            "https://r2.zeeland.top/images/2024/10/b03949e6bc43d71b7ddab3d70515eee0.png",
+          content: "/banner.png",
         },
       ],
       ["meta", { property: "twitter:card", content: "summary_large_image" }],
@@ -70,8 +69,7 @@ export default withPwa(
         "meta",
         {
           property: "twitter:image",
-          content:
-            "https://r2.zeeland.top/images/2024/10/b03949e6bc43d71b7ddab3d70515eee0.png",
+          content: "/banner.png",
         },
       ],
       [
