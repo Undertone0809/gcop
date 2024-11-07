@@ -32,3 +32,7 @@ Remember:
 
 1. Install GCOP in each Python environment you want to use it in.
 2. The GCOP configuration is shared across all environments, so you only need to set it up once.
+
+### How to see the logs?
+
+GCOP will store the logs in the `logs` folder in the GCOP storage path, which is usually `~/.zeeland/gcop/logs/`.

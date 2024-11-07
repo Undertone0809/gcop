@@ -14,6 +14,7 @@ from rich.console import Console
 from zeeland import get_default_storage_path as _get_default_storage_path
 
 from gcop import version
+from gcop.utils.logger import Color, logger
 
 
 @dataclass
@@ -126,12 +127,9 @@ def _load_metadata(metadata_path: str) -> VersionMetadata:
     return metadata
 
 
-def check_version_update(console: Console) -> None:
+def check_version_update() -> None:
     """Check for new version of gcop using cached data.
     Only checks PyPI once per day and caches the result.
-
-    Args:
-        console: Rich console instance for output
     """
     metadata_path: str = os.path.join(get_default_storage_path(), "metadata.json")
     current_time: datetime = datetime.now()
@@ -159,13 +157,15 @@ def check_version_update(console: Console) -> None:
 
             if should_update:
                 try:
-                    console.print("[yellow]Updating gcop...[/]")
+                    logger.color_info("Updating gcop...", color=Color.YELLOW)
                     subprocess.run(["pip", "install", "-U", "gcop"], check=True)
-                    console.print("[green]Update successful![/]")
+                    logger.color_info("Update successful!", color=Color.GREEN)
                     subprocess.run(["gcop", "init"], check=True)
-                    console.print("[green]GCOP reinitialized successfully![/]")
+                    logger.color_info(
+                        "GCOP reinitialized successfully!", color=Color.GREEN
+                    )
                 except subprocess.CalledProcessError as e:
-                    console.print(f"[red]Failed to update gcop: {e}[/]")
+                    logger.color_info(f"Failed to update gcop: {e}", color=Color.RED)
 
     except Exception:
         pass
@@ -181,17 +181,21 @@ def migrate_config_if_needed() -> None:
 
     try:
         if not os.path.exists(new_config_path):
-            print("No new config file found, migrating old config...")
+            logger.color_info("No new config file found, migrating old config...")
             shutil.copy2(old_config_path, new_config_path)
-            print(f"Config migrated from {old_config_path} to {new_config_path}")
+            logger.color_info(
+                f"Config migrated from {old_config_path} to {new_config_path}"
+            )
         else:
-            print("New config file already exists, skipping migration")
+            logger.color_info("New config file already exists, skipping migration")
 
         backup_path: str = old_config_path + ".backup"
         shutil.copy2(old_config_path, backup_path)
         os.remove(old_config_path)
-        print(f"Old config backup created at {backup_path}")
+        logger.color_info(f"Old config backup created at {backup_path}")
 
     except Exception as e:
-        print(f"Error migrating config: {e}")
-        print("Please manually move your config file to the new location")
+        logger.color_info(f"Error migrating config: {e}", color=Color.RED)
+        logger.color_info(
+            "Please manually move your config file to the new location", color=Color.RED
+        )

@@ -12,11 +12,11 @@ import requests
 import typer
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
-from rich.console import Console
 
 from gcop import prompt, version
 from gcop.config import ModelConfig, get_config
 from gcop.utils import check_version_update, migrate_config_if_needed
+from gcop.utils.logger import Color, logger
 
 load_dotenv()
 
@@ -25,7 +25,6 @@ app = typer.Typer(
     help="gcop is your local git command copilot",
     add_completion=False,
 )
-console = Console()
 
 
 class CommitMessage(BaseModel):
@@ -99,7 +98,7 @@ def check_version_before_command(f: Callable) -> Callable:
 
     @wraps(f)
     def wrapper(*args, **kwargs):
-        check_version_update(console)
+        check_version_update()
         return f(*args, **kwargs)
 
     return wrapper
@@ -199,10 +198,10 @@ def init_command():
             check=True,
             encoding="utf-8",
         )
-        console.print("[green]git aliases added successfully[/]")
+        logger.color_info("git aliases added successfully", color=Color.GREEN)
 
         config_command(from_init=True)
-        console.print("[green]gcop initialized successfully[/]")
+        logger.color_info("gcop initialized successfully", color=Color.GREEN)
     except subprocess.CalledProcessError as error:
         print(f"Error adding git aliases: {error}")
 
@@ -409,28 +408,28 @@ def info_command():
             shell=True,
         ).strip()
 
-        console.print(f"[bold]Project Name:[/] {project_name}")
-        console.print(f"[bold]Current Branch:[/] {current_branch}")
-        console.print(f"[bold]Latest Commit:[/] {latest_commit}")
-        console.print(f"[bold]Uncommitted Changes:[/] {uncommitted_changes}")
-        console.print(f"[bold]Remote URL:[/] {remote_url}")
-        console.print(f"[bold]Total Commits:[/] {total_commits}")
-        console.print(f"[bold]Contributors:[/] {contributors}")
-        console.print(f"[bold]Repository Created:[/] {creation_time}")
-        console.print(f"[bold]Last Modified:[/] {last_modified}")
-        console.print(f"[bold]Repository Size:[/] {repo_size}")
-        console.print(f"[bold]Most Active Contributor:[/] {most_active}")
-        console.print(f"[bold]Most Changed File:[/] {most_changed}")
-        console.print(f"[bold]Line Count by Language:[/]\n{line_count}")
-        console.print(f"[bold]Latest Tag:[/] {latest_tag}")
-        console.print(f"[bold]Branch Count:[/] {branch_count}")
-        console.print(f"[bold]Untracked Files:[/] {untracked_count}")
-        console.print(f"[bold]Submodules:[/]{submodules}")
-        console.print(f"[bold]Latest Merge Commit:[/] {latest_merge}")
-        console.print(f"[bold]File Type Statistics:[/]\n{file_types}")
+        logger.color_info(f"Project Name: {project_name}")
+        logger.color_info(f"Current Branch: {current_branch}")
+        logger.color_info(f"Latest Commit: {latest_commit}")
+        logger.color_info(f"Uncommitted Changes: {uncommitted_changes}")
+        logger.color_info(f"Remote URL: {remote_url}")
+        logger.color_info(f"Total Commits: {total_commits}")
+        logger.color_info(f"Contributors: {contributors}")
+        logger.color_info(f"Repository Created: {creation_time}")
+        logger.color_info(f"Last Modified: {last_modified}")
+        logger.color_info(f"Repository Size: {repo_size}")
+        logger.color_info(f"Most Active Contributor: {most_active}")
+        logger.color_info(f"Most Changed File: {most_changed}")
+        logger.color_info(f"Line Count by Language:\n{line_count}")
+        logger.color_info(f"Latest Tag: {latest_tag}")
+        logger.color_info(f"Branch Count: {branch_count}")
+        logger.color_info(f"Untracked Files: {untracked_count}")
+        logger.color_info(f"Submodules: {submodules}")
+        logger.color_info(f"Latest Merge Commit: {latest_merge}")
+        logger.color_info(f"File Type Statistics:\n{file_types}")
 
     except subprocess.CalledProcessError as e:
-        console.print(f"[red]Error getting repository information: {e}[/]")
+        logger.color_info(f"Error getting repository information: {e}", color=Color.RED)
 
 
 @app.command(name="commit")
@@ -455,18 +454,20 @@ def commit_command(
     diff: str = get_git_diff("--staged")
 
     if not diff:
-        console.print("[yellow]No staged changes[/]")
+        logger.color_info("No staged changes", color=Color.YELLOW)
         return
 
-    console.print(f"[yellow][Code diff] \n{diff}[/]")
-    console.print("[bold][On Ready] Generating commit message... [/]")
+    logger.color_info(f"[Code diff] \n{diff}", color=Color.YELLOW)
+    logger.color_info("[On Ready] Generating commit message...")
 
     commit_messages: CommitMessage = generate_commit_message(
         diff, instruction, previous_commit_message
     )
 
-    console.print(f"[bold][Thought] {commit_messages.thought}[/]")
-    console.print(f"[green][Generated commit message]\n{commit_messages.content}[/]")
+    logger.color_info(f"[Thought] {commit_messages.thought}")
+    logger.color_info(
+        f"[Generated commit message]\n{commit_messages.content}", color=Color.GREEN
+    )
 
     actions: Dict[str, Callable] = {
         "yes": lambda: subprocess.run(["git", "commit", "-m", commit_messages.content]),
@@ -477,7 +478,9 @@ def commit_command(
             instruction=questionary.text("Please enter your feedback:").ask(),
             previous_commit_message=commit_messages.content,
         ),
-        "exit": lambda: console.print("[yellow]Exiting commit process.[/]"),
+        "exit": lambda: logger.color_info(
+            "Exiting commit process.", color=Color.YELLOW
+        ),
     }
 
     response = questionary.select(
@@ -492,14 +495,14 @@ def commit_command(
 @check_version_before_command
 def help_command():
     """Show help message"""
-    help_message = """
-[bold]gcop[/] is your local git command copilot
-[bold]Version: [/]{version}
-[bold]GitHub: https://github.com/Undertone0809/gcop[/]
+    help_message = f"""
+gcop is your local git command copilot
+Version: {version}
+GitHub: https://github.com/Undertone0809/gcop
 
-[bold]Usage: gcop [OPTIONS] COMMAND[/]
+Usage: gcop [OPTIONS] COMMAND
 
-[bold]Commands:
+Commands:
   git p          Push the changes to the remote repository
   git pf         Push the changes to the remote repository with force
   git undo       Undo the last commit but keep the file changes
@@ -514,7 +517,7 @@ def help_command():
   git info       Display basic information about the current git repository
 """  # noqa
 
-    console.print(help_message)
+    logger.color_info(help_message)
 
 
 if __name__ == "__main__":
