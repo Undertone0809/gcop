@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 from gcop import prompt, version
 from gcop.config import ModelConfig, get_config
 from gcop.utils import check_version_update, migrate_config_if_needed
+from gcop.utils.init_config import ConfigFileHandleMixin, InitConfigCommand
 from gcop.utils.logger import Color, logger
 
 load_dotenv()
@@ -73,14 +74,16 @@ def generate_commit_message(
         str: git commit message with ai generated.
     """
     gcop_config = get_config()
-
+    commit_template = (
+        ConfigFileHandleMixin().get_local_config().get("gcoprule", None)
+        or gcop_config.commit_template
+    )
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
-        commit_template=gcop_config.commit_template,
+        commit_template=commit_template,
         instruction=instruction,
         previous_commit_message=previous_commit_message,
     )
-
     model_config: ModelConfig = gcop_config.model_config
     return pne.chat(
         messages=instruction,
@@ -490,6 +493,15 @@ def commit_command(
     ).ask()
 
     actions[response]()
+
+
+@app.command(name="init_project")
+def init_project_command():
+    """Initialize gcop config"""
+    logger.color_info("Initializing gcop config...")
+    command = InitConfigCommand()
+    if command.handle():
+        logger.color_info("Gcop config initialized successfully.")
 
 
 @app.command(name="help")
