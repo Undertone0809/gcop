@@ -16,6 +16,11 @@ from pydantic import BaseModel, Field
 from gcop import prompt, version
 from gcop.config import ModelConfig, get_config
 from gcop.utils import check_version_update, migrate_config_if_needed
+from gcop.utils.init_config import (
+    INIT_CONFIG_COMMAND,
+    InitConfigCommand,
+    get_local_config,
+)
 from gcop.utils.logger import Color, logger
 
 load_dotenv()
@@ -55,8 +60,29 @@ def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
         raise ValueError(f"Error getting git diff: {e}")
 
 
+def get_git_history(log_type: Literal["--oneline", "--stat"]) -> str:
+    """Get git history
+
+    Args:
+        log_type(str): log type, --oneline or --stat
+
+    Returns:
+        str: git history
+    """
+    if not get_local_config().historyLearning:
+        return ""
+    try:
+        result = subprocess.check_output(
+            ["git", "log", log_type], text=True, encoding="utf-8"
+        )
+        return result
+    except subprocess.CalledProcessError as e:
+        raise ValueError(f"Error getting git history: {e}")
+
+
 def generate_commit_message(
     diff: str,
+    commit_message_history: Optional[str] = None,
     instruction: Optional[str] = None,
     previous_commit_message: Optional[str] = None,
 ) -> CommitMessage:
@@ -73,14 +99,14 @@ def generate_commit_message(
         str: git commit message with ai generated.
     """
     gcop_config = get_config()
-
+    commit_template = get_local_config().gcoprule or gcop_config.commit_template
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
-        commit_template=gcop_config.commit_template,
+        commmit_message_history=commit_message_history,
+        commit_template=commit_template,
         instruction=instruction,
         previous_commit_message=previous_commit_message,
     )
-
     model_config: ModelConfig = gcop_config.model_config
     return pne.chat(
         messages=instruction,
@@ -453,6 +479,7 @@ def commit_command(
     process, please select "exit".
     """
     diff: str = get_git_diff("--staged")
+    commit_message_history: str = get_git_history("--staged")
 
     if not diff:
         logger.color_info("No staged changes", color=Color.YELLOW)
@@ -462,7 +489,7 @@ def commit_command(
     logger.color_info("[On Ready] Generating commit message...")
 
     commit_messages: CommitMessage = generate_commit_message(
-        diff, instruction, previous_commit_message
+        diff, commit_message_history, instruction, previous_commit_message
     )
 
     logger.color_info(f"[Thought] {commit_messages.thought}")
@@ -490,6 +517,15 @@ def commit_command(
     ).ask()
 
     actions[response]()
+
+
+@app.command(name=INIT_CONFIG_COMMAND)
+def init_project_command():
+    """Initialize gcop config"""
+    logger.color_info("Initializing gcop config...")
+    command = InitConfigCommand()
+    if command.handle():
+        logger.color_info("Gcop config initialized successfully.")
 
 
 @app.command(name="help")
