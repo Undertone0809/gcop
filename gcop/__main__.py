@@ -16,7 +16,11 @@ from pydantic import BaseModel, Field
 from gcop import prompt, version
 from gcop.config import ModelConfig, get_config
 from gcop.utils import check_version_update, migrate_config_if_needed
-from gcop.utils.init_config import ConfigFileHandleMixin, InitConfigCommand
+from gcop.utils.init_config import (
+    INIT_CONFIG_COMMAND,
+    InitConfigCommand,
+    get_local_config,
+)
 from gcop.utils.logger import Color, logger
 
 load_dotenv()
@@ -75,8 +79,7 @@ def generate_commit_message(
     """
     gcop_config = get_config()
     commit_template = (
-        ConfigFileHandleMixin().get_local_config().get("gcoprule", None)
-        or gcop_config.commit_template
+        get_local_config().gcoprule or gcop_config.commit_template
     )
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
@@ -495,7 +498,7 @@ def commit_command(
     actions[response]()
 
 
-@app.command(name="init_project")
+@app.command(name=INIT_CONFIG_COMMAND)
 def init_project_command():
     """Initialize gcop config"""
     logger.color_info("Initializing gcop config...")
