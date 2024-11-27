@@ -2,6 +2,7 @@ import pytest
 
 from gcop.prompt import get_commit_instrcution
 
+
 def test_get_commit_instruction_basic():
     """Test basic commit instruction generation."""
     diff = "test diff content"
@@ -52,6 +53,7 @@ def test_get_commit_instruction_with_history():
     assert isinstance(result, str)
     assert "commit message history" in result
     assert "test diff" in result
+
 
 def test_get_commit_instruction_all_params():
     """Test commit instruction with all parameters."""

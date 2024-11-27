@@ -80,7 +80,6 @@ def get_git_history(log_type: Literal["--oneline", "--stat"]) -> str:
         raise ValueError(f"Error getting git history: {e}")
 
 
-
 def generate_commit_message(
     diff: str,
     commit_message_history: Optional[str] = None,
@@ -480,7 +479,7 @@ def commit_command(
     process, please select "exit".
     """
     diff: str = get_git_diff("--staged")
-    commit_message_history:str = get_git_history("--staged")
+    commit_message_history: str = get_git_history("--staged")
 
     if not diff:
         logger.color_info("No staged changes", color=Color.YELLOW)
@@ -490,7 +489,7 @@ def commit_command(
     logger.color_info("[On Ready] Generating commit message...")
 
     commit_messages: CommitMessage = generate_commit_message(
-        diff,commit_message_history, instruction, previous_commit_message
+        diff, commit_message_history, instruction, previous_commit_message
     )
 
     logger.color_info(f"[Thought] {commit_messages.thought}")
