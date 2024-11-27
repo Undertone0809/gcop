@@ -27,10 +27,25 @@ GCOP is a powerful Python-based tool that leverages large language models (LLMs)
 
 ## Key Features
 
-1. **AI-Powered Commit Messages**: Let AI analyze your changes and suggest contextually appropriate commit messages.
-2. **Customizable LLM Integration**: Configure GCOP to work with your preferred AI model, such as OpenAI's GPT or others.
-3. **Intuitive Git Aliases**: Simplify complex Git operations with easy-to-remember commands like `git c` for AI-assisted commits.
-4. **Seamless Workflow Integration**: GCOP enhances your existing Git workflow without disrupting your familiar processes.
+1. **🤖 Intelligent Commit Crafting**
+   - Let AI analyze your changes and generate contextually perfect commit messages
+   - Learn from your project's commit history to match your team's style
+   - Support multiple languages for global development teams
+
+2. **🎨 Highly Customizable Experience**
+   - Design your own commit templates to match project requirements
+   - Fine-tune commit message style with custom prompts
+   - Configure project-specific settings for consistent team standards
+
+3. **📚 Smart Learning Capabilities**
+   - Automatically learn from your repository's commit history
+   - Adapt to your team's commit conventions over time
+   - Improve message quality through continuous learning
+
+4. **⚡ Seamless Developer Experience**
+   - Simple Git aliases for lightning-fast workflows
+   - Integrate with your favorite AI models (OpenAI, Anthropic, etc.)
+   - Works with your existing Git setup - no disruption to your flow
 
 ![GCOP Features](/images/git-ac-banner.png)
 

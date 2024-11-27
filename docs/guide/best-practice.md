@@ -10,11 +10,16 @@ If you want to commit all changes, you can use the following command:
 git ac
 ```
 
+The command is the same as `git add . && git commit`.
+
+
 If you want to commit all changes and push to the remote repository, you can use the following command:
 
 ```bash
 git acp
 ```
+
+The command is the same as `git add . && git commit && git push`.
 
 ## Revert a Regretful Commit Pushed to the Remote Repository
 
@@ -24,6 +29,8 @@ If you have just committed incorrect commit information and have already pushed 
 git undo
 git pf
 ```
+
+The command is the same as `git reset HEAD~ && git push --force`.
 
 This means that you are reverting the regretful commit, which will result in one less commit locally. Then, through `pf`, you push force to the remote repository, equivalent to your previous commit never happening.
 
@@ -35,3 +42,5 @@ If you have already committed, but forgot to add some files, you can use the fol
 git add <file>
 git amend
 ```
+
+The command is the same as `git commit --amend`.
