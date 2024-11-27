@@ -60,8 +60,30 @@ def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
         raise ValueError(f"Error getting git diff: {e}")
 
 
+def get_git_history(log_type: Literal["--oneline", "--stat"]) -> str:
+    """Get git history
+
+    Args:
+        log_type(str): log type, --oneline or --stat
+
+    Returns:
+        str: git history
+    """
+    if not get_local_config().historyLearning:
+        return ""
+    try:
+        result = subprocess.check_output(
+            ["git", "log", log_type], text=True, encoding="utf-8"
+        )
+        return result
+    except subprocess.CalledProcessError as e:
+        raise ValueError(f"Error getting git history: {e}")
+
+
+
 def generate_commit_message(
     diff: str,
+    commit_message_history: Optional[str] = None,
     instruction: Optional[str] = None,
     previous_commit_message: Optional[str] = None,
 ) -> CommitMessage:
@@ -81,6 +103,7 @@ def generate_commit_message(
     commit_template = get_local_config().gcoprule or gcop_config.commit_template
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
+        commmit_message_history=commit_message_history,
         commit_template=commit_template,
         instruction=instruction,
         previous_commit_message=previous_commit_message,
@@ -457,6 +480,7 @@ def commit_command(
     process, please select "exit".
     """
     diff: str = get_git_diff("--staged")
+    commit_message_history:str = get_git_history("--staged")
 
     if not diff:
         logger.color_info("No staged changes", color=Color.YELLOW)
@@ -466,7 +490,7 @@ def commit_command(
     logger.color_info("[On Ready] Generating commit message...")
 
     commit_messages: CommitMessage = generate_commit_message(
-        diff, instruction, previous_commit_message
+        diff,commit_message_history, instruction, previous_commit_message
     )
 
     logger.color_info(f"[Thought] {commit_messages.thought}")

@@ -10,6 +10,7 @@ INIT_CONFIG_COMMAND = "init_project"
 @dataclass
 class LocalConfig:
     gcoprule: str
+    historyLearning: bool = False
 
     @classmethod
     def from_yaml(cls) -> "LocalConfig":
