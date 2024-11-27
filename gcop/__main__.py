@@ -78,9 +78,7 @@ def generate_commit_message(
         str: git commit message with ai generated.
     """
     gcop_config = get_config()
-    commit_template = (
-        get_local_config().gcoprule or gcop_config.commit_template
-    )
+    commit_template = get_local_config().gcoprule or gcop_config.commit_template
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
         commit_template=commit_template,

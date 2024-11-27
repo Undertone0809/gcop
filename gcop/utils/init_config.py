@@ -66,7 +66,7 @@ the command '{INIT_CONFIG_COMMAND}'.""",
     return wrapper
 
 
-def get_local_config() ->"LocalConfig":
+def get_local_config() -> "LocalConfig":
     config = LocalConfig.from_yaml()
     return config
 
