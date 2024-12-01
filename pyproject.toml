@@ -32,7 +32,7 @@ pytest = "^8.3.3"
 pytest-html = "^4.1.1"
 pytest-cov = "^5.0.0"
 bandit = "^1.7.1"
-ruff = "^0.7.2"
+ruff = "^0.8.1"
 
 [tool.ruff]
 # https://beta.ruff.rs/docs/settings/
