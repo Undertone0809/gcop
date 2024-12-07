@@ -10,17 +10,13 @@ import pne
 import questionary
 import requests
 import typer
+import yaml
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import ModelConfig, get_config
+from gcop.config import EXAMPLE_CONFIG, ModelConfig, get_config
 from gcop.utils import check_version_update, migrate_config_if_needed
-from gcop.utils.init_config import (
-    INIT_CONFIG_COMMAND,
-    InitConfigCommand,
-    get_local_config,
-)
 from gcop.utils.logger import Color, logger
 
 load_dotenv()
@@ -69,8 +65,6 @@ def get_git_history(log_type: Literal["--oneline", "--stat"]) -> str:
     Returns:
         str: git history
     """
-    if not get_local_config().historyLearning:
-        return ""
     try:
         result = subprocess.check_output(
             ["git", "log", log_type], text=True, encoding="utf-8"
@@ -99,7 +93,7 @@ def generate_commit_message(
         str: git commit message with ai generated.
     """
     gcop_config = get_config()
-    commit_template = get_local_config().gcoprule or gcop_config.commit_template
+    commit_template = gcop_config.commit_template
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
         commmit_message_history=commit_message_history,
@@ -519,15 +513,6 @@ def commit_command(
     actions[response]()
 
 
-# @app.command(name=INIT_CONFIG_COMMAND)
-# def init_project_command():
-#     """Initialize gcop config"""
-#     logger.color_info("Initializing gcop config...")
-#     command = InitConfigCommand()
-#     if command.handle():
-#         logger.color_info("Gcop config initialized successfully.")
-
-
 @app.command(name="init-project")
 def init_project_command():
     """Initialize gcop config"""
@@ -540,7 +525,8 @@ def init_project_command():
         return
     try:
         config_folder_path.parent.mkdir(parents=True, exist_ok=True)
-        config_folder_path.touch()
+        with open(config_folder_path, "w") as f:
+            yaml.dump(EXAMPLE_CONFIG, f, default_flow_style=False)
         logger.color_info("Gcop config initialized successfully.")
     except Exception as e:
         logger.color_info(f"Failed to initialize gcop config: {e}", color=Color.RED)

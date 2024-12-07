@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
 
 from zeeland import Singleton
@@ -124,10 +125,36 @@ class GcopConfig(metaclass=Singleton):
     def model_config(self) -> ModelConfig:
         return self.model
 
+    @staticmethod
+    def get_example_config() -> dict:
+        return {
+            "model": {
+                "model_name": "provider/name,eg openai/gpt-4o",
+                "api_key": "sk-xxx",
+                "api_base": "https://api.openai.com/v1",
+            },
+            "commit_template": None,
+            "include_git_history": False,
+            "enable_data_improvement": False,
+        }
+
+
+EXAMPLE_CONFIG = GcopConfig.get_example_config()
+
 
 def get_config() -> GcopConfig:
-    """Get the global config instance, loading it if necessary."""
+    """Get the  config instance, loading it if necessary.
+    If an attribute is defined in the local configuration,
+    the original value will be overwritten.
+    """
     if not hasattr(get_config, "_instance"):
         get_config._instance = GcopConfig.from_yaml()
-
+    project_config_path = Path.cwd() / ".gcop" / "config.yaml"
+    if project_config_path.exists():
+        project_config = read_yaml(project_config_path)
+        for k, v in project_config.items():
+            if not v.strip():
+                pass
+            if hasattr(get_config._instance, k):
+                setattr(get_config._instance, k, v)
     return get_config._instance
