@@ -131,7 +131,7 @@ class GcopConfig(metaclass=Singleton):
             "model": {
                 "model_name": "provider/name,eg openai/gpt-4o",
                 "api_key": "sk-xxx",
-                "api_base": "https://api.openai.com/v1",
+                "api_base": "eg:https://api.openai.com/v1",
             },
             "commit_template": None,
             "include_git_history": False,
@@ -141,6 +141,21 @@ class GcopConfig(metaclass=Singleton):
 
 EXAMPLE_CONFIG = GcopConfig.get_example_config()
 
+
+def check_model_config(new_model:dict) -> bool:
+    '''
+    check if the new model config is valid
+    '''
+    example_model_config = EXAMPLE_CONFIG["model"]
+
+    if not new_model:
+        return False
+
+    for key in example_model_config:
+        if any(key not in new_model ,not new_model[key],
+            new_model[key]==example_model_config[key]):
+            return False
+    return True
 
 def get_config() -> GcopConfig:
     """Get the  config instance, loading it if necessary.
@@ -153,8 +168,12 @@ def get_config() -> GcopConfig:
     if project_config_path.exists():
         project_config = read_yaml(project_config_path)
         for k, v in project_config.items():
-            if not v.strip():
+            if isinstance(v, str) and not v.strip():
                 pass
             if hasattr(get_config._instance, k):
-                setattr(get_config._instance, k, v)
+                if k == "model" and isinstance(v, dict) and check_model_config(v):
+                    v= ModelConfig(**v)
+                    setattr(get_config._instance, k, v)
+                else:
+                    setattr(get_config._instance, k, v)
     return get_config._instance
