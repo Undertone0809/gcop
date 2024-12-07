@@ -519,13 +519,32 @@ def commit_command(
     actions[response]()
 
 
-@app.command(name=INIT_CONFIG_COMMAND)
+# @app.command(name=INIT_CONFIG_COMMAND)
+# def init_project_command():
+#     """Initialize gcop config"""
+#     logger.color_info("Initializing gcop config...")
+#     command = InitConfigCommand()
+#     if command.handle():
+#         logger.color_info("Gcop config initialized successfully.")
+
+
+@app.command(name="init-project")
 def init_project_command():
     """Initialize gcop config"""
-    logger.color_info("Initializing gcop config...")
-    command = InitConfigCommand()
-    if command.handle():
+    project_path = Path.cwd()
+    config_folder_path = project_path / ".gcop" / "config.yaml"
+    if config_folder_path.exists():
+        logger.color_info(
+            "Gcop config already exists in the current project.", color=Color.YELLOW
+        )
+        return
+    try:
+        config_folder_path.parent.mkdir(parents=True, exist_ok=True)
+        config_folder_path.touch()
         logger.color_info("Gcop config initialized successfully.")
+    except Exception as e:
+        logger.color_info(f"Failed to initialize gcop config: {e}", color=Color.RED)
+        return
 
 
 @app.command(name="help")
