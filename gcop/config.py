@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
 
 from zeeland import Singleton
@@ -124,10 +125,67 @@ class GcopConfig(metaclass=Singleton):
     def model_config(self) -> ModelConfig:
         return self.model
 
+    @staticmethod
+    def get_example_config() -> dict:
+        return {
+            "model": {
+                "model_name": "provider/name,eg openai/gpt-4o",
+                "api_key": "sk-xxx",
+                "api_base": "eg:https://api.openai.com/v1",
+            },
+            "commit_template": None,
+            "include_git_history": False,
+            "enable_data_improvement": False,
+        }
+
+
+EXAMPLE_CONFIG = GcopConfig.get_example_config()
+
+
+def check_model_config(new_model: dict) -> bool:
+    """
+    check if the new model config is valid
+
+    Args:
+        new_model: the model config of project config by reading ~/.gcop/config.yaml
+
+    Returns:
+        True if the new model config is valid, False otherwise
+    """
+    example_model_config = EXAMPLE_CONFIG["model"]
+
+    if not new_model:
+        return False
+
+    for key in example_model_config:
+        if (
+            (key not in new_model)
+            or (not new_model.get(key))
+            or (new_model[key] == example_model_config[key])
+        ):
+            return False
+    return True
+
 
 def get_config() -> GcopConfig:
-    """Get the global config instance, loading it if necessary."""
+    """Get the  config instance, loading it if necessary.
+    If an attribute is defined in the local configuration,
+    the original value will be overwritten.
+    """
     if not hasattr(get_config, "_instance"):
         get_config._instance = GcopConfig.from_yaml()
-
+    project_config_path = Path.cwd() / ".gcop" / "config.yaml"
+    if project_config_path.exists():
+        project_config = read_yaml(project_config_path)
+        for k, v in project_config.items():
+            if isinstance(v, str) and not v.strip():
+                continue
+            if not hasattr(get_config._instance, k):
+                continue
+            if k == "model" and isinstance(v, dict):
+                if check_model_config(v):
+                    v = ModelConfig(**v)
+                    setattr(get_config._instance, k, v)
+            elif k != "model" and k in EXAMPLE_CONFIG.keys():
+                setattr(get_config._instance, k, v)
     return get_config._instance
