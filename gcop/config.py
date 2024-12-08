@@ -142,8 +142,8 @@ class GcopConfig(metaclass=Singleton):
 EXAMPLE_CONFIG = GcopConfig.get_example_config()
 
 
-def check_model_config(new_model:dict) -> bool:
-    '''
+def check_model_config(new_model: dict) -> bool:
+    """
     check if the new model config is valid
 
     Args:
@@ -151,17 +151,21 @@ def check_model_config(new_model:dict) -> bool:
 
     Returns:
         True if the new model config is valid, False otherwise
-    '''
+    """
     example_model_config = EXAMPLE_CONFIG["model"]
 
     if not new_model:
         return False
 
     for key in example_model_config:
-        if (key not in new_model)or(not new_model.get(key))or(
-            new_model[key]==example_model_config[key]):
+        if (
+            (key not in new_model)
+            or (not new_model.get(key))
+            or (new_model[key] == example_model_config[key])
+        ):
             return False
     return True
+
 
 def get_config() -> GcopConfig:
     """Get the  config instance, loading it if necessary.
@@ -185,4 +189,3 @@ def get_config() -> GcopConfig:
             elif k != "model" and k in EXAMPLE_CONFIG.keys():
                 setattr(get_config._instance, k, v)
     return get_config._instance
-

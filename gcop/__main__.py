@@ -532,12 +532,15 @@ def init_project_command():
     except Exception as e:
         logger.color_info(f"Failed to initialize gcop config: {e}", color=Color.RED)
         return
+
+
 @app.command(name="show-config")
 @check_version_before_command
 def show_config_command():
-    '''command to show the current gcop config'''
+    """command to show the current gcop config"""
     config = get_config()
     logger.color_info(f"Current gcop config: {config}")
+
 
 @app.command(name="help")
 @check_version_before_command
