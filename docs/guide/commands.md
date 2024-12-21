@@ -79,6 +79,14 @@ Display detailed information about the current git repository. This command prov
 - Version control information (latest tag, branch count, untracked files)
 - Advanced details (submodules, latest merge commit, file type statistics)
 
+### `gcop init-project`
+
+Initialize the GCOP configuration in the current project. This command creates the `.gcop/config.yaml` file in the project root directory, which contains the default GCOP configuration.
+
+### `gcop show-config`
+
+The current GCOP configuration is displayed. This command outputs all GCOP configuration items currently in effect, including model configuration, submit templates, and so on.
+
 ## Usage Examples
 
 1. Generate and apply an AI commit message:
@@ -129,6 +137,26 @@ Some advanced features like line count by language require additional tools (e.g
 
 ::: warning
 The `git amend` command modifies Git history. Use it with caution, especially if you've already pushed the commit you're amending to a shared repository.
+:::
+
+7. To initialize the GCOP configuration in the project:
+
+   ```
+   gcop init-project
+   ```
+
+   This will create the `.gcop/config.yaml `file in the project root. If the configuration file already exists, the command prompts that it has been initialized.
+
+8. View the current GCOP configuration
+
+   ```
+   gcop show-config
+   ```
+
+   This displays all currently active GCOP configuration items and is useful for debugging and validating configurations.
+
+::: tip
+The project level configuration (.gcop/config.yaml) overrides the global configuration. This allows you to set different configurations for different projects.
 :::
 
 For more detailed information on each command, refer to the [Quick Start](/guide/quick-start.md) section in the guide.
