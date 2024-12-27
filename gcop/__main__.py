@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import ModelConfig, get_config
+from gcop.config import GcopConfig, ModelConfig, get_config
 from gcop.utils import check_version_update, migrate_config_if_needed
 from gcop.utils.logger import Color, logger
 
@@ -113,17 +113,18 @@ def config_command(from_init: bool = False):
         "model:\n  model_name: provider/name,eg openai/gpt-4o"
         "\n  api_key: your_api_key\n"
     )
-    gcop_config = get_config()
 
-    if not os.path.exists(gcop_config._config_path):
-        Path(gcop_config._config_path).write_text(initial_content)
+    conf_file: str = GcopConfig._config_path
+
+    if not os.path.exists(conf_file):
+        Path(conf_file).write_text(initial_content)
 
     if from_init:
-        with open(gcop_config._config_path) as f:
+        with open(conf_file) as f:
             if f.read() == initial_content:
-                click.edit(filename=gcop_config._config_path)
+                click.edit(filename=conf_file)
     else:
-        click.edit(filename=gcop_config._config_path)
+        click.edit(filename=conf_file)
 
 
 @app.command(name="init")
