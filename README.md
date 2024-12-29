@@ -87,7 +87,7 @@ We recommend you to read the [Quick Start Guide](https://gcop.zeeland.top/) in d
 
 Then gcop will generate a `config.yaml`, then gcop will open the `config.yaml`
 file in the default editor, and you can config your language model. See how to
-config your model [here](https://gcop.zeeland.top/how-to-config-model.html):
+config your model [here](https://gcop.zeeland.top/other/how-to-config-model.html):
 
 > `config.yaml` store path:
 >
