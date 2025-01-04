@@ -1,0 +1,8 @@
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/Undertone0809/gcop/main/config-schema.json": [
+      "/Users/*/.zeeland/gcop/config.yaml",
+      "~/.zeeland/gcop/config.yaml"
+    ]
+  },
+}
