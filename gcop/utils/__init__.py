@@ -172,7 +172,12 @@ def check_version_update() -> None:
 
 
 def migrate_config_if_needed() -> None:
-    """Migrate old config to new location if needed."""
+    """Migrate old config to new location if needed.
+
+    After v1.6.0, the config file location has been changed to
+    `~/.zeeland/gcop/config.yaml`. Original config file location is
+    `~/.gcop/config.yaml`.
+    """
     old_config_path: str = os.path.join(get_old_default_storage_path(), "config.yaml")
     new_config_path: str = os.path.join(get_default_storage_path(), "config.yaml")
 

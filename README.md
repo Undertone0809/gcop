@@ -101,6 +101,7 @@ config your model [here](https://gcop.zeeland.top/other/how-to-config-model.html
    git ghelp
    ```
 
+
    You should see output similar to:
 
    ```
@@ -141,14 +142,27 @@ After making changes to your project:
 
    Example output:
 
-   ```
-   ? Select a commit message to commit (Use arrow keys)
-    » feat: Implement user authentication system
-      docs: Update installation instructions in README
-      fix: Resolve database connection timeout issue
-      style: Improve code formatting in src/main.py
-      retry
-   ```
+```
+[On Ready] Generating commit message...
+
+[Thought] The changes include adding a new file for VSCode settings and updating the .gitignore to include the new settings file. These changes are related to
+development environment configuration and do not affect the application's functionality.
+
+[Generated commit message]
+chore: update vscode settings and gitignore
+
+- Add .vscode/settings.json with YAML schema configuration
+- Update .gitignore to include .vscode/settings.json
+- Add .vscode/extensions.json with recommended extensions
+
+These changes improve the development environment by ensuring proper YAML schema validation and managing VSCode settings and extensions.
+
+? Do you want to commit the changes with this message? (Use arrow keys)
+ » yes
+   retry
+   retry by feedback
+   exit
+```
 
 3. Choose the most appropriate message using arrow keys and press Enter.
 

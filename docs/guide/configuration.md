@@ -17,9 +17,9 @@ This tutorial will guide you through the process of configuring GCOP. Before you
 
 Gcop will store all configurations in the `config.yaml` file. The `config.yaml` file will be stored in:
 
-- Windows: `%USERPROFILE%\.gcop\config.yaml`
-- Linux: `~/.gcop/config.yaml`
-- MacOS: `~/.gcop/config.yaml`
+- Windows: `%USERPROFILE%\.zeeland\gcop\config.yaml`
+- Linux: `~/.zeeland/gcop/config.yaml`
+- MacOS: `~/.zeeland/gcop/config.yaml`
 
 ## All Configurations
 

@@ -1,5 +1,9 @@
 # Upgrade
 
+::: info INFO
+Every time you run gcop command, it will check if there is a new version of GCOP. If there is a new version, it will ask you if you want to update.
+:::
+
 This section will guide you through the process of upgrading GCOP to the latest version.
 
 Install the latest version of GCOP:
