@@ -21,6 +21,30 @@ Gcop will store all configurations in the `config.yaml` file. The `config.yaml` 
 - Linux: `~/.zeeland/gcop/config.yaml`
 - MacOS: `~/.zeeland/gcop/config.yaml`
 
+## Setting up YAML Schema in VSCode
+
+GCOP provides a JSON schema (`config-schema.json`) to help you autocomplete and validate your config file. The schema supports version control to ensure backward compatibility and smooth upgrades.
+
+If you are using VSCode, you can install the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) to enable autocomplete and validation for YAML files.
+
+![Autocomplete Configuration](/public/videos/autocomplete-config.gif)
+
+To configure this in your local VSCode environment, follow these steps:
+
+1. Download the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) for VSCode.
+2. Add the following settings to your VSCode settings (`.vscode/settings.json`):
+
+```json
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/Undertone0809/gcop/main/config-schema.json": [
+      "~/.zeeland/gcop/config.yaml",
+      "/Users/*/.zeeland/gcop/config.yaml"
+    ]
+  }
+}
+```
+
 ## All Configurations
 
 There are all configurations you can set in the `config.yaml` file.
@@ -66,7 +90,7 @@ See details in [How to config model](/other/how-to-config-model.md).
 
 ### Commit Message Template
 
-gcop provides a default `commit template` to guide language model how to generate commit message. Default template is as follows:
+GCOP provides a default `commit template` to guide language model how to generate commit message. Default template is as follows:
 
 ```yaml
 ... # other configurations
@@ -94,8 +118,11 @@ commit_template: |
 
 You can customize the commit message template to guide language model how to generate commit message.
 
-The following example how to generate a commit message in Chinese:
+:::info TIP
+We recommend you fork the default commit template and customize it to your own needs.
+:::
 
+The following example how to generate a commit message in Chinese:
 
 ```yaml
 ... # other configurations
@@ -141,7 +168,3 @@ docs: 更新文档结构和内容
 - 更新gcop/prompt.py中的默认提交模板
 - 修复utils/__init__.py中的文件读取编码问题
 ```
-
-:::info TIP
-We recommend you fork the default commit template and customize it to your own needs.
-:::
