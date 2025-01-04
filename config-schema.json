@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "model"
+  ],
+  "properties": {
+    "model": {
+      "type": "object",
+      "required": [
+        "model_name"
+      ],
+      "properties": {
+        "model_name": {
+          "type": "string",
+          "description": "The name of the model to use"
+        },
+        "api_key": {
+          "type": "string",
+          "description": "The API key to use"
+        },
+        "api_base": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The API base URL to use"
+        }
+      }
+    },
+    "commit_template": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The commit template to use. If not provided, default template will be used"
+    },
+    "include_git_history": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to include the git history in the prompt"
+    },
+    "enable_data_improvement": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to enable data improvement"
+    }
+  },
+  "examples": [
+    {
+      "model": {
+        "model_name": "openai/gpt-4o",
+        "api_key": "sk-xxx",
+        "api_base": "https://api.openai.com/v1"
+      },
+      "commit_template": "- Good Example\n\n```\nfeat: implement user registration\n\n- Add registration form component\n- Create API endpoint for user creation\n- Implement email verification process\n\nThis feature allows new users to create accounts and verifies\ntheir email addresses before activation. It includes proper\ninput validation and error handling.\n```\nreason: contain relevant detail of the changes, no just one line\n\n- Bad Example\n\n```\nfeat: add user registration\n```\nreason: only one line, need more detail based on guidelines",
+      "include_git_history": false,
+      "enable_data_improvement": false
+    }
+  ]
+}
