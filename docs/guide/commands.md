@@ -139,15 +139,7 @@ Some advanced features like line count by language require additional tools (e.g
 The `git amend` command modifies Git history. Use it with caution, especially if you've already pushed the commit you're amending to a shared repository.
 :::
 
-7. To initialize the GCOP configuration in the project:
-
-   ```
-   gcop init-project
-   ```
-
-   This will create the `.gcop/config.yaml `file in the project root. If the configuration file already exists, the command prompts that it has been initialized.
-
-8. View the current GCOP configuration
+7. View the current GCOP configuration
 
    ```
    gcop show-config
