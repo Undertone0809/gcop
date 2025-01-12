@@ -127,7 +127,7 @@ class GcopConfig(metaclass=Singleton):
     project_config: Optional[YamlFile] = None
 
     def __post_init__(self):
-        self._config = self.default_config
+        self._config = deepcopy(self.default_config)
 
     @property
     def dict(self) -> Dict[str, Any]:
