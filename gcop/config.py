@@ -1,11 +1,30 @@
 import os
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Any, ClassVar, Dict, Optional
 
 from zeeland import Singleton
 
-from gcop.utils import get_default_storage_path, read_yaml
+from gcop.utils import Color, get_default_storage_path, logger, read_yaml
+
+
+class YamlFile:
+    def __init__(self, path: str) -> None:
+        self._path: Path | str = path
+
+    def read(self) -> Dict[str, Any]:
+        return read_yaml(self._path)
+
+    def exists(self) -> bool:
+        return os.path.exists(self._path)
+
+    @property
+    def path(self) -> str:
+        return str(self._path)
+
+    def __repr__(self) -> str:
+        return self.path
 
 
 @dataclass
@@ -29,6 +48,18 @@ class ModelConfig:
     model_name: str
     api_key: str
     api_base: Optional[str] = None
+
+    def check_model_config(self) -> bool:
+        if (
+            self.model_name == "provider/name,eg openai/gpt-4o"
+            or self.api_base == "eg:https://api.openai.com/v1"
+            or self.api_key == "eg:sk-xxx"
+        ):
+            return False
+        return True
+
+
+_gcop_config: "GcopConfig" = None
 
 
 @dataclass
@@ -75,115 +106,96 @@ class GcopConfig(metaclass=Singleton):
 
     """
 
+    default_config: ClassVar[Dict[str, Any]] = {
+        "model": {
+            "model_name": "provider/name,eg openai/gpt-4o",
+            "api_key": "sk-xxx",
+            "api_base": "eg:https://api.openai.com/v1",
+        },
+        "commit_template": None,
+        "include_git_history": False,
+        "enable_data_improvement": False,
+    }
     model: ModelConfig
     commit_template: Optional[str] = None
     include_git_history: bool = False
     enable_data_improvement: bool = False
 
     _config_path: str = f"{get_default_storage_path()}/config.yaml"
+    _config: Optional[Dict[str, Any]] = None
+    user_config: Optional[YamlFile] = None
+    project_config: Optional[YamlFile] = None
 
-    @classmethod
-    def from_yaml(cls, config_path: Optional[str] = None) -> "GcopConfig":
-        """Load config from YAML file.
+    def __post_init__(self):
+        self._config = self.default_config
+
+    @property
+    def dict(self) -> Dict[str, Any]:
+        return deepcopy(self._config)
+
+    def merge(self, config: Dict[str, Any]) -> None:
+        """Merge config with provided config.
 
         Args:
-            config_path: Optional path to config file. If not provided, uses
-            default path.
-
-        Returns:
-            GcopConfig instance initialized from YAML data
-
-        Raises:
-            ValueError: If model name is not properly configured
+            config: The config to merge.
         """
-        config: dict = read_yaml(config_path or cls._config_path)
+        from gcop.utils import merge_dicts
 
-        try:
-            config["model"] = ModelConfig(**config.get("model", {}))
-        except KeyError:
-            raise ValueError(
-                "`model` field error in ~/.zeeland/gcop/config.yaml\n"
-                "Go https://gcop.zeeland.top/guide/configuration see how to config model."  # noqa
-            )
-
-        if (
-            not config["model"].model_name
-            or config["model"].model_name == "provider/name,eg openai/gpt-4o"
-        ):
-            raise ValueError(
-                "Please run `gcop config` to custom your language model "
-                "config.\nGo https://gcop.zeeland.top/how-to-config-model see how to config model."  # noqa
-            )
-
-        # Set commit_template to None if it's empty or only contains whitespace
-        if config.get("commit_template") and not config.get("commit_template").strip():
-            config["commit_template"] = None
-
-        return cls(**config)
+        merge_dicts(self._config, config)
 
     @property
     def model_config(self) -> ModelConfig:
         return self.model
 
-    @staticmethod
-    def get_example_config() -> Dict:
-        return {
-            "model": {
-                "model_name": "provider/name,eg openai/gpt-4o",
-                "api_key": "sk-xxx",
-                "api_base": "eg:https://api.openai.com/v1",
-            },
-            "commit_template": None,
-            "include_git_history": False,
-            "enable_data_improvement": False,
-        }
+    def init_model_config(self) -> None:
+        self._config["model"] = ModelConfig(**self._config.get("model", {}))
+        if not self._config["model"].check_model_config():
+            logger.color_info(
+                "Warning:You are using the example configuration for the model."
+                "Please replace the example values with "
+                "your actual model_name ,api_key and api_base to ensure the project "  # noqa
+                "runs correctly",
+                color=Color.YELLOW,
+            )
+
+    @classmethod
+    def get_config(cls, reload: bool = False) -> "GcopConfig":
+        """Get the GcopConfig instance.
+
+        This method follows the singleton pattern and loads configurations in the following priority:
+        1. Project config (.gcop/config.yaml)
+        2. User config (~/.zeeland/gcop/config.yaml)
+        3. Default config
+
+        Args:
+            reload (bool, optional): Whether to force reload the configuration.
+                When True, ignores existing instance and creates a new one. Defaults to False.
+
+        Returns:
+            GcopConfig: Configuration instance containing merged configuration data.
+
+        Example:
+            >>> config = GcopConfig.get_config()  # Get config instance
+            >>> config = GcopConfig.get_config(reload=True)  # Force reload config
+        """  # noqa: E501
+        global _gcop_config
+        if _gcop_config is None or reload:
+            _gcop_config = cls(cls.default_config)
+            # Load user_config
+            user_config = YamlFile(cls._config_path)
+            if user_config.exists():
+                logger.info("Loading user config from %s", user_config.path)
+                _gcop_config.user_config = user_config
+                _gcop_config.merge(user_config.read())
+            # Load project_config
+            project_config_path = Path.cwd() / ".gcop" / "config.yaml"
+            project_config = YamlFile(project_config_path)
+            if project_config.exists():
+                logger.info("Loading project config from %s", project_config.path)
+                _gcop_config.merge(project_config.read())
+                _gcop_config.project_config = project_config
+            _gcop_config.init_model_config()
+        return _gcop_config
 
 
-EXAMPLE_CONFIG = GcopConfig.get_example_config()
-
-
-def check_model_config(new_model: Dict) -> bool:
-    """
-    check if the new model config is valid
-
-    Args:
-        new_model: the model config of project config by reading ~/.gcop/config.yaml
-
-    Returns:
-        True if the new model config is valid, False otherwise
-    """
-    example_model_config = EXAMPLE_CONFIG["model"]
-
-    if not new_model:
-        return False
-
-    for key in example_model_config:
-        if (
-            (key not in new_model)
-            or (not new_model.get(key))
-            or (new_model[key] == example_model_config[key])
-        ):
-            return False
-    return True
-
-
-def get_config() -> GcopConfig:
-    """Get the  config instance, loading it if necessary.
-    If an attribute is defined in the local configuration,
-    the original value will be overwritten.
-    """
-    if not hasattr(get_config, "_instance"):
-        get_config._instance = GcopConfig.from_yaml()
-
-    project_config_path = Path.cwd() / ".gcop" / "config.yaml"
-    if project_config_path.exists():
-        project_config = read_yaml(project_config_path)
-        for k, v in project_config.items():
-            if isinstance(v, str) and not v.strip():
-                continue
-            if hasattr(get_config._instance, k):
-                if k == "model" and isinstance(v, dict) and check_model_config(v):
-                    setattr(get_config._instance, k, ModelConfig(**v))
-                elif k != "model" and k in EXAMPLE_CONFIG.keys():
-                    setattr(get_config._instance, k, v)
-    return get_config._instance
+EXAMPLE_CONFIG = GcopConfig.default_config

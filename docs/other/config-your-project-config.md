@@ -1,4 +1,4 @@
-# Configure Your Project
+# Project based configuration
 
 GCOP supports project-level configuration, allowing you to set different configuration options for different projects. This guide will help you understand how to configure your project.
 

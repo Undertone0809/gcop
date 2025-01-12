@@ -1,4 +1,5 @@
 import os
+import pprint
 import subprocess
 from enum import Enum
 from functools import wraps
@@ -15,7 +16,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import EXAMPLE_CONFIG, ModelConfig, get_config
+from gcop.config import EXAMPLE_CONFIG, GcopConfig, ModelConfig
 from gcop.utils import check_version_update, migrate_config_if_needed
 from gcop.utils.logger import Color, logger
 
@@ -92,7 +93,7 @@ def generate_commit_message(
     Returns:
         str: git commit message with ai generated.
     """
-    gcop_config = get_config()
+    gcop_config = GcopConfig.get_config()
     commit_template = gcop_config.commit_template
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
@@ -133,7 +134,7 @@ def config_command(from_init: bool = False):
         "model:\n  model_name: provider/name,eg openai/gpt-4o"
         "\n  api_key: your_api_key\n"
     )
-    gcop_config = get_config()
+    gcop_config = GcopConfig.get_config()
 
     if not os.path.exists(gcop_config._config_path):
         Path(gcop_config._config_path).write_text(initial_content)
@@ -538,8 +539,8 @@ def init_project_command():
 @check_version_before_command
 def show_config_command():
     """command to show the current gcop config"""
-    config = get_config()
-    logger.color_info(f"Current gcop config: {config}")
+    gcop_config: GcopConfig = GcopConfig.get_config()
+    logger.color_info(f"Current gcop config:\n {pprint.pformat(gcop_config.dict)}")
 
 
 @app.command(name="help")
@@ -566,6 +567,8 @@ Commands:
   git cp         The same as `git gcommit && git push` command
   git amend      Amend the last commit, allowing you to modify the commit message or add changes to the previous commit
   git info       Display basic information about the current git repository
+  gcop init-project Initialize gcop config in the current project
+  gcop show-config Show the current gcop config
 """  # noqa
 
     logger.color_info(help_message)
