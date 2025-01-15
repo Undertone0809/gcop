@@ -21,6 +21,44 @@ Gcop will store all configurations in the `config.yaml` file. The `config.yaml` 
 - Linux: `~/.gcop/config.yaml`
 - MacOS: `~/.gcop/config.yaml`
 
+## Configuration Priority
+
+GCOP supports three levels of configuration, loaded in the following priority order (from highest to lowest):
+
+1. Project configuration (`.gcop/config.yaml`): Located in the project root directory
+2. User configuration (`~/.gcop/config.yaml`): User-level configuration
+3. Default configuration: Built-in default settings
+
+Higher priority configurations override lower priority ones. This means:
+
+- Project configurations override both user and default configurations
+- User configurations override default configurations if no project configuration exists
+- Default configurations are used when neither project nor user configurations are present
+
+## Project Configuration
+
+You can create a project-level configuration by running the following command in your project root directory:
+
+```bash
+gcop init-project
+```
+
+This command will create a `.gcop` directory with a `config.yaml` file:
+
+```bash
+your-project/
+├── .gcop/
+│   └── config.yaml    # Project-level configuration
+├── src/
+└── ...
+```
+
+Project-level configuration follows the same format as user-level configuration. This is particularly useful for team collaboration as it allows you to:
+
+- Set specific configurations for individual projects
+- Share consistent settings across team members
+- Version control your configuration
+
 ## All Configurations
 
 There are all configurations you can set in the `config.yaml` file.
@@ -28,16 +66,16 @@ There are all configurations you can set in the `config.yaml` file.
 ```yaml
 model:
   # Required, the model name.
-  model_name: 'provider/name,eg openai/gpt-4o '
+  model_name: "provider/name,eg openai/gpt-4o "
   # Required, the API key.
-  api_key: 'your_api_key'
+  api_key: "your_api_key"
   # Optional, the API base.
-  api_base: 'your_api_base,eg https://api.openai.com/v1'
+  api_base: "your_api_base,eg https://api.openai.com/v1"
 # Optional, default is false. If true, the git history will be included in the prompt.
 include_git_history: false
 # Optional, default is false. Attention: This feature is not supported yet.
 enable_data_improvement: false
-# Optional, if you want to customize the commit template. 
+# Optional, if you want to customize the commit template.
 commit_template: |
   <good_example>
   <commit_message>
@@ -69,6 +107,7 @@ See details in [How to config model](/other/how-to-config-model.md).
 gcop provides a default `commit template` to guide language model how to generate commit message. Default template is as follows:
 
 ```yaml
+
 ... # other configurations
 commit_template: |
   <good_example>
@@ -96,8 +135,8 @@ You can customize the commit message template to guide language model how to gen
 
 The following example how to generate a commit message in Chinese:
 
-
 ```yaml
+
 ... # other configurations
 commit_template: |
   <good_example>
