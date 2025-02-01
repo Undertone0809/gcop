@@ -40,7 +40,7 @@ prompt-toolkit==3.0.36 ; python_full_version >= "3.8.1" and python_version < "4.
 promptulate==1.18.4 ; python_full_version >= "3.8.1" and python_version < "4.0"
 propcache==0.2.0 ; python_full_version >= "3.8.1" and python_version < "4.0"
 pydantic-core==2.23.4 ; python_full_version >= "3.8.1" and python_version < "4.0"
-pydantic==2.9.2 ; python_full_version >= "3.8.1" and python_version < "4.0"
+pydantic==2.10.6 ; python_full_version >= "3.8.1" and python_version < "4.0"
 pygments==2.18.0 ; python_full_version >= "3.8.1" and python_version < "4.0"
 python-dotenv==1.0.1 ; python_full_version >= "3.8.1" and python_version < "4.0"
 pyyaml==6.0.2 ; python_full_version >= "3.8.1" and python_version < "4.0"
