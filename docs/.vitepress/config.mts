@@ -133,6 +133,7 @@ export default withPwa(
             { text: "Introduction", link: "/guide/introduction" },
             { text: "Quick Start", link: "/guide/quick-start" },
             { text: "How to guide", link: "/guide/how-to-guide" },
+            { text: "Best Practice", link: "/guide/best-practice" },
             { text: "Commands", link: "/guide/commands" },
             { text: "Configuration", link: "/guide/configuration" },
             { text: "Upgrade", link: "/guide/upgrade" },

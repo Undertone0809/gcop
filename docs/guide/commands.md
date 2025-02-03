@@ -65,6 +65,10 @@ Amend the last commit, allowing you to modify the commit message or add changes 
 
 The same as `git commit --amend`.
 
+::: warning
+The `git amend` command modifies Git history. Use it with caution, especially if you've already pushed the commit you're amending to a shared repository.
+:::
+
 ### `git gconfig`
 
 Open the GCOP configuration file in the default editor. See [Configuration](/guide/configuration) for more details.

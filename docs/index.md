@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: "GCOP"
-  text: "Your first git AI copilot"
-  tagline: Help you write better git commit message and build efficient git workflow
+  text: "Transform Messy Commits into Meaningful Stories"
+  tagline: Your AI-powered Git assistant that makes version control a breeze with smart commit messages and 20+ intuitive commands
   image:
     src: /gcop-logo.png
     alt: gcop
@@ -18,10 +18,16 @@ hero:
       link: https://github.com/undertone0809/gcop
 
 features:
-  - title: 🚀 AI-Powered Commit Messages
-    details: Automatically generate meaningful git commit messages using advanced language models.
-  - title: 🔄 Seamless Git Integration
-    details: Enhance your Git workflow with intuitive commands like 'git c' for AI-assisted commits.
-  - title: 🛠️ Flexible LLM Configuration
-    details: Easily set up and customize your preferred language model for personalized results.
+  - title: 🚀 Intelligent Commit Crafting
+    details: Let AI understand your changes and generate perfect commit messages that tell the story of your code.
+  - title: 📚 Smart Learning & Adaptation
+    details: Learns from your repository's history to match your team's style and conventions automatically.
+  - title: ⚡ Supercharged Workflow
+    details: Streamline your Git experience with 20+ powerful commands that make complex operations simple.
+  - title: 🎨 Highly Customizable
+    details: Choose your AI model, design commit templates, and configure project-specific settings to match your needs.
+  - title: 🔄 Zero-Config Integration
+    details: Works seamlessly with your existing Git setup - no disruption to your current workflow.
+  - title: 🤝 Team-Friendly
+    details: Perfect for teams of all sizes, with consistent commit styles and collaborative workflow support.
 ---

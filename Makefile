@@ -34,6 +34,9 @@ check-codestyle:
 
 lint: test check-codestyle
 
+run-docs:
+	cd docs && npm run docs:dev
+
 help:
 	@echo "lock                                      Lock the dependencies."
 	@echo "install                                   Install the project dependencies."

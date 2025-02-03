@@ -15,13 +15,29 @@
 
 </div>
 
-GCOP (Git Copilot) is an intelligent assistant that enhances your Git workflow by automating commit message generation using AI. It's designed to make your development process smoother and more efficient by improving git commit practices, conventional commits, and version control. With GCOP, you can create better commit messages, maintain a clean git history, and streamline your git commit workflow.
+GCOP (Git Copilot) - Your AI-powered Git assistant that transforms messy commits into meaningful stories. It automates commit message generation, enhances your Git workflow, and makes version control a breeze with 20+ smart commands.
 
 ## 🚀 Key Features
 
-- **Smart Commit Messages**: Let AI generate better commit messages based on your changes.
-- **Flexible AI Integration**: Support any language model you want.
-- **Simplified Git Commands**: Powerful aliases for common Git operations to speed up your workflow.
+1. **🤖 Intelligent Commit Crafting**
+   - Let AI analyze your changes and generate contextually perfect commit messages
+   - Learn from your project's commit history to match your team's style
+
+2. **🎨 Highly Customizable Experience**
+   - Design your own commit templates to match project requirements
+   - Fine-tune commit message style with custom prompts
+   - Configure project-specific settings for consistent team standards
+
+3. **📚 Smart Learning Capabilities**
+   - Automatically learn from your repository's commit history
+   - Adapt to your team's commit conventions over time
+   - Improve message quality through continuous learning
+
+4. **⚡ Seamless Developer Experience**
+   - Supercharged with 20+ intuitive Git shortcuts and commands
+   - Smart aliases that make complex Git operations a breeze
+   - Integrate with your favorite AI models (OpenAI, Anthropic, etc.)
+   - Zero-config integration with your existing Git workflow
 
 ## Video Demo
 
@@ -71,7 +87,7 @@ We recommend you to read the [Quick Start Guide](https://gcop.zeeland.top/) in d
 
 Then gcop will generate a `config.yaml`, then gcop will open the `config.yaml`
 file in the default editor, and you can config your language model. See how to
-config your model [here](https://gcop.zeeland.top/how-to-config-model.html):
+config your model [here](https://gcop.zeeland.top/other/how-to-config-model.html):
 
 > `config.yaml` store path:
 >
@@ -84,6 +100,7 @@ config your model [here](https://gcop.zeeland.top/how-to-config-model.html):
    ```
    git ghelp
    ```
+
 
    You should see output similar to:
 
@@ -125,14 +142,27 @@ After making changes to your project:
 
    Example output:
 
-   ```
-   ? Select a commit message to commit (Use arrow keys)
-    » feat: Implement user authentication system
-      docs: Update installation instructions in README
-      fix: Resolve database connection timeout issue
-      style: Improve code formatting in src/main.py
-      retry
-   ```
+```
+[On Ready] Generating commit message...
+
+[Thought] The changes include adding a new file for VSCode settings and updating the .gitignore to include the new settings file. These changes are related to
+development environment configuration and do not affect the application's functionality.
+
+[Generated commit message]
+chore: update vscode settings and gitignore
+
+- Add .vscode/settings.json with YAML schema configuration
+- Update .gitignore to include .vscode/settings.json
+- Add .vscode/extensions.json with recommended extensions
+
+These changes improve the development environment by ensuring proper YAML schema validation and managing VSCode settings and extensions.
+
+? Do you want to commit the changes with this message? (Use arrow keys)
+ » yes
+   retry
+   retry by feedback
+   exit
+```
 
 3. Choose the most appropriate message using arrow keys and press Enter.
 
