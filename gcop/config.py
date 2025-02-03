@@ -1,3 +1,4 @@
+import json
 import os
 from copy import deepcopy
 from dataclasses import dataclass
@@ -7,6 +8,9 @@ from typing import Any, ClassVar, Dict, Optional
 from zeeland import Singleton
 
 from gcop.utils import Color, get_default_storage_path, logger, read_yaml
+
+with open("default_config.json") as f:
+    default_config = json.load(f)
 
 
 class YamlFile:
@@ -106,16 +110,6 @@ class GcopConfig(metaclass=Singleton):
 
     """
 
-    default_config: ClassVar[Dict[str, Any]] = {
-        "model": {
-            "model_name": "provider/name,eg openai/gpt-4o",
-            "api_key": "sk-xxx",
-            "api_base": "eg:https://api.openai.com/v1",
-        },
-        "commit_template": None,
-        "include_git_history": False,
-        "enable_data_improvement": False,
-    }
     model: ModelConfig
     commit_template: Optional[str] = None
     include_git_history: bool = False
@@ -127,7 +121,7 @@ class GcopConfig(metaclass=Singleton):
     project_config: Optional[YamlFile] = None
 
     def __post_init__(self):
-        self._config = deepcopy(self.default_config)
+        self._config = deepcopy(default_config)
 
     @property
     def dict(self) -> Dict[str, Any]:
@@ -196,6 +190,3 @@ class GcopConfig(metaclass=Singleton):
                 _gcop_config.project_config = project_config
             _gcop_config.init_model_config()
         return _gcop_config
-
-
-EXAMPLE_CONFIG = GcopConfig.default_config

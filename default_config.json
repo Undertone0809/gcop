@@ -1,0 +1,10 @@
+{
+    "model": {
+        "model_name": "provider/name,eg openai/gpt-4o",
+        "api_key": "sk-xxx",
+        "api_base": "eg:https://api.openai.com/v1"
+    },
+    "commit_template": null,
+    "include_git_history": false,
+    "enable_data_improvement": false
+}
