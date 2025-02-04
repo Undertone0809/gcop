@@ -142,13 +142,15 @@ class GcopConfig(metaclass=Singleton):
         return self.model
 
     def init_model_config(self) -> None:
-        self._config["model"] = ModelConfig(**self._config.get("model", {}))
-        if not self._config["model"].check_model_config():
+        self.model = self._config["model"] = ModelConfig(
+            **self._config.get("model", {})
+        )
+        if not self.model.check_model_config():
             logger.color_info(
                 "Warning:You are using the example configuration for the model."
                 "Please replace the example values with "
                 "your actual model_name ,api_key and api_base to ensure the project "  # noqa
-                "runs correctly",
+                "runs correctly Please visit the following link for help: https://gcop.zeeland.top/other/how-to-config-model.html",
                 color=Color.YELLOW,
             )
 
@@ -174,7 +176,7 @@ class GcopConfig(metaclass=Singleton):
         """  # noqa: E501
         global _gcop_config
         if _gcop_config is None or reload:
-            _gcop_config = cls(cls.default_config)
+            _gcop_config = cls(default_config)
             # Load user_config
             user_config = YamlFile(cls._config_path)
             if user_config.exists():
