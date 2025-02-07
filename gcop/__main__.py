@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import GcopConfig, ModelConfig, default_config
+from gcop.config import GcopConfig, ModelConfig, DEFAULT_CONFIG
 from gcop.utils import check_version_update, migrate_config_if_needed
 from gcop.utils.logger import Color, logger
 
@@ -528,7 +528,7 @@ def init_project_command():
     try:
         config_folder_path.parent.mkdir(parents=True, exist_ok=True)
         with open(config_folder_path, "w") as f:
-            yaml.dump(default_config, f, default_flow_style=False)
+            yaml.dump(DEFAULT_CONFIG, f, default_flow_style=False)
         logger.color_info("Gcop config initialized successfully.")
     except Exception as e:
         logger.color_info(f"Failed to initialize gcop config: {e}", color=Color.RED)
