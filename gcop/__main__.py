@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import GcopConfig, ModelConfig, default_config
+from gcop.config import GcopConfig, ModelConfig, DEFAULT_CONFIG
 from gcop.utils import check_version_update, migrate_config_if_needed
 from gcop.utils.logger import Color, logger
 
@@ -40,7 +40,7 @@ class CommitMessage(BaseModel):
 
 
 def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
-    """Get git diff
+    """Get git diff.
 
     Args:
         diff_type(str): diff type, --staged or --cached
@@ -520,15 +520,19 @@ def init_project_command():
     """Initialize gcop config"""
     project_path = Path.cwd()
     config_folder_path = project_path / ".gcop" / "config.yaml"
+
     if config_folder_path.exists():
         logger.color_info(
             "Gcop config already exists in the current project.", color=Color.YELLOW
         )
         return
+
     try:
         config_folder_path.parent.mkdir(parents=True, exist_ok=True)
+
         with open(config_folder_path, "w") as f:
-            yaml.dump(default_config, f, default_flow_style=False)
+            yaml.dump(DEFAULT_CONFIG, f, default_flow_style=False)
+
         logger.color_info("Gcop config initialized successfully.")
     except Exception as e:
         logger.color_info(f"Failed to initialize gcop config: {e}", color=Color.RED)

@@ -9,8 +9,15 @@ from zeeland import Singleton
 
 from gcop.utils import Color, get_default_storage_path, logger, read_yaml
 
-with open("default_config.json") as f:
-    default_config = json.load(f)
+DEFAULT_CONFIG = {
+    "model": {
+        "model_name": "provider/name,eg openai/gpt-4o",
+        "api_key": "eg:sk-xxx",
+    },
+    "commit_template": None,
+    "include_git_history": False,
+    "enable_data_improvement": False,
+}
 
 
 class YamlFile:
@@ -121,7 +128,7 @@ class GcopConfig(metaclass=Singleton):
     project_config: Optional[YamlFile] = None
 
     def __post_init__(self):
-        self._config = deepcopy(default_config)
+        self._config = deepcopy(DEFAULT_CONFIG)
 
     @property
     def dict(self) -> Dict[str, Any]:
@@ -176,7 +183,7 @@ class GcopConfig(metaclass=Singleton):
         """  # noqa: E501
         global _gcop_config
         if _gcop_config is None or reload:
-            _gcop_config = cls(default_config)
+            _gcop_config = cls(DEFAULT_CONFIG)
             # Load user_config
             user_config = YamlFile(cls._config_path)
             if user_config.exists():
