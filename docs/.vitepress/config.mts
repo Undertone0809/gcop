@@ -151,7 +151,7 @@ export default withPwa(
       ],
       socialLinks: [
         { icon: "github", link: "https://github.com/undertone0809/gcop" },
-        { icon: "twitter", link: "https://x.com/kfhedRk3lXofRIB" },
+        { icon: "x", link: "https://x.com/kfhedRk3lXofRIB" },
       ],
       footer: {
         message: "Released under the MIT License.",
