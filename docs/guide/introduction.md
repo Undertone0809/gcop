@@ -13,7 +13,7 @@ head:
    <img src="/banner.png" alt="GCOP Banner" style="border-radius: 15px;">
 </p>
 
-# Introduction to GCOP
+# Introduction
 
 GCOP (Git Copilot) - Your AI-powered Git assistant that transforms messy commits into meaningful stories. It automates commit message generation, enhances your Git workflow, and makes version control a breeze with 20+ smart commands.
 
