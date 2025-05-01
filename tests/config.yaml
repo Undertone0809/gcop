@@ -1,3 +1,0 @@
-model:
-  model_name: provider/model, eg OpenAI/gpt-4o
-  api_key: YOUR_API_KEY

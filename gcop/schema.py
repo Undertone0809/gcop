@@ -28,7 +28,6 @@ class ModelConfig:
 
 
 @dataclass
-
 class GcopConfig:
     """Configuration class for Gcop.
 
@@ -39,8 +38,9 @@ class GcopConfig:
         enable_data_improvement (bool): Flag to enable data improvement features.
         history_learning_limit (int): The limit on the number of learning iterations.
     """
+
     model_config: ModelConfig = field(default_factory=ModelConfig)
     commit_template: str = None
     include_git_history: bool = False
     enable_data_improvement: bool = False
-    history_learning_limit : int = 10
+    history_learning_limit: int = 10
