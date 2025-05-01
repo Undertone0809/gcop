@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import config_manager
+from gcop.config import config_manager,is_key_in_config
 from gcop.schema import ModelConfig
 from gcop.utils import check_version_update, migrate_config_if_needed
 from gcop.utils.logger import Color, logger
@@ -596,9 +596,14 @@ def set_config(
         "-p",
         is_flag=True,
         help="Update project config instead of user config",
-    ),  # noqa: E501
+    ),
 ):
     """Set a configuration value"""
+    gcop_config = config_manager.load()
+    if not is_key_in_config(gcop_config,key):
+        typer.echo( f"Invalid key(s): {key}")
+        raise typer.Abort()
+
     config_name = config_manager.config_name
     if project:
         project_root = find_project_root()
