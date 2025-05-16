@@ -57,6 +57,7 @@ Before you begin, ensure you have the following:
    How to config your model? Please refer to [How to Config Model](/other/how-to-config-model)
 
    The `config.yaml` file will be stored in:
+
    - Windows: `%USERPROFILE%\.zeeland\gcop\config.yaml`
    - Linux: `~/.zeeland/gcop/config.yaml`
    - MacOS: `~/.zeeland/gcop/config.yaml`
@@ -101,11 +102,11 @@ Finally, you can see the commit message like this:
 
 ```bash
 (gcop) D:\Projects\gcop\docs>git ac
-[Code diff] 
+[Code diff]
 ...
 
 
-[Thought] The changes involve updating the VitePress configuration to use an environment variable for the website ID, adding a reference to a new documentation page in the quick-start guide, and correcting a URL in the model configuration documentation. These changes are primarily 
+[Thought] The changes involve updating the VitePress configuration to use an environment variable for the website ID, adding a reference to a new documentation page in the quick-start guide, and correcting a URL in the model configuration documentation. These changes are primarily
 related to documentation and configuration updates.
 [Generated commit message]
 docs: update VitePress config and add model config reference
@@ -172,5 +173,5 @@ For more detailed information on each command, refer to the [Commands](./command
 
 - Visit our [How to guide](/guide/how-to-guide) for common questions and troubleshooting
 - Check out the [How to Config Model](/other/how-to-config-model) guide for advanced configuration options
-
-Start enhancing your Git workflow with GCOP today!
+- How to [setting different configuration options for different projects](/other/config-your-project-config)
+  Start enhancing your Git workflow with GCOP today!

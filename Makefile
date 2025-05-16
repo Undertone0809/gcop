@@ -19,6 +19,9 @@ install:
 	poetry lock -n && poetry export --without-hashes > requirements.txt
 	poetry install -n
 
+install-docs:
+	cd docs && npm run install
+
 polish-codestyle:
 	poetry run ruff format --config pyproject.toml .
 	poetry run ruff check --fix --config pyproject.toml .
@@ -34,7 +37,7 @@ check-codestyle:
 
 lint: test check-codestyle
 
-run-docs:
+start-docs:
 	cd docs && npm run docs:dev
 
 help:
@@ -45,3 +48,4 @@ help:
 	@echo "format                                    Format the codebase."
 	@echo "check-codestyle                           Check the codebase for style issues."
 	@echo "lint                                      Run the tests and check the codebase for style issues."
+	@echo "run-docs                                  Run the local docs server."
