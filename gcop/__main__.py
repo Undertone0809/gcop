@@ -22,8 +22,8 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import config_manager,is_key_in_config
-from gcop.schema import ModelConfig
+from gcop.config import config_manager, is_key_in_config
+from gcop.schema import GcopConfig, ModelConfig
 from gcop.utils import check_version_update, migrate_config_if_needed
 from gcop.utils.logger import Color, logger
 
@@ -555,31 +555,55 @@ def init_project(
 def show_config():
     """Show current effective configuration and its sources"""
     config_name = config_manager.config_name
-    user_path = get_user_config_path(config_name)
-    project_root = find_project_root()
-    project_path = get_project_config_path(
-        config_name, str(project_root) if project_root else None
-    )
 
-    if not user_path.exists() and (not project_path or not project_path.exists()):
-        typer.echo(f"No configuration files found for framework '{config_name}'")
+    # Get configs directly from config_manager
+    merged_config = config_manager.load()
+    user_config = config_manager.get_user_config()
+    project_config = config_manager.get_project_config()
+
+    if not user_config and not project_config:
+        typer.echo(
+            typer.style(
+                f"No configuration files found for framework '{config_name}'",
+                fg="yellow",
+            )
+        )
         return
 
-    if user_path.exists():
-        typer.echo(f"User config ({user_path}):")
-        with open(user_path, "r") as f:
-            user_config = yaml.safe_load(f) or {}
-        typer.echo(yaml.dump(user_config, default_flow_style=False))
+    # Display user config
+    if user_config:
+        typer.echo(
+            typer.style(f"User config ({config_manager.user_config_path}):", fg="blue")
+        )
+        typer.echo(
+            typer.style(yaml.dump(user_config, default_flow_style=False), fg="cyan")
+        )
     else:
-        typer.echo(f"No user config found at {user_path}")
+        typer.echo(
+            typer.style(
+                f"No user config found at {config_manager.user_config_path}",
+                fg="yellow",
+            )
+        )
 
-    if project_path and project_path.exists():
-        typer.echo(f"Project config ({project_path}):")
-        with open(project_path, "r") as f:
-            project_config = yaml.safe_load(f) or {}
-        typer.echo(yaml.dump(project_config, default_flow_style=False))
+    # Display project config
+    if project_config:
+        typer.echo(
+            typer.style(
+                f"Project config ({config_manager.project_config_path}):", fg="blue"
+            )
+        )
+        typer.echo(
+            typer.style(yaml.dump(project_config, default_flow_style=False), fg="cyan")
+        )
     else:
-        typer.echo("No project config found")
+        typer.echo(typer.style("No project config found", fg="yellow"))
+
+    # Display merged config (effective configuration)
+    typer.echo(typer.style("Merged config (effective configuration):", fg="green"))
+    typer.echo(
+        typer.style(yaml.dump(merged_config, default_flow_style=False), fg="green")
+    )
 
 
 @app.command(name="set-config")
@@ -598,12 +622,12 @@ def set_config(
     ),
 ):
     """Set a configuration value"""
-    gcop_config = config_manager.load()
-    if not is_key_in_config(gcop_config,key):
-        typer.echo( f"Invalid key(s): {key}")
+    gcop_config: GcopConfig = config_manager.load()
+    if not is_key_in_config(gcop_config, key):
+        typer.echo(f"Invalid key(s): {key}")
         raise typer.Abort()
 
-    config_name = config_manager.config_name
+    config_name: str = config_manager.config_name
     if project:
         project_root = find_project_root()
         if not project_root:

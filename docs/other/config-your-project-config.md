@@ -1,65 +1,126 @@
-# Project based configuration
+# Project-Based Configuration Made Easy
 
-GCOP supports project-level configuration, allowing you to set different configuration options for different projects. This guide will help you understand how to configure your project.
+GCOP makes it simple to customize settings for each of your projects! This guide walks you through setting up project-specific configurations that work perfectly for your team's needs.
 
-## Initialize Project Configuration
+## Why Use Project-Based Configuration?
 
-To initialize GCOP configuration in your project, simply run in the project root directory:
+Different projects often need different settings. With GCOP's project configuration, you can:
+
+- Use different AI models for different projects
+- Set unique commit message templates for each team
+- Keep configurations separate and organized
+
+## Real-World Example: Standardizing Commit Messages Across Your Team
+
+Want your team to write consistent, informative commit messages? Project configuration makes it easy!
+
+### How It Works in Practice: The FinTech Example
+
+Imagine a financial technology team that needs detailed commit messages to streamline their review process. Here's how they configure GCOP:
+
+```yaml
+commit_template: |
+  <good_example>
+  <commit_message>
+  feat(payment): implement cryptocurrency payment gateway
+  
+  - Add Bitcoin and Ethereum payment processing
+  - Create transaction history component for crypto payments
+  - Implement wallet address validation with checksum
+  
+  JIRA: FIN-423
+  Security: Medium impact, wallet validation prevents transaction errors
+  QA: Added unit tests for all validation logic
+  </commit_message>
+  <reason>
+  Has required elements:
+  - Type prefix with scope in parentheses
+  - Descriptive bullet points
+  - JIRA ticket reference
+  - Security impact assessment
+  - QA testing notes
+  </reason>
+  </good_example>
+  
+  <bad_example>
+  <commit_message>added crypto payments</commit_message>
+  <reason>
+  Missing required elements:
+  - No type/scope prefix
+  - No bullet points for changes
+  - No JIRA reference
+  - No security or QA notes
+  </reason>
+  </bad_example>
+  
+  # TEAM REQUIREMENTS:
+  # 1. Always include relevant ticket number (JIRA: XXX-###)
+  # 2. For features affecting payment systems, include security impact
+  # 3. Mention QA strategy for testable changes
+  # 4. Use conventional commit types with scope (feat/fix/docs/etc)
+  # 5. Include bullet points for multiple changes
+```
+
+With this setup, team members simply use GCOP as normal. The AI automatically generates properly formatted commit messages following all team standards—no more forgetting ticket numbers or skipping important details!
+
+## Getting Started in 30 Seconds
+
+Setting up project configuration is quick:
 
 ```bash
 gcop init-project
 ```
 
-This command creates a `.gcop/config.yaml` file in your project root directory. If the configuration file already exists, the command will indicate that it has been initialized.
+That's it! This creates a `.gcop/config.yaml` file in your project's root directory. If the file already exists, you'll see a message letting you know.
 
-## Configuration File Structure
+## What's in the Configuration File?
 
-The default content of the project configuration file `.gcop/config.yaml` is as follows:
+Your `.gcop/config.yaml` file contains these key settings:
 
 ```yaml
-commit_template: null # Commit message template
+commit_template: null # Your commit message template
 enable_data_improvement: false # Whether to enable data improvement
-include_git_history: false # Whether to include git history in the prompt
+include_git_history: false # Whether to include git history
 model:
   api_base: eg:https://api.openai.com/v1
   api_key: sk-xxx
   model_name: provider/name,eg openai/gpt-4o
 ```
 
-## Configuration Priority
+## How Configuration Priority Works
 
-GCOP's configuration priority is as follows (from highest to lowest):
+GCOP follows a simple priority system:
 
-1. Project-level configuration (`.gcop/config.yaml`)
-2. Global configuration (`~/.gcop/config.yaml`)
+1. Project-level settings (`.gcop/config.yaml`) come first
+2. Global settings (`~/.gcop/config.yaml`) are used as fallbacks
 
-This means that project-level configuration will override global configuration, allowing you to set different configurations for different projects.
+This means you can set different configurations for different projects, but keep common settings global.
 
-## View Current Configuration
+## Quick Command: Check Your Current Settings
 
-To view the current effective configuration, use:
+Want to see what settings are active? Just run:
 
 ```bash
 gcop show-config
 ```
 
-This command displays all currently effective GCOP configuration items, including model configuration, commit templates, etc.
+This shows you exactly which configuration options are currently in effect.
 
-## Important Notes
+## Pro Tips for Smooth Setup
 
-1. Make sure to add `.gcop/` to your `.gitignore` file to avoid committing sensitive information like API keys to version control.
+1. **Security first**: Add `.gcop/` to your `.gitignore` file to keep API keys private
 
-2. It's recommended to use environment variables for storing API keys rather than writing them directly in the configuration file.
+2. **Use environment variables**: Store sensitive API keys as environment variables instead of in the config file
 
-3. Changes to the project configuration file take effect immediately, no need to restart GCOP.
+3. **Changes apply immediately**: No need to restart anything when you update your settings
 
-## Troubleshooting
+## Troubleshooting Common Issues
 
-If you encounter configuration-related issues, you can:
+Running into problems? Try these quick fixes:
 
-1. Use `gcop show-config` to check the current configuration
-2. Ensure the configuration file format is correct (valid YAML format)
-3. Verify that the API key and model name are correct
-4. Check file permissions
+1. Run `gcop show-config` to see what settings are active
+2. Check that your config file has valid YAML formatting
+3. Double-check your API key and model name
+4. Verify file permissions are correct
 
-For more help, refer to the [Configuration Guide](/guide/configuration) or submit a GitHub issue.
+Need more help? Check the [Configuration Guide](/guide/configuration) or open an issue on GitHub.

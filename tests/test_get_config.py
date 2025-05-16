@@ -8,7 +8,7 @@ from gcop.schema import GcopConfig
 
 @pytest.fixture
 def mock_project_config(tmp_path):
-    """创建一个模拟的项目配置文件"""
+    """Create a mock project configuration file"""
     config_dir: Path = tmp_path / ".gcop"
     config_dir.mkdir()
     project_config_file = config_dir / "config.yaml"
@@ -29,7 +29,7 @@ def mock_project_config(tmp_path):
 
 
 def test_get_project_config(mock_project_config, monkeypatch):
-    """测试从项目配置文件加载配置"""
+    """Test loading configuration from the project configuration file"""
     monkeypatch.chdir(mock_project_config)
     config = config_manager.load()
     assert isinstance(config, GcopConfig)

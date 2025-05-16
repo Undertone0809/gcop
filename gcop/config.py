@@ -1,19 +1,9 @@
+from dataclasses import fields, is_dataclass
+
 from conftier import ConfigManager
 
 from gcop.schema import GcopConfig
-from dataclasses import fields, is_dataclass
 
-
-DEFAULT_CONFIG = {
-    "model": {
-        "model_name": "provider/name,eg openai/gpt-4o",
-        "api_key": "eg:sk-xxx",
-        "api_base": "eg:https://api.openai.com/v1",
-    },
-    "commit_template": None,
-    "include_git_history": False,
-    "enable_data_improvement": False,
-}
 
 def is_key_in_config(config: GcopConfig, key: str) -> bool:
     """Check if a key (including nested keys) exists in the config.
@@ -25,7 +15,7 @@ def is_key_in_config(config: GcopConfig, key: str) -> bool:
     Returns:
         bool: True if the key exists, False otherwise.
     """
-    keys = key.split('.')
+    keys = key.split(".")
     current = config
 
     for k in keys:
@@ -50,6 +40,8 @@ def is_key_in_config(config: GcopConfig, key: str) -> bool:
 config_manager = ConfigManager(
     config_name="gcop",
     config_schema=GcopConfig,
-    version="2.0.0",
+    version="1.0.0",
     auto_create_user=True,
 )
+print(config_manager.get_user_config())
+print(config_manager.get_project_config())
