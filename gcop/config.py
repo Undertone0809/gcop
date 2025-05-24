@@ -43,5 +43,3 @@ config_manager = ConfigManager(
     version="1.0.0",
     auto_create_user=True,
 )
-print(config_manager.get_user_config())
-print(config_manager.get_project_config())

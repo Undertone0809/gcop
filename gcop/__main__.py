@@ -110,7 +110,7 @@ def generate_commit_message(
         instruction=instruction,
         previous_commit_message=previous_commit_message,
     )
-    model_config: ModelConfig = gcop_config.model_config
+    model_config: ModelConfig = gcop_config.model
     return pne.chat(
         messages=instruction,
         model=model_config.model_name,
@@ -231,7 +231,7 @@ def init_command():
         config_manager.load()
         logger.color_info("gcop initialized successfully", color=Color.GREEN)
     except subprocess.CalledProcessError as error:
-        print(f"Error adding git aliases: {error}")
+        logger.color_info(f"Error adding git aliases: {error}", color=Color.RED)
 
 
 @app.command(name="info")
