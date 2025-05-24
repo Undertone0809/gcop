@@ -76,7 +76,7 @@ def get_git_history(log_type: Literal["--oneline", "--stat"], limit: int) -> str
     """
     try:
         result = subprocess.check_output(
-            ["git", "log", log_type, "-n", limit], text=True, encoding="utf-8"
+            ["git", "log", log_type, "-n", str(limit)], text=True, encoding="utf-8"
         )
         return result
     except subprocess.CalledProcessError as e:
@@ -490,7 +490,7 @@ def commit_command(
 
     if gcop_config.include_git_history:
         commit_message_history: str = get_git_history(
-            "--online", gcop_config.history_learning_limit
+            "--oneline", gcop_config.history_learning_limit
         )
 
     logger.color_info(f"[Code diff] \n{diff}", color=Color.YELLOW)

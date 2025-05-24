@@ -1,11 +1,10 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
   name: "GCOP"
-  text: "Transform Messy Commits into Meaningful Stories"
-  tagline: Your AI-powered Git assistant that makes version control a breeze with smart commit messages and 20+ intuitive commands
+  text: "Your Complete Git Workflow Assistant"
+  tagline: Enhance your Git experience with AI-powered commit messages, smart commands, and workflow optimization tools
   image:
     src: /gcop-logo.png
     alt: gcop
@@ -18,16 +17,22 @@ hero:
       link: https://github.com/undertone0809/gcop
 
 features:
-  - title: 🚀 Intelligent Commit Crafting
-    details: Let AI understand your changes and generate perfect commit messages that tell the story of your code.
-  - title: 📚 Smart Learning & Adaptation
-    details: Learns from your repository's history to match your team's style and conventions automatically.
-  - title: ⚡ Supercharged Workflow
-    details: Streamline your Git experience with 20+ powerful commands that make complex operations simple.
-  - title: 🎨 Highly Customizable
-    details: Choose your AI model, design commit templates, and configure project-specific settings to match your needs.
-  - title: 🔄 Zero-Config Integration
-    details: Works seamlessly with your existing Git setup - no disruption to your current workflow.
-  - title: 🤝 Team-Friendly
-    details: Perfect for teams of all sizes, with consistent commit styles and collaborative workflow support.
+  - icon: 🚀
+    title: Intelligent Commit Messages
+    details: Generate meaningful, structured commit messages automatically. Save time while improving your repository's documentation quality.
+  - icon: ⚡
+    title: 20+ Powerful Git Commands
+    details: Streamline complex Git operations with intuitive shortcuts. Simplify your daily workflow with smarter, more efficient commands.
+  - icon: 📊
+    title: Repository Insights
+    details: Get detailed information about your project with a single command. Visualize activity, contributors, and codebase statistics easily.
+  - icon: 🔄
+    title: Workflow Automation
+    details: Combine multiple Git operations into single commands. Automate common patterns like "add, commit and push" to save time.
+  - icon: 🎨
+    title: Highly Customizable
+    details: Configure to match your team's conventions with templates, project-specific settings, and custom AI model selection.
+  - icon: 🤝
+    title: Team Collaboration Tools
+    details: Maintain consistent commit styles and clear history across your team. Improve code review processes with better commit documentation.
 ---
