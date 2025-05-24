@@ -57,6 +57,7 @@ Before you begin, ensure you have the following:
    How to config your model? Please refer to [How to Config Model](/other/how-to-config-model)
 
    The `config.yaml` file will be stored in:
+
    - Windows: `%USERPROFILE%\.zeeland\gcop\config.yaml`
    - Linux: `~/.zeeland/gcop/config.yaml`
    - MacOS: `~/.zeeland/gcop/config.yaml`
@@ -93,32 +94,65 @@ import IFrame from '/components/iframe.vue'
 
 <IFrame src="https://www.youtube.com/embed/iP5qYxFaLS4" />
 
-You can accept the `default message`,` retry`, `retry by your feedback` or `exit` after the AI generates the commit message.
+You can accept the `default message`,`retry`, `retry by your feedback` or `exit` after the AI generates the commit message.
 
 Finally, you can see the commit message like this:
 
 ![commit message](../images/git-commit-2.png)
 
-```bash
-(gcop) D:\Projects\gcop\docs>git ac
-[Code diff] 
-...
+### Customizing Commit Messages with Project Configuration
 
+GCOP uses a two-level configuration system:
 
-[Thought] The changes involve updating the VitePress configuration to use an environment variable for the website ID, adding a reference to a new documentation page in the quick-start guide, and correcting a URL in the model configuration documentation. These changes are primarily 
-related to documentation and configuration updates.
-[Generated commit message]
-docs: update VitePress config and add model config reference
+- **User config**: Global settings stored in `~/.zeeland/gcop/config.yaml` (includes your API keys)
+- **Project config**: Repository-specific settings in `.gcop/config.yaml` (overrides user config)
 
-- Update VitePress config to use environment variable for website ID
-- Add reference to model configuration guide in quick-start documentation
-- Correct URL in model configuration documentation
+This approach lets you keep sensitive information in your user config while customizing project-specific elements like commit templates.
 
-These changes improve the clarity and accuracy of the documentation, ensuring that users can properly configure the website and understand how to set up models.
-? Do you want to commit the changes with this message? yes
-[main 5612f60] docs: update VitePress config and add model config reference
- 3 files changed, 5 insertions(+), 2 deletions(-)
-```
+You can customize how GCOP generates commit messages for specific projects:
+
+1. Initialize a project-level configuration:
+
+   ```
+   gcop init-project
+   ```
+
+   This creates a `.gcop/config.yaml` file in your project root.
+
+2. Edit the configuration to customize commit message templates:
+
+   ```yaml
+   commit_template: |
+     <good_example>
+     <commit_message>
+     feat(backend): add user authentication API
+     
+     - Implement JWT token generation and validation
+     - Add rate limiting for login attempts
+     - Create user session management endpoints
+     
+     Related: #123
+     Testing: Added unit tests for auth flows
+     </commit_message>
+     </good_example>
+     
+     <bad_example>
+     <commit_message>added login stuff</commit_message>
+     </bad_example>
+     
+     # PROJECT GUIDELINES:
+     # 1. Use conventional commits format (feat/fix/docs)
+     # 2. Include ticket number for tracked issues
+     # 3. Mention testing strategy for new features
+   ```
+
+3. Use GCOP normally with `git c` or `git ac` - the AI will now follow your custom template!
+
+This approach helps teams maintain consistent commit messages and follow project-specific conventions. Project configurations take priority over global settings, so each repository can have its own standards.
+
+> **Important:** Keep your API keys in user config (`~/.zeeland/gcop/config.yaml`), not in project config. This keeps sensitive information secure and separate from your codebase.
+
+For more advanced configuration options, see [Project-Based Configuration](/other/config-your-project-config).
 
 ### Viewing Repository Information
 
@@ -172,5 +206,5 @@ For more detailed information on each command, refer to the [Commands](./command
 
 - Visit our [How to guide](/guide/how-to-guide) for common questions and troubleshooting
 - Check out the [How to Config Model](/other/how-to-config-model) guide for advanced configuration options
-
-Start enhancing your Git workflow with GCOP today!
+- How to [setting different configuration options for different projects](/other/config-your-project-config)
+  Start enhancing your Git workflow with GCOP today!

@@ -17,33 +17,47 @@ This tutorial will guide you through the process of configuring GCOP. Before you
 
 Gcop will store all configurations in the `config.yaml` file. The `config.yaml` file will be stored in:
 
-- Windows: `%USERPROFILE%\.zeeland\gcop\config.yaml`
-- Linux: `~/.zeeland/gcop/config.yaml`
-- MacOS: `~/.zeeland/gcop/config.yaml`
+- Windows: `%USERPROFILE%\.gcop\config.yaml`
+- Linux: `~/.gcop/config.yaml`
+- MacOS: `~/.gcop/config.yaml`
 
-## Setting up YAML Schema in VSCode
+## Configuration Priority
 
-GCOP provides a JSON schema (`config-schema.json`) to help you autocomplete and validate your config file. The schema supports version control to ensure backward compatibility and smooth upgrades.
+GCOP supports three levels of configuration, loaded in the following priority order (from highest to lowest):
 
-If you are using VSCode, you can install the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) to enable autocomplete and validation for YAML files.
+1. Project configuration (`.gcop/config.yaml`): Located in the project root directory
+2. User configuration (`~/.gcop/config.yaml`): User-level configuration
+3. Default configuration: Built-in default settings
 
-![Autocomplete Configuration](/public/videos/autocomplete-config.gif)
+Higher priority configurations override lower priority ones. This means:
 
-To configure this in your local VSCode environment, follow these steps:
+- Project configurations override both user and default configurations
+- User configurations override default configurations if no project configuration exists
+- Default configurations are used when neither project nor user configurations are present
 
-1. Download the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) for VSCode.
-2. Add the following settings to your VSCode settings (`.vscode/settings.json`):
+## Project Configuration
 
-```json
-{
-  "yaml.schemas": {
-    "https://raw.githubusercontent.com/Undertone0809/gcop/main/config-schema.json": [
-      "~/.zeeland/gcop/config.yaml",
-      "/Users/*/.zeeland/gcop/config.yaml"
-    ]
-  }
-}
+You can create a project-level configuration by running the following command in your project root directory:
+
+```bash
+gcop init-project
 ```
+
+This command will create a `.gcop` directory with a `config.yaml` file:
+
+```bash
+your-project/
+├── .gcop/
+│   └── config.yaml    # Project-level configuration
+├── src/
+└── ...
+```
+
+Project-level configuration follows the same format as user-level configuration. This is particularly useful for team collaboration as it allows you to:
+
+- Set specific configurations for individual projects
+- Share consistent settings across team members
+- Version control your configuration
 
 ## All Configurations
 
@@ -52,16 +66,16 @@ There are all configurations you can set in the `config.yaml` file.
 ```yaml
 model:
   # Required, the model name.
-  model_name: 'provider/name,eg openai/gpt-4o '
+  model_name: "provider/name,eg openai/gpt-4o "
   # Required, the API key.
-  api_key: 'your_api_key'
+  api_key: "your_api_key"
   # Optional, the API base.
-  api_base: 'your_api_base,eg https://api.openai.com/v1'
+  api_base: "your_api_base,eg https://api.openai.com/v1"
 # Optional, default is false. If true, the git history will be included in the prompt.
 include_git_history: false
 # Optional, default is false. Attention: This feature is not supported yet.
 enable_data_improvement: false
-# Optional, if you want to customize the commit template. 
+# Optional, if you want to customize the commit template.
 commit_template: |
   <good_example>
   <commit_message>
@@ -90,9 +104,10 @@ See details in [How to config model](/other/how-to-config-model.md).
 
 ### Commit Message Template
 
-GCOP provides a default `commit template` to guide language model how to generate commit message. Default template is as follows:
+gcop provides a default `commit template` to guide language model how to generate commit message. Default template is as follows:
 
 ```yaml
+
 ... # other configurations
 commit_template: |
   <good_example>
@@ -118,13 +133,10 @@ commit_template: |
 
 You can customize the commit message template to guide language model how to generate commit message.
 
-:::info TIP
-We recommend you fork the default commit template and customize it to your own needs.
-:::
-
 The following example how to generate a commit message in Chinese:
 
 ```yaml
+
 ... # other configurations
 commit_template: |
   <good_example>
@@ -168,3 +180,7 @@ docs: 更新文档结构和内容
 - 更新gcop/prompt.py中的默认提交模板
 - 修复utils/__init__.py中的文件读取编码问题
 ```
+
+:::info TIP
+We recommend you fork the default commit template and customize it to your own needs.
+:::

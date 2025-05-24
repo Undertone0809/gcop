@@ -5,7 +5,7 @@ import subprocess
 import tempfile
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Mapping, Optional
 
 import questionary
 import requests
@@ -204,3 +204,11 @@ def migrate_config_if_needed() -> None:
         logger.color_info(
             "Please manually move your config file to the new location", color=Color.RED
         )
+
+
+def merge_dicts(d1: Dict[str, Any], d2: Dict[str, Any]) -> None:
+    for k in d2:
+        if k in d1 and isinstance(d1[k], Dict) and isinstance(d2[k], Mapping):
+            merge_dicts(d1[k], d2[k])
+        else:
+            d1[k] = d2[k]

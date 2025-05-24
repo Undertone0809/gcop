@@ -15,29 +15,41 @@
 
 </div>
 
-GCOP (Git Copilot) - Your AI-powered Git assistant that transforms messy commits into meaningful stories. It automates commit message generation, enhances your Git workflow, and makes version control a breeze with 20+ smart commands.
+# GCOP - Your Complete Git Workflow Assistant
+
+GCOP (Git Copilot) enhances your Git experience with AI-powered commit messages, smart commands, and workflow optimization tools. It streamlines your development workflow, improves team collaboration, and makes complex Git operations simple.
 
 ## 🚀 Key Features
 
-1. **🤖 Intelligent Commit Crafting**
-   - Let AI analyze your changes and generate contextually perfect commit messages
+1. **🤖 Intelligent Commit Messages**
+   - Generate meaningful, structured commit messages automatically
+   - Save time while improving your repository's documentation quality
    - Learn from your project's commit history to match your team's style
 
-2. **🎨 Highly Customizable Experience**
-   - Design your own commit templates to match project requirements
-   - Fine-tune commit message style with custom prompts
-   - Configure project-specific settings for consistent team standards
+2. **⚡ 20+ Powerful Git Commands**
+   - Streamline complex Git operations with intuitive shortcuts
+   - Simplify your daily workflow with smarter, more efficient commands
+   - Reduce common Git operations to single commands
 
-3. **📚 Smart Learning Capabilities**
-   - Automatically learn from your repository's commit history
-   - Adapt to your team's commit conventions over time
-   - Improve message quality through continuous learning
+3. **📊 Repository Insights**
+   - Get detailed information about your project with a single command
+   - Visualize activity, contributors, and codebase statistics easily
+   - Monitor repository health and team contributions
 
-4. **⚡ Seamless Developer Experience**
-   - Supercharged with 20+ intuitive Git shortcuts and commands
-   - Smart aliases that make complex Git operations a breeze
-   - Integrate with your favorite AI models (OpenAI, Anthropic, etc.)
-   - Zero-config integration with your existing Git workflow
+4. **🔄 Workflow Automation**
+   - Combine multiple Git operations into single commands
+   - Automate common patterns like "add, commit and push" to save time
+   - Create consistent workflows across your team
+
+5. **🎨 Highly Customizable**
+   - Configure to match your team's conventions with templates
+   - Project-specific settings for consistent standards
+   - Custom AI model selection for your specific needs
+
+6. **🤝 Team Collaboration Tools**
+   - Maintain consistent commit styles and clear history across your team
+   - Improve code review processes with better commit documentation
+   - Enhance team communication through standardized practices
 
 ## Video Demo
 
@@ -100,7 +112,6 @@ config your model [here](https://gcop.zeeland.top/other/how-to-config-model.html
    ```
    git ghelp
    ```
-
 
    You should see output similar to:
 
@@ -166,64 +177,90 @@ These changes improve the development environment by ensuring proper YAML schema
 
 3. Choose the most appropriate message using arrow keys and press Enter.
 
-### Other Useful Commands
+### Customizing Commit Messages with Project Configuration
+
+GCOP uses a two-level configuration system:
+
+- **User config**: Global settings stored in `~/.zeeland/gcop/config.yaml` (includes your API keys)
+- **Project config**: Repository-specific settings in `.gcop/config.yaml` (overrides user config)
+
+This approach lets you keep sensitive information in your user config while customizing project-specific elements like commit templates.
+
+You can customize how GCOP generates commit messages for specific projects:
+
+1. Initialize a project-level configuration:
+
+   ```
+   gcop init-project
+   ```
+
+   This creates a `.gcop/config.yaml` file in your project root.
+
+2. Edit the configuration to customize commit message templates:
+
+   ```yaml
+   commit_template: |
+     <good_example>
+     <commit_message>
+     feat(backend): add user authentication API
+     
+     - Implement JWT token generation and validation
+     - Add rate limiting for login attempts
+     - Create user session management endpoints
+     
+     Related: #123
+     Testing: Added unit tests for auth flows
+     </commit_message>
+     </good_example>
+     
+     <bad_example>
+     <commit_message>added login stuff</commit_message>
+     </bad_example>
+     
+     # PROJECT GUIDELINES:
+     # 1. Use conventional commits format (feat/fix/docs)
+     # 2. Include ticket number for tracked issues
+     # 3. Mention testing strategy for new features
+   ```
+
+3. Use GCOP normally with `git c` or `git ac` - the AI will now follow your custom template!
+
+This approach helps teams maintain consistent commit messages and follow project-specific conventions. Project configurations take priority over global settings, so each repository can have its own standards.
+
+> **Important:** Keep your API keys in user config (`~/.zeeland/gcop/config.yaml`), not in project config. This keeps sensitive information secure and separate from your codebase.
+
+For more advanced configuration options, see [Project-Based Configuration](https://gcop.zeeland.top/other/config-your-project-config).
+
+
+### Repository Insights
+
+Get detailed information about your repository:
+
+```
+git info
+```
+
+This command displays comprehensive repository statistics including:
+
+- Project name and branch information
+- Commit history and contributor metrics
+- File type distribution and repository size
+- Most active contributors and frequently changed files
+
+### Workflow Automation Commands
+
+GCOP provides several time-saving command combinations:
 
 - `git ac`: Add all changes and commit with an AI-generated message
-
-   ```
-   git ac
-   ```
-
-   Output:
-
-   ```
-   Changes added. Generating commit message...
-   ? Select a commit message to commit (Use arrow keys)
-    » feat: Add new user profile page
-      fix: Correct CSS styling issues on mobile devices
-      docs: Update API documentation for v2.0
-      refactor: Optimize database queries for better performance
-      retry
-   ```
-
+- `git acp`: Add all changes, commit with AI message, and push to remote
+- `git cp`: Commit with AI message and push to remote
 - `git undo`: Undo the last commit while keeping changes staged
-
-   ```
-   git undo
-   ```
-
-   Output:
-
-   ```
-   HEAD is now at a1b2c3d Previous commit message
-   Changes from the last commit are now staged.
-   ```
-
 - `git p`: Push to the current branch
-
-   ```
-   git p
-   ```
-
-   Output:
-
-   ```
-   Enumerating objects: 5, done.
-   Counting objects: 100% (5/5), done.
-   Delta compression using up to 8 threads
-   Compressing objects: 100% (3/3), done.
-   Writing objects: 100% (3/3), 328 bytes | 328.00 KiB/s, done.
-   Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
-   To https://github.com/username/repo.git
-      a1b2c3d..e4f5g6h  main -> main
-   ```
-
 - `git pf`: Force push to the current branch (use with caution)
-- `git gconfig`: Open the GCOP configuration file for adjustments
 
 ## 🔧 Configuration
 
-To modify your AI model settings:
+To modify your settings:
 
 1. Open the config file:
 
@@ -231,13 +268,11 @@ To modify your AI model settings:
    git gconfig
    ```
 
-2. Edit the `config.yaml` file:
-
-   ```yaml
-   model:
-     model_name: provider/name, eg openai/gpt-4o
-     api_key: your_api_key
-   ```
+2. Edit the `config.yaml` file to customize:
+   - AI model settings
+   - Commit message templates
+   - Git history learning preferences
+   - Project-specific configurations
 
 3. Save and close the file.
 

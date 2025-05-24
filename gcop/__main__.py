@@ -1,4 +1,5 @@
 import os
+import pprint
 import subprocess
 from enum import Enum
 from functools import wraps
@@ -10,11 +11,19 @@ import pne
 import questionary
 import requests
 import typer
+import yaml
+from conftier import (
+    ConfigManager,
+    find_project_root,
+    get_project_config_path,
+    get_user_config_path,
+)
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from gcop import prompt, version
-from gcop.config import GcopConfig, ModelConfig, get_config
+from gcop.config import config_manager, is_key_in_config
+from gcop.schema import GcopConfig, ModelConfig
 from gcop.utils import check_version_update, migrate_config_if_needed
 from gcop.utils.logger import Color, logger
 
@@ -38,7 +47,7 @@ class CommitMessage(BaseModel):
 
 
 def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
-    """Get git diff
+    """Get git diff.
 
     Args:
         diff_type(str): diff type, --staged or --cached
@@ -55,8 +64,28 @@ def get_git_diff(diff_type: Literal["--staged", "--cached"]) -> str:
         raise ValueError(f"Error getting git diff: {e}")
 
 
+def get_git_history(log_type: Literal["--oneline", "--stat"], limit: int) -> str:
+    """Get git history
+
+    Args:
+        log_type(str): log type, --oneline or --stat
+        limit(int): Limit the output quantity
+
+    Returns:
+        str: git history
+    """
+    try:
+        result = subprocess.check_output(
+            ["git", "log", log_type, "-n", str(limit)], text=True, encoding="utf-8"
+        )
+        return result
+    except subprocess.CalledProcessError as e:
+        raise ValueError(f"Error getting git history: {e}")
+
+
 def generate_commit_message(
     diff: str,
+    commit_message_history: Optional[str] = None,
     instruction: Optional[str] = None,
     previous_commit_message: Optional[str] = None,
 ) -> CommitMessage:
@@ -72,16 +101,16 @@ def generate_commit_message(
     Returns:
         str: git commit message with ai generated.
     """
-    gcop_config = get_config()
-
+    gcop_config = config_manager.load()
+    commit_template = gcop_config.commit_template
     instruction: str = prompt.get_commit_instrcution(
         diff=diff,
-        commit_template=gcop_config.commit_template,
+        commmit_message_history=commit_message_history,
+        commit_template=commit_template,
         instruction=instruction,
         previous_commit_message=previous_commit_message,
     )
-
-    model_config: ModelConfig = gcop_config.model_config
+    model_config: ModelConfig = gcop_config.model
     return pne.chat(
         messages=instruction,
         model=model_config.model_name,
@@ -107,24 +136,22 @@ def check_version_before_command(f: Callable) -> Callable:
 
 @app.command(name="config")
 @check_version_before_command
-def config_command(from_init: bool = False):
+def config_command(
+    level: str = typer.Option(
+        "project",
+        "--level",
+        "-l",
+        help="Configuration levels, with the option of project/user",
+        case_sensitive=False,
+    ),
+):
     """Open the config file in the default editor."""
-    initial_content = (
-        "model:\n  model_name: provider/name,eg openai/gpt-4o"
-        "\n  api_key: your_api_key\n"
-    )
-
-    conf_file: str = GcopConfig._config_path
-
-    if not os.path.exists(conf_file):
-        Path(conf_file).write_text(initial_content)
-
-    if from_init:
-        with open(conf_file) as f:
-            if f.read() == initial_content:
-                click.edit(filename=conf_file)
+    if level == "project":
+        click.edit(filename=config_manager.project_config_path)
+    elif level == "user":
+        click.edit(filename=config_manager.user_config_path)
     else:
-        click.edit(filename=conf_file)
+        typer.echo("The current parameter is illegal. The option is project/user.")
 
 
 @app.command(name="init")
@@ -201,11 +228,10 @@ def init_command():
             encoding="utf-8",
         )
         logger.color_info("git aliases added successfully", color=Color.GREEN)
-
-        config_command(from_init=True)
+        config_manager.load()
         logger.color_info("gcop initialized successfully", color=Color.GREEN)
     except subprocess.CalledProcessError as error:
-        print(f"Error adding git aliases: {error}")
+        logger.color_info(f"Error adding git aliases: {error}", color=Color.RED)
 
 
 @app.command(name="info")
@@ -453,17 +479,25 @@ def commit_command(
     feedback, please select "retry by feedback". If you want to exit the commit
     process, please select "exit".
     """
+    gcop_config = config_manager.load()
+
     diff: str = get_git_diff("--staged")
+    commit_message_history: Optional[str] = None
 
     if not diff:
         logger.color_info("No staged changes", color=Color.YELLOW)
         return
 
+    if gcop_config.include_git_history:
+        commit_message_history: str = get_git_history(
+            "--oneline", gcop_config.history_learning_limit
+        )
+
     logger.color_info(f"[Code diff] \n{diff}", color=Color.YELLOW)
     logger.color_info("[On Ready] Generating commit message...")
 
     commit_messages: CommitMessage = generate_commit_message(
-        diff, instruction, previous_commit_message
+        diff, commit_message_history, instruction, previous_commit_message
     )
 
     logger.color_info(f"[Thought] {commit_messages.thought}")
@@ -493,6 +527,158 @@ def commit_command(
     actions[response]()
 
 
+@app.command(name="init-project")
+@check_version_before_command
+def init_project(
+    path: Optional[str] = typer.Option(None, "--path", "-p", help="Project path"),
+):
+    """Initialize project configuration template"""
+    config_name = config_manager.config_name
+    project_path = Path(path) if path else Path.cwd()
+    config_dir = project_path / f".{config_name}"
+    config_file = config_dir / "config.yaml"
+
+    if not config_dir.exists():
+        config_dir.mkdir(parents=True, exist_ok=True)
+        typer.echo(f"Created directory: {config_dir}")
+
+    if not config_file.exists():
+        with open(config_file, "w") as f:
+            yaml.dump(config_manager._get_default_dict(), f, default_flow_style=False)
+        typer.echo(f"Created project config template: {config_file}")
+    else:
+        typer.echo(f"Project config already exists: {config_file}")
+
+
+@app.command(name="show-config")
+@check_version_before_command
+def show_config():
+    """Show current effective configuration and its sources"""
+    config_name = config_manager.config_name
+
+    # Get configs directly from config_manager
+    merged_config = config_manager.load()
+    user_config = config_manager.get_user_config()
+    project_config = config_manager.get_project_config()
+
+    if not user_config and not project_config:
+        typer.echo(
+            typer.style(
+                f"No configuration files found for framework '{config_name}'",
+                fg="yellow",
+            )
+        )
+        return
+
+    # Display user config
+    if user_config:
+        typer.echo(
+            typer.style(f"User config ({config_manager.user_config_path}):", fg="blue")
+        )
+        typer.echo(
+            typer.style(yaml.dump(user_config, default_flow_style=False), fg="cyan")
+        )
+    else:
+        typer.echo(
+            typer.style(
+                f"No user config found at {config_manager.user_config_path}",
+                fg="yellow",
+            )
+        )
+
+    # Display project config
+    if project_config:
+        typer.echo(
+            typer.style(
+                f"Project config ({config_manager.project_config_path}):", fg="blue"
+            )
+        )
+        typer.echo(
+            typer.style(yaml.dump(project_config, default_flow_style=False), fg="cyan")
+        )
+    else:
+        typer.echo(typer.style("No project config found", fg="yellow"))
+
+    # Display merged config (effective configuration)
+    typer.echo(typer.style("Merged config (effective configuration):", fg="green"))
+    typer.echo(
+        typer.style(yaml.dump(merged_config, default_flow_style=False), fg="green")
+    )
+
+
+@app.command(name="set-config")
+@check_version_before_command
+def set_config(
+    key: str = typer.Option(
+        ..., "--key", "-k", help="Config key to set (dot notation)"
+    ),
+    value: str = typer.Option(..., "--value", "-v", help="Value to set"),
+    project: bool = typer.Option(
+        False,
+        "--project",
+        "-p",
+        is_flag=True,
+        help="Update project config instead of user config",
+    ),
+):
+    """Set a configuration value"""
+    gcop_config: GcopConfig = config_manager.load()
+    if not is_key_in_config(gcop_config, key):
+        typer.echo(f"Invalid key(s): {key}")
+        raise typer.Abort()
+
+    config_name: str = config_manager.config_name
+    if project:
+        project_root = find_project_root()
+        if not project_root:
+            typer.echo("No project root found. Cannot update project configuration.")
+            raise typer.Abort()
+        config_path = get_project_config_path(config_name, str(project_root))
+        if not config_path:
+            typer.echo("No project configuration path could be determined.")
+            raise typer.Abort()
+    else:
+        config_path = get_user_config_path(config_name)
+
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+
+    existing_config = {}
+    if config_path.exists():
+        with open(config_path, "r") as f:
+            existing_config = yaml.safe_load(f) or {}
+
+    key_parts = key.split(".")
+    current = existing_config
+
+    for part in key_parts[:-1]:
+        current = current.setdefault(part, {})
+        if not isinstance(current, dict):
+            current = {}
+
+    try:
+        if value.lower() == "true":
+            parsed_value = True
+        elif value.lower() == "false":
+            parsed_value = False
+        elif value.isdigit():
+            parsed_value = int(value)
+        else:
+            try:
+                parsed_value = float(value)
+            except ValueError:
+                parsed_value = value
+    except Exception:
+        parsed_value = value
+
+    current[key_parts[-1]] = parsed_value
+
+    with open(config_path, "w") as f:
+        yaml.dump(existing_config, f, default_flow_style=False, sort_keys=False)
+
+    config_type = "project" if project else "user"
+    typer.echo(f"Updated {config_type} config: {key} = {value}")
+
+
 @app.command(name="help")
 @check_version_before_command
 def help_command():
@@ -517,6 +703,8 @@ Commands:
   git cp         The same as `git gcommit && git push` command
   git amend      Amend the last commit, allowing you to modify the commit message or add changes to the previous commit
   git info       Display basic information about the current git repository
+  gcop init-project Initialize gcop config in the current project
+  gcop show-config Show the current gcop config
 """  # noqa
 
     logger.color_info(help_message)
