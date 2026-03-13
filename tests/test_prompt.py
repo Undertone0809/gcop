@@ -45,15 +45,27 @@ def test_get_commit_instruction_with_instruction():
     assert "test diff" in result
 
 
+def test_get_commit_instruction_with_history():
+    """Test commit instruction with commit message history."""
+    diff = "test diff"
+    history = "commit message history"
+    result = get_commit_instrcution(diff, commmit_message_history=history)
+    assert isinstance(result, str)
+    assert "commit message history" in result
+    assert "test diff" in result
+
+
 def test_get_commit_instruction_all_params():
     """Test commit instruction with all parameters."""
     diff = "test diff"
     template = "<example>template</example>"
     prev_msg = "previous message"
     instruction = "make it better"
+    commit_message_history = "commit message history"
 
     result = get_commit_instrcution(
         diff,
+        commmit_message_history=commit_message_history,
         commit_template=template,
         previous_commit_message=prev_msg,
         instruction=instruction,
@@ -61,6 +73,7 @@ def test_get_commit_instruction_all_params():
 
     assert isinstance(result, str)
     assert "test diff" in result
+    assert "commit message history"
     assert "template" in result
     assert "previous message" in result
     assert "make it better" in result

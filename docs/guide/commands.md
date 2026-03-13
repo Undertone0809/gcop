@@ -73,6 +73,10 @@ The `git amend` command modifies Git history. Use it with caution, especially if
 
 Open the GCOP configuration file in the default editor. See [Configuration](/guide/configuration) for more details.
 
+Option parameters:
+
+- `l/--level` [Optional]:Configuration levels, with the option of project/user. The default is `user`.
+
 ### `git info`
 
 Display detailed information about the current git repository. This command provides a comprehensive overview, including:
@@ -83,4 +87,19 @@ Display detailed information about the current git repository. This command prov
 - Version control information (latest tag, branch count, untracked files)
 - Advanced details (submodules, latest merge commit, file type statistics)
 
-For more detailed information on each command, refer to the [Quick Start](/guide/quick-start.md) section in the guide.
+### `gcop init-project`
+
+Initialize the GCOP configuration in the current project. This command creates the `.gcop/config.yaml` file in the project root directory, which contains the default GCOP configuration.
+
+### `gcop show-config`
+
+The current GCOP configuration is displayed. This command outputs all GCOP configuration items currently in effect, including model configuration, submit templates, and so on.
+
+### `gcop set-config`
+
+Set a configuration value.
+Option parameters:
+
+- `k/--key` [Required]:Config key to set (dot notation).
+- `v/--value` [Required]:Value to set.
+- `p/--project` [Optional]:Update project config instead of user config. The default is False.

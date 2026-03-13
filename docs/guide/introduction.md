@@ -21,25 +21,25 @@ Tired of spending precious development time crafting commit messages? Meet GCOP 
 
 ## Key Features
 
-1. **🤖 Intelligent Commit Crafting**
-   - Let AI analyze your changes and generate contextually perfect commit messages
-   - Learn from your project's commit history to match your team's style
+1. **🤖 AI-Powered Commit Messages**
+   - Type `git c` and get a professional commit message instantly
+   - No more staring at the screen thinking what to write
+   - Detailed messages with proper formatting and bullet points
 
-2. **🎨 Highly Customizable Experience**
-   - Design your own commit templates to match project requirements
-   - Fine-tune commit message style with custom prompts
-   - Configure project-specific settings for consistent team standards
+2. **🎨 Team-Friendly Configuration**
+   - Set project standards that everyone follows automatically
+   - Create custom commit templates with examples of good/bad messages
+   - Maintain consistent style across your entire team without manual enforcement
 
-3. **📚 Smart Learning Capabilities**
-   - Automatically learn from your repository's commit history
-   - Adapt to your team's commit conventions over time
-   - Improve message quality through continuous learning
+3. **📚 Smart Context Understanding**
+   - GCOP reads your code changes to understand what you actually did
+   - Automatically includes ticket numbers, affected components, and impact
+   - Produces more meaningful history than "fix bug" or "update code"
 
-4. **⚡ Seamless Developer Experience**
-   - Supercharged with 20+ intuitive Git shortcuts and commands
-   - Smart aliases that make complex Git operations a breeze
-   - Integrate with your favorite AI models (OpenAI, Anthropic, etc.)
-   - Zero-config integration with your existing Git workflow
+4. **⚡ Git Workflow Superpowers**
+   - Quick shortcuts like `git ac` (add + commit) and `git acp` (add + commit + push)
+   - Detailed repo insights with `git info` (contributors, file stats, activity)
+   - Works with your existing workflow - no new tools to learn
 
 ![GCOP Features](/images/git-ac-banner.png)
 
@@ -49,6 +49,17 @@ Tired of spending precious development time crafting commit messages? Meet GCOP 
 - **Consistency**: Maintain a clear and informative commit history across your projects and teams.
 - **Flexibility**: Adapt GCOP to your specific needs with customizable AI model settings.
 - **Enhanced Collaboration**: Improve team understanding of code changes with well-structured, AI-generated commit messages.
+
+## Project-Level Configuration
+
+One of GCOP's most powerful features is its two-level configuration system:
+
+- **User config**: Your personal settings with API keys and preferences
+- **Project config**: Repository-specific rules that all team members follow
+
+This means you can define exactly what a good commit message looks like for each project. For example, your frontend team might require component names in commit messages, while your API team might need endpoint references.
+
+Simply run `gcop init-project` in your repo and customize the commit template - every team member will automatically follow the same standards!
 
 ## Video Demo
 

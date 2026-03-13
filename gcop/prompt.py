@@ -81,6 +81,7 @@ release generate a conventional commit message based on the provided git diff, f
 
 def get_commit_instrcution(
     diff: str,
+    commmit_message_history: Optional[str] = None,
     commit_template: Optional[str] = None,
     instruction: Optional[str] = None,
     previous_commit_message: Optional[str] = None,
@@ -115,5 +116,6 @@ def get_commit_instrcution(
 
     if instruction:
         _ += f"<user_feedback>{instruction}</user_feedback>"
-
+    if commmit_message_history:
+        _ += f"<commit_message_history>{commmit_message_history}</commit_message_history>"  # noqa: E501
     return _
