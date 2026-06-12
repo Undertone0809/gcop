@@ -21,7 +21,10 @@ keywords = ["gcop", "git", "git copilot", "promptulate", "pne", "LLM", "zeeland"
 python = ">=3.8.1,<4.0"
 zeeland = ">=0.3.0,<1.0.0"
 pne = "^1.1.1"
-click = "^8.1.7"
+# click 8.2+ rejects the secondary flag form that typer < 0.16 generates,
+# crashing every command with "TypeError: Secondary flag is not valid for
+# non-boolean flag". Cap click until typer is upgraded to >= 0.16.
+click = ">=8.1.7,<8.2"
 questionary = "^2.0.1"
 typer = "^0.12.3"
 rich = "^13.7.1"
