@@ -61,10 +61,10 @@ class Logger(logging.Logger, metaclass=Singleton):
             **kwargs: Additional kwargs passed to logger
         """
         self.info(message, *args, **kwargs)
-        formatted_msg = (
-            f"[{color.value}]{message}[/]" if color != Color.DEFAULT else message
-        )
-        self.console.print(formatted_msg, style=color.value)
+        # markup=False prevents Rich from parsing bracketed text in user content
+        # (e.g. "[/?#]" inside a git diff) as markup tags, which raises MarkupError.
+        # The color is applied via the style parameter instead of markup tags.
+        self.console.print(message, style=color.value, markup=False)
 
 
 def handle_exception(exc_type, exc_value, exc_tb) -> None:
